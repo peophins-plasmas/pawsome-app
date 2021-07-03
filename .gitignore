@@ -1,3 +1,6 @@
+# Secrets
+src/firebase/secret_key.js
+
 # Logs
 logs
 *.log
