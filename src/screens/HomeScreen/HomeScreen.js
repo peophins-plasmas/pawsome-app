@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
@@ -21,17 +22,24 @@ export default function HomeScreen(props) {
     firebase
       .auth()
       .signOut()
+      .then(() =>
+        Alert.alert(
+          "Logged Out",
+          "You are now logged out"
+          // [
+          //   {
+          //     text: "Return to login page",
+          //     onPress: () => props.navigation.navigate("Login"),
+          //   },
+          // ]
+        )
+      )
       .catch((error) => {
         alert(error);
       });
   };
 
   useEffect(() => {
-    // firebase.auth.onAuthStateChanged((user) => {
-    //   if (!user) {
-    //     props.navigation.navigate("Home");
-    //   }
-
     entityRef
       .where("authorID", "==", userID)
       .orderBy("createdAt", "desc")
