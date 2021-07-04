@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text } from "react-native";
 import { LoginScreen, HomeScreen, RegistrationScreen } from "./src/screens";
 import { decode, encode } from "base-64";
+import { set } from "react-native-reanimated";
 if (!global.btoa) {
   global.btoa = encode;
 }
@@ -18,6 +19,7 @@ const Stack = createStackNavigator();
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [isSignedIn, setIsSignedIn] = useState(null);
 
   useEffect(() => {
     const usersRef = firebase.firestore().collection("users");
@@ -30,12 +32,14 @@ export default function App() {
             const userData = document.data();
             setLoading(false);
             setUser(userData);
+            setIsSignedIn(true);
           })
           .catch((error) => {
             setLoading(false);
           });
       } else {
         setLoading(false);
+        setIsSignedIn(false);
       }
     });
   }, []);
@@ -51,7 +55,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {user ? (
+        {isSignedIn ? (
           <Stack.Screen name='Home'>
             {(props) => <HomeScreen {...props} extraData={user} />}
           </Stack.Screen>
