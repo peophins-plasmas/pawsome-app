@@ -12,6 +12,7 @@ import styles from "./styles";
 import { firebase } from "../../firebase/config";
 
 export default function HomeScreen(props) {
+  //console.log("PROPS on HOMESCREEN", props);
   const [entityText, setEntityText] = useState("");
   const [entities, setEntities] = useState([]);
 
@@ -96,7 +97,15 @@ export default function HomeScreen(props) {
           <Text style={styles.buttonText}>Log out</Text>
         </TouchableOpacity>
       </View>
-
+      <View>
+        <TouchableOpacity
+          style={styles.button}
+          title='Calendar View'
+          onPress={() => props.navigation.navigate("Calendar")}
+        >
+          <Text style={styles.buttonText}>To Calendar</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
