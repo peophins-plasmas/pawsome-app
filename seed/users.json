@@ -1,0 +1,16 @@
+[
+    {
+        "id" : "3dOEnij6c5bbrYaVlCBW8G7B8ef2",
+        "firstName": "McKenna",
+        "lastName": "Warren",
+        "email": "",
+        "password": "",
+        "address" : "2157 45th St",
+        "zip" : 10031,
+        "vetId": [],
+        "ownedPetId": [1],
+        "caredPetId" : [],
+        "relatedUsers" : [],
+        "tasks" : []
+      }
+]
