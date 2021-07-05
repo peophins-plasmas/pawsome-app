@@ -1,5 +1,14 @@
 import { StyleSheet } from "react-native";
 
+export const colors = {
+  dkblue: "#0081AF",
+  pawsomeblue: "#00ABE7",
+  ltblue: "#2DC7FF",
+  wheat: "#EAD2AC",
+  antWhite: "#FAEFDC",
+  yellow: "#FEE05B",
+};
+
 export default StyleSheet.create({
   container: {
     flex: 1,
