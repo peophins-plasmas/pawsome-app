@@ -11,9 +11,10 @@ export default StyleSheet.create({
     logo: {
         flex: 1,
         height: 120,
-        width: 90,
+        width: 300,
         alignSelf: "center",
-        margin: 30
+        margin: 30,
+        resizeMode: 'contain'
     },
     input: {
         height: 48,
