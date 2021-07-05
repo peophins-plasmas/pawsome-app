@@ -3,14 +3,28 @@
         "id" : "3dOEnij6c5bbrYaVlCBW8G7B8ef2",
         "firstName": "McKenna",
         "lastName": "Warren",
-        "email": "",
-        "password": "",
+        "email": "mckenna@gmail.com",
+        "password": "123456",
         "address" : "2157 45th St",
         "zip" : 10031,
         "vetId": [],
-        "ownedPetId": [1],
-        "caredPetId" : [],
-        "relatedUsers" : [],
+        "ownedPetId": ["1"],
+        "caredPetId" : ["2"],
+        "relatedUsers" : ["ZjWMjcQvqURhBl3KlwB21juMOqZ2"],
         "tasks" : []
+      },
+      {
+        "id": "ZjWMjcQvqURhBl3KlwB21juMOqZ2",
+        "firstName": "Phoebe",
+        "lastName": "Torcia",
+        "email": "phoebe@gmail.com",
+        "password": "123456",
+        "address" : "2157 45th St",
+        "zip" : 10031,
+        "vetId": ["1"],
+        "ownedPetId": ["2"],
+        "caredPetId" : ["1"],
+        "relatedUsers" : ["3dOEnij6c5bbrYaVlCBW8G7B8ef2"],
+        "tasks" : ["1"]
       }
 ]
