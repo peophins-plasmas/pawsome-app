@@ -13,9 +13,10 @@ import { firebase } from "../../firebase/config";
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
-  const [entities, setEntities] = useState([]);
+  const [pets, setPets] = useState([]);
 
-  const entityRef = firebase.firestore().collection("entities");
+
+  const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
 
   const onLogoutPress = () => {
@@ -40,18 +41,18 @@ export default function HomeScreen(props) {
   };
 
   useEffect(() => {
-    entityRef
-      .where("authorID", "==", userID)
-      .orderBy("createdAt", "desc")
+    petsRef
+      .where("ownerId", "==", userID)
       .onSnapshot(
         (querySnapshot) => {
-          const newEntities = [];
+          const newPets = [];
           querySnapshot.forEach((doc) => {
-            const entity = doc.data();
-            entity.id = doc.id;
-            newEntities.push(entity);
+            const pet = doc.data();
+            console.log('PET>>>>>>>>>>>>', pet)
+            pet.id = doc.id;
+            newPets.push(pet);
           });
-          setEntities(newEntities);
+          setPets(newPets);
         },
         (error) => {
           console.log(error);
@@ -63,11 +64,11 @@ export default function HomeScreen(props) {
     if (entityText && entityText.length > 0) {
       const timestamp = firebase.firestore.FieldValue.serverTimestamp();
       const data = {
-        text: entityText,
-        authorID: userID,
+        petName: entityText,
+        ownerId: userID,
         createdAt: timestamp,
       };
-      entityRef
+      petsRef
         .add(data)
         .then((_doc) => {
           setEntityText("");
@@ -83,12 +84,11 @@ export default function HomeScreen(props) {
     return (
       <View style={styles.entityContainer}>
         <Text style={styles.entityText}>
-          {index}. {item.text}
+          {item.petName}
         </Text>
       </View>
     );
   };
-
   return (
     <View style={styles.container}>
       <View>
@@ -100,7 +100,7 @@ export default function HomeScreen(props) {
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
-          placeholder='Add new entity'
+          placeholder='Add new pet'
           placeholderTextColor='#aaaaaa'
           onChangeText={(text) => setEntityText(text)}
           value={entityText}
@@ -111,14 +111,17 @@ export default function HomeScreen(props) {
           <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
       </View>
-      {entities && (
+      {pets && (
         <View style={styles.listContainer}>
           <FlatList
-            data={entities}
+            data={pets}
             renderItem={renderEntity}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
           />
+          {/* <Text>
+            {pets[0].petName}
+          </Text> */}
         </View>
       )}
     </View>
