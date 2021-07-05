@@ -1,0 +1,31 @@
+[
+    {
+        "id" : 1,
+        "ownerId" : [1],
+        "caretakerId" : [],
+        "vetId": [],
+        "petName": "Ragnar",
+        "species": "Cat",
+        "birthday": "9/12/2016",
+        "weight": "14 lbs",
+        "allergies": "",
+        "medications" : [{
+            "medicationName" : "allegra",
+            "medicationsDetails" : "once a day"
+        }],
+        "features": "All black",
+        "behavior": "Sweet but shy and sassy",
+        "likes": "Catnip and butt pats",
+        "dislikes": "Being picked up",
+        "feedingScheduleDry": "Free Feeding",
+        "feedingScheduleWet": "4pm-6pm",
+        "dryFoodBrand": "Blue Buffalo",
+        "amountDryFood": "1/4 cup",
+        "wetFoodBrand": "Fromm",
+        "amountWetFood": "Two tablespoons",
+        "dailyTreatLimit": 6,
+        "additionalInfo": "",
+        "images": "",
+        "tasks" : []
+      }
+]
