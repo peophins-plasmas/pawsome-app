@@ -23,7 +23,7 @@ export default StyleSheet.create({
   },
   //Homescreen formcontainer
   formContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     height: 80,
     marginTop: 40,
     marginBottom: 20,
@@ -88,6 +88,8 @@ export default StyleSheet.create({
     padding: 20,
   },
   entityContainer: {
+    display: "flex",
+    flexBasis: 1,
     marginTop: 16,
     borderBottomColor: "#cccccc",
     borderBottomWidth: 1,
