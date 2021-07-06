@@ -50,7 +50,7 @@ export default function RegistrationScreen({ navigation }) {
     <View style={styles.container}>
       <KeyboardAwareScrollView
         style={{ flex: 1, width: "100%" }}
-        keyboardShouldPersistTaps="always"
+        keyboardShouldPersistTaps='always'
       >
         <Image
           style={styles.logo}
@@ -58,41 +58,41 @@ export default function RegistrationScreen({ navigation }) {
         />
         <TextInput
           style={styles.input}
-          placeholder="Full Name"
-          placeholderTextColor="#aaaaaa"
+          placeholder='Full Name'
+          placeholderTextColor='#aaaaaa'
           onChangeText={(text) => setFullName(text)}
           value={fullName}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
+          underlineColorAndroid='transparent'
+          autoCapitalize='none'
         />
         <TextInput
           style={styles.input}
-          placeholder="E-mail"
-          placeholderTextColor="#aaaaaa"
+          placeholder='E-mail'
+          placeholderTextColor='#aaaaaa'
           onChangeText={(text) => setEmail(text)}
           value={email}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
+          underlineColorAndroid='transparent'
+          autoCapitalize='none'
         />
         <TextInput
           style={styles.input}
-          placeholderTextColor="#aaaaaa"
+          placeholderTextColor='#aaaaaa'
           secureTextEntry
-          placeholder="Password"
+          placeholder='Password'
           onChangeText={(text) => setPassword(text)}
           value={password}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
+          underlineColorAndroid='transparent'
+          autoCapitalize='none'
         />
         <TextInput
           style={styles.input}
-          placeholderTextColor="#aaaaaa"
+          placeholderTextColor='#aaaaaa'
           secureTextEntry
-          placeholder="Confirm Password"
+          placeholder='Confirm Password'
           onChangeText={(text) => setConfirmPassword(text)}
           value={confirmPassword}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
+          underlineColorAndroid='transparent'
+          autoCapitalize='none'
         />
         <TouchableOpacity
           style={styles.button}
