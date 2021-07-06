@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text } from "react-native";
 import { LoginScreen, HomeScreen, RegistrationScreen } from "./src/screens";
+import CalendarScreen from "./src/screens/CalendarScreen/CalendarScreen";
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
 if (!global.btoa) {
@@ -56,9 +57,14 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {isSignedIn ? (
-          <Stack.Screen name='Home'>
-            {(props) => <HomeScreen {...props} extraData={user} />}
-          </Stack.Screen>
+          <>
+            <Stack.Screen name='Home'>
+              {(props) => <HomeScreen {...props} extraData={user} />}
+            </Stack.Screen>
+            <Stack.Screen name='Calendar'>
+              {(props) => <CalendarScreen {...props} />}
+            </Stack.Screen>
+          </>
         ) : (
           <>
             <Stack.Screen name='Login' component={LoginScreen} />
