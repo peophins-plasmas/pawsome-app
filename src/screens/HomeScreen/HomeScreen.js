@@ -43,7 +43,7 @@ export default function HomeScreen(props) {
 
   useEffect(() => {
     petsRef
-      .where("ownerId", "==", userID)
+      .where("ownerId", "array-contains", userID)
       .onSnapshot(
         (querySnapshot) => {
           const newPets = [];
@@ -66,7 +66,7 @@ export default function HomeScreen(props) {
       const timestamp = firebase.firestore.FieldValue.serverTimestamp();
       const data = {
         petName: entityText,
-        ownerId: userID,
+        ownerId: [userID],
         createdAt: timestamp,
       };
       petsRef

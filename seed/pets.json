@@ -1,8 +1,8 @@
 [
     {
-        "id" : 1,
-        "ownerId" : [1],
-        "caretakerId" : [],
+        "id" : "1",
+        "ownerId" : ["3dOEnij6c5bbrYaVlCBW8G7B8ef2"],
+        "caretakerId" : ["ZjWMjcQvqURhBl3KlwB21juMOqZ2"],
         "vetId": [],
         "petName": "Ragnar",
         "species": "Cat",
@@ -11,7 +11,7 @@
         "allergies": "",
         "medications" : [{
             "medicationName" : "allegra",
-            "medicationsDetails" : "once a day"
+            "medicationDetails" : "once a day"
         }],
         "features": "All black",
         "behavior": "Sweet but shy and sassy",
@@ -27,5 +27,34 @@
         "additionalInfo": "",
         "images": "",
         "tasks" : []
+      },
+      {
+        "id": "2",
+        "ownerId": ["ZjWMjcQvqURhBl3KlwB21juMOqZ2"],
+        "caretakerId": ["3dOEnij6c5bbrYaVlCBW8G7B8ef2"],
+        "vetId": [],
+        "petName": "Lola",
+        "species": "dog",
+        "birthday": "6/28/2016",
+        "weight": "22lbs",
+        "allergies": "none",
+        "medications": [{
+            "medicationName": "fluoxetine - 20mg",
+            "medicationDetails": "daily, morning"
+        }],
+        "features": "being gorgeous, bowed legs/funny walk",
+        "behavior": "Lola is nervous around loud noises and startles easily. She doesn't like vacuums, cars, trucks, or any loud street noises. She's a nervous walker, so her walker needs to be confident and okay with moving her along, and encouraging her to walk. She will try and turn back and run towards home, but she can be convinced to keep going. Walks during quieter hours(morning and night), are easier, so it's okay to keep midday walks on the shorter side. Otherwise, she is an angel, great with other dogs, cats, and people, she prefers to hang with humans, she can be picked up and loves to snuggle. She is food motivated, and will try to eat your food and the food of other dogs, but she has never bitten a human or animal, she's just sneaky. The only time she really growls is when she wants food, or if she has a rawhide bone and you come near her she'll grow, but would not bite. She is an overly aggressive licker, but just needs to be told to stop and back off and she will get the hint, if you don't stop her she could do it ALL day, be warned.",
+        "likes": "peanut butter, lambchop(the toy), play wrestling, chasing, sometimes fetch, long walks in quiet places",
+        "dislikes": "loud streets, trucks, bangs, thunder, fireworks, cars, vaccuums",
+        "feedingScheduleDry": "8am-10am, 4pm-6pm",
+        "feedingScheduleWet": "",
+        "dryFoodBrand": "Purina One Smart Blend Chicken and Rice",
+        "amountDryFood": "~1/2-3/4 cup",
+        "wetFoodBrand": "anything fine as a treat",
+        "amountWetFood": "typically none",
+        "dailyTreatLimit": "no limit just not a crazy amount(she is spoiled)",
+        "additionalInfo": "if you're nervous about walking her and shes pulling/her harness is loose, double clip the collar and the harness clip. Choke up on the leash and keep her next to you, and she'll walk better. She tends to pull when she has more room to. The more authority and confidence the better.",
+        "images": "https://drive.google.com/open?id=1-_9iO5jrplRkCqfU9IrZGGTHxlBJXpGr",
+        "tasks": ["1"]
       }
 ]
