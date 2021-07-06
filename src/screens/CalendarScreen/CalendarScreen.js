@@ -97,13 +97,13 @@ export default function CalendarScreen(props) {
   const renderEntity = ({ item, index }) => {
     return (
       <View style={styles.entityContainer}>
-        <Text style={styles.entityText}>Remember to {item.description}</Text>
+        <Text style={styles.entityText}>Remember to {item.description} at {item.dueTime}</Text>
       </View>
     );
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container} >
+    <ScrollView contentContainerStyle={styles.container}>
     <View style={styles.container}>
       <View>
         <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
@@ -126,19 +126,14 @@ export default function CalendarScreen(props) {
           />
         </View>
         {tasks.length > 0 && (
-          <ScrollView contentContainerStyle={styles.container} >
+          <View>
             <FlatList
               data={tasks}
               renderItem={renderEntity}
               keyExtractor={(item) => item.id}
               removeClippedSubviews={true}
             />
-            {tasks.map(task => {
-              <View>
-                <Text>{task.description}</Text>
-              </View>
-            })}
-          </ScrollView>
+          </View>
         )}
         <View style={styles.formContainer}>
           <View>
