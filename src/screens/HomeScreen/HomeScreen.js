@@ -16,7 +16,6 @@ export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
   const [pets, setPets] = useState([]);
 
-
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
 
@@ -42,23 +41,21 @@ export default function HomeScreen(props) {
   };
 
   useEffect(() => {
-    petsRef
-      .where("ownerId", "array-contains", userID)
-      .onSnapshot(
-        (querySnapshot) => {
-          const newPets = [];
-          querySnapshot.forEach((doc) => {
-            const pet = doc.data();
-            console.log('PET>>>>>>>>>>>>', pet)
-            pet.id = doc.id;
-            newPets.push(pet);
-          });
-          setPets(newPets);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    petsRef.where("ownerId", "array-contains", userID).onSnapshot(
+      (querySnapshot) => {
+        const newPets = [];
+        querySnapshot.forEach((doc) => {
+          const pet = doc.data();
+          console.log("PET>>>>>>>>>>>>", pet);
+          pet.id = doc.id;
+          newPets.push(pet);
+        });
+        setPets(newPets);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }, []);
 
   const onAddButtonPress = () => {
@@ -84,9 +81,7 @@ export default function HomeScreen(props) {
   const renderEntity = ({ item, index }) => {
     return (
       <View style={styles.entityContainer}>
-        <Text style={styles.entityText}>
-          {item.petName}
-        </Text>
+        <Text style={styles.entityText}>{item.petName}</Text>
       </View>
     );
   };
@@ -100,7 +95,7 @@ export default function HomeScreen(props) {
       <View>
         <TouchableOpacity
           style={styles.button}
-          title='Calendar View'
+          title="Calendar View"
           onPress={() => props.navigation.navigate("Calendar")}
         >
           <Text style={styles.buttonText}>To Calendar</Text>
@@ -109,12 +104,12 @@ export default function HomeScreen(props) {
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
-          placeholder='Add new pet'
-          placeholderTextColor='#aaaaaa'
+          placeholder="Add new pet"
+          placeholderTextColor="#aaaaaa"
           onChangeText={(text) => setEntityText(text)}
           value={entityText}
-          underlineColorAndroid='transparent'
-          autoCapitalize='none'
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
         />
         <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
           <Text style={styles.buttonText}>Add</Text>
