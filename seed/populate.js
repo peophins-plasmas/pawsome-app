@@ -1,18 +1,30 @@
 const firebase = require("firebase");
 // Required for side-effects
 require("firebase/firestore");
-const fs = require('fs');
+const fs = require("fs");
 
-
-const { resolve } = require('path');
+const { resolve } = require("path");
 
 // Initialize Firebase
-// Get your firebase credentials from 
+// Get your firebase credentials from
 // the firebase console for your project
+
+if (process.env.NODE_ENV !== "production") require("./secret_key");
+
+const FIRESTORE_API_KEY = process.env.FIRESTORE_API_KEY;
+const FIRESTORE_AUTH_DOMAIN = process.env.FIRESTORE_AUTH_DOMAIN;
+const FIRESTORE_PROJECT_ID = process.env.FIRESTORE_PROJECT_ID;
+
+export const firebaseConfig = {
+  apiKey: FIRESTORE_API_KEY,
+  authDomain: FIRESTORE_AUTH_DOMAIN,
+  projectId: FIRESTORE_PROJECT_ID,
+};
+
 firebase.initializeApp({
-  apiKey: 'AIzaSyCdt5wiQDYGhiNPEC6TxwxX-EyGC4vLa70',
-  authDomain: 'pawsome-ce323.firebaseapp.com',
-  projectId: 'pawsome-ce323'
+  apiKey: FIRESTORE_API_KEY,
+  authDomain: FIRESTORE_AUTH_DOMAIN,
+  projectId: FIRESTORE_PROJECT_ID,
 });
 
 /**
@@ -38,30 +50,31 @@ class PopulateJsonFireStore {
     this.collectionname = collectionname;
 
     // Lets make sure the right firestore method is used.
-    if (this.type !== 'set' && this.type !== 'add') {
-      console.error(`Wrong method type ${this.type}`)
-      console.log('Accepted methods are: set or add');
+    if (this.type !== "set" && this.type !== "add") {
+      console.error(`Wrong method type ${this.type}`);
+      console.log("Accepted methods are: set or add");
       this.exit(1);
     }
 
     // If file path is missing
-    if (this.absolutepath == null || this.absolutepath.length < 1){
-      console.error(`Make sure you have file path assigned ${this.absolutepath}`)
+    if (this.absolutepath == null || this.absolutepath.length < 1) {
+      console.error(
+        `Make sure you have file path assigned ${this.absolutepath}`
+      );
       this.exit(1);
     }
 
     // If collection name not set
-    if (this.collectionname == null || this.collectionname.length < 1){
-      console.error(`Make sure to specify firestore collection ${this.collectionname}`)
+    if (this.collectionname == null || this.collectionname.length < 1) {
+      console.error(
+        `Make sure to specify firestore collection ${this.collectionname}`
+      );
       this.exit(1);
     }
-
 
     console.log(`ABS: FILE PATH ${this.absolutepath}`);
     console.log(`Type: method is ${this.type}`);
   }
-
-
 
   // The populate function
   // uploads the json data to firestore
@@ -71,7 +84,7 @@ class PopulateJsonFireStore {
 
     // Get data from json file using fs
     try {
-      data = JSON.parse(fs.readFileSync(this.absolutepath, {}), 'utf8');
+      data = JSON.parse(fs.readFileSync(this.absolutepath, {}), "utf8");
     } catch (e) {
       console.error(e.message);
     }
@@ -81,53 +94,57 @@ class PopulateJsonFireStore {
     // Populate Firestore on each run
     // Make sure file has atleast one item.
     if (data.length < 1) {
-      console.error('Make sure file contains items.');
+      console.error("Make sure file contains items.");
     }
     var i = 0;
     for (var item of data) {
       console.log(item);
       try {
-        this.type === 'set' ? await this.set(item) : await this.add(item);
+        this.type === "set" ? await this.set(item) : await this.add(item);
       } catch (e) {
-        console.log(e.message)
+        console.log(e.message);
         this.exit(1);
       }
       // Successfully got to end of data;
       // print success message
       if (data.length - 1 === i) {
-        console.log(`**************************\n****SUCCESS UPLOAD*****\n**************************`);
+        console.log(
+          `**************************\n****SUCCESS UPLOAD*****\n**************************`
+        );
         console.timeEnd("Time taken");
         this.exit(0);
       }
 
       i++;
     }
-
   }
 
   // Sets data to firestore database
   // Firestore auto generated IDS
   add(item) {
     console.log(`Adding item with id ${item.id}`);
-    return this.db.collection(this.collectionname).add(Object.assign({}, item))
-    .then(() => true)
-    .catch((e) => console.error(e.message));
+    return this.db
+      .collection(this.collectionname)
+      .add(Object.assign({}, item))
+      .then(() => true)
+      .catch((e) => console.error(e.message));
   }
 
   // Set data with specified ID
   // Custom Generated IDS
   set(item) {
     console.log(`setting item with id ${item.id}`);
-    return this.db.doc(`${this.collectionname}/${item.id}`).set(Object.assign({}, item))
-    .then(() => true)
-    .catch((e) => console.error(e.message));
+    return this.db
+      .doc(`${this.collectionname}/${item.id}`)
+      .set(Object.assign({}, item))
+      .then(() => true)
+      .catch((e) => console.error(e.message));
   }
 
   // Exit nodejs console
   exit(code) {
     return process.exit(code);
   }
-
 }
 
 // create instance of class
