@@ -7,7 +7,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
+  ScrollView,
   View,
   Alert,
 } from "react-native";
@@ -75,6 +75,7 @@ export default function CalendarScreen(props) {
         petId: entityPetId,
         status: entityStatus,
         frequency: entityFrequency,
+        userId: userId
       };
       tasksRef
         .add(data)
@@ -102,6 +103,7 @@ export default function CalendarScreen(props) {
   };
 
   return (
+    <ScrollView contentContainerStyle={styles.container} >
     <View style={styles.container}>
       <View>
         <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
@@ -123,16 +125,20 @@ export default function CalendarScreen(props) {
             }}
           />
         </View>
-        {tasks && (
-          <View style={styles.listContainer}>
+        {tasks.length > 0 && (
+          <ScrollView contentContainerStyle={styles.container} >
             <FlatList
               data={tasks}
               renderItem={renderEntity}
               keyExtractor={(item) => item.id}
               removeClippedSubviews={true}
             />
-            <Text>{tasks[0].description}</Text>
-          </View>
+            {tasks.map(task => {
+              <View>
+                <Text>{task.description}</Text>
+              </View>
+            })}
+          </ScrollView>
         )}
         <View style={styles.formContainer}>
           <View>
@@ -149,7 +155,7 @@ export default function CalendarScreen(props) {
           <View>
             <TextInput
               style={styles.input}
-              placeholder="Add new task"
+              placeholder="Add due date"
               placeholderTextColor="#aaaaaa"
               onChangeText={(text) => setEntityDueDate(text)}
               value={entityDueDate}
@@ -160,7 +166,7 @@ export default function CalendarScreen(props) {
           <View>
             <TextInput
               style={styles.input}
-              placeholder="Add new task"
+              placeholder="Add time due"
               placeholderTextColor="#aaaaaa"
               onChangeText={(text) => setEntityDueTime(text)}
               value={entityDueTime}
@@ -171,7 +177,7 @@ export default function CalendarScreen(props) {
           <View>
             <TextInput
               style={styles.input}
-              placeholder="Add new task"
+              placeholder="Add pet"
               placeholderTextColor="#aaaaaa"
               onChangeText={(text) => setEntityPetId(text)}
               value={entityPetId}
@@ -182,7 +188,7 @@ export default function CalendarScreen(props) {
           <View>
             <TextInput
               style={styles.input}
-              placeholder="Add new task"
+              placeholder="Add status"
               placeholderTextColor="#aaaaaa"
               onChangeText={(text) => setEntityStatus(text)}
               value={entityStatus}
@@ -193,7 +199,7 @@ export default function CalendarScreen(props) {
           <View>
             <TextInput
               style={styles.input}
-              placeholder="Add new task"
+              placeholder="Add frequency"
               placeholderTextColor="#aaaaaa"
               onChangeText={(text) => setEntityFrequency(text)}
               value={entityFrequency}
@@ -207,5 +213,6 @@ export default function CalendarScreen(props) {
         </View>
       </View>
     </View>
+    </ScrollView>
   );
 }
