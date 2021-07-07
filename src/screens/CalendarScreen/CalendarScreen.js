@@ -59,6 +59,14 @@ export default function CalendarScreen(props) {
     );
   };
 
+  const renderEmpty = () => {
+    return (
+      <View style={styles.container}>
+        <Text>No recorded chores for this day.</Text>
+      </View>
+    );
+  };
+
   const renderDay = (day, item) => {
     return (
       <Card>
@@ -161,6 +169,7 @@ export default function CalendarScreen(props) {
           }}
           renderDay={renderDay}
           renderItem={renderItem}
+          renderEmptyDate={renderEmpty}
           onDayPress={(dateString) => showDayTest(dateString)}
         />
 
