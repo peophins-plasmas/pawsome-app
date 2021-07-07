@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import XDate from "xdate";
 import { firebase } from "../../firebase/config";
 import {
-  FlatList,
   Keyboard,
   Text,
   TextInput,
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-  SectionList,
   View,
   Alert,
 } from "react-native";
-import styles from "../../screens/combinedStyles";
+import { Card } from "react-native-paper";
+import styles, { colors } from "../../screens/combinedStyles";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 
 export default function CalendarScreen(props) {
@@ -47,6 +46,34 @@ export default function CalendarScreen(props) {
       .catch((error) => {
         alert(error);
       });
+  };
+  const showDayTest = (date) => {
+    alert(date);
+  };
+
+  const renderItem = (item) => {
+    return (
+      <View style={styles.container}>
+        <Text>{item.description}</Text>
+      </View>
+    );
+  };
+
+  const renderDay = (day, item) => {
+    return (
+      <Card>
+        <Card.Content
+          style={{
+            backgroundColor: colors.antiqueWhite,
+            borderWidth: 2,
+            borderStyle: "solid",
+            borderColor: colors.dkblue,
+          }}
+        >
+          {renderItem}
+        </Card.Content>
+      </Card>
+    );
   };
 
   //click on date and show associated tasks?
@@ -116,13 +143,25 @@ export default function CalendarScreen(props) {
               selectedColor: "orange",
               selectedTextColor: "red",
             },
+            "2021-07-09": {
+              selected: true,
+              disableTouchEvent: true,
+              selectedColor: "blue",
+              selectedTextColor: "white",
+            },
           }}
           items={{
             "2021-07-08": [],
             "2021-07-09": [],
-            "2021-07-06": [],
-            "2021-07-07": [],
+            "2021-07-06": [{ timestamp: "08:15", description: "feed cat" }],
+            "2021-07-07": [
+              { time: "09:30", description: "throw mouse" },
+              { time: "10:45", description: "give hairball remedy" },
+            ],
           }}
+          renderDay={renderDay}
+          renderItem={renderItem}
+          onDayPress={(dateString) => showDayTest(dateString)}
         />
 
         <View style={[styles.container]}>
