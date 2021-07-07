@@ -12,11 +12,14 @@ import {
   Alert,
 } from "react-native";
 import { Card } from "react-native-paper";
-import CalendarStrip from "react-native-calendar-strip";
+import CalendarStrip, {
+  getSelectedDate,
+  setSelectedDate,
+} from "react-native-calendar-strip";
 import styles, { colors } from "../../screens/combinedStyles";
 
 export default function CalendarScreen(props) {
-  let currentDate = new XDate();
+  let currentDate = new Date();
   currentDate = currentDate.toString();
 
   // date format: year/month/day/hrs/minutes
@@ -34,6 +37,7 @@ export default function CalendarScreen(props) {
   const [taskDue, setTaskDue] = useState(taskDate);
   const [showMarkedDates, setShowMarkedDates] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [selDate, setSelDate] = useState(currentDate);
 
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
@@ -107,7 +111,12 @@ export default function CalendarScreen(props) {
         </View>
         <CalendarStrip
           scrollable
+          // ref={(calendarStrip: CalendarStrip) => {
+          //   this.calendarStrip = calendarStrip;
+          // }}
           calendarAnimation={{ type: "sequence", duration: 30 }}
+          selectedDate={currentDate}
+          //onDateSelected={setSelDate()}
           daySelectionAnimation={{
             type: "border",
             duration: 200,
