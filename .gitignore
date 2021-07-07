@@ -1,6 +1,7 @@
 # Secrets
 src/firebase/secret_key.js
 src/firebase/gitignoretest.js
+secrets.js
 
 # Logs
 logs
