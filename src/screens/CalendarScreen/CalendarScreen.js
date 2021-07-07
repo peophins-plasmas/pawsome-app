@@ -12,8 +12,8 @@ import {
   Alert,
 } from "react-native";
 import { Card } from "react-native-paper";
+import CalendarStrip from "react-native-calendar-strip";
 import styles, { colors } from "../../screens/combinedStyles";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 
 export default function CalendarScreen(props) {
   let currentDate = new XDate();
@@ -46,42 +46,6 @@ export default function CalendarScreen(props) {
       .catch((error) => {
         alert(error);
       });
-  };
-  const showDayTest = (date) => {
-    alert(date);
-  };
-
-  const renderItem = (item) => {
-    return (
-      <View style={styles.container}>
-        <Text>{item.description}</Text>
-      </View>
-    );
-  };
-
-  const renderEmpty = () => {
-    return (
-      <View style={styles.container}>
-        <Text>No recorded chores for this day.</Text>
-      </View>
-    );
-  };
-
-  const renderDay = (day, item) => {
-    return (
-      <Card>
-        <Card.Content
-          style={{
-            backgroundColor: colors.antiqueWhite,
-            borderWidth: 2,
-            borderStyle: "solid",
-            borderColor: colors.dkblue,
-          }}
-        >
-          {renderItem}
-        </Card.Content>
-      </Card>
-    );
   };
 
   //click on date and show associated tasks?
@@ -141,38 +105,26 @@ export default function CalendarScreen(props) {
           </TouchableOpacity>
           <Text>Hello world</Text>
         </View>
-
-        <Agenda
-          current={currentDate}
-          markedDates={{
-            [taskDue]: {
-              selected: true,
-              disableTouchEvent: true,
-              selectedColor: "orange",
-              selectedTextColor: "red",
-            },
-            "2021-07-09": {
-              selected: true,
-              disableTouchEvent: true,
-              selectedColor: "blue",
-              selectedTextColor: "white",
-            },
+        <CalendarStrip
+          scrollable
+          calendarAnimation={{ type: "sequence", duration: 30 }}
+          daySelectionAnimation={{
+            type: "border",
+            duration: 200,
+            borderWidth: 1,
+            borderHighlightColor: colors.yellow,
           }}
-          items={{
-            "2021-07-08": [],
-            "2021-07-09": [],
-            "2021-07-06": [{ timestamp: "08:15", description: "feed cat" }],
-            "2021-07-07": [
-              { time: "09:30", description: "throw mouse" },
-              { time: "10:45", description: "give hairball remedy" },
-            ],
-          }}
-          renderDay={renderDay}
-          renderItem={renderItem}
-          renderEmptyDate={renderEmpty}
-          onDayPress={(dateString) => showDayTest(dateString)}
+          style={{ height: 100, paddingTop: 20, paddingBottom: 10 }}
+          calendarHeaderStyle={{ color: "white" }}
+          calendarColor={colors.dkblue}
+          dateNumberStyle={{ color: "white" }}
+          dateNameStyle={{ color: "white" }}
+          highlightDateNumberStyle={{ color: colors.yellow }}
+          highlightDateNameStyle={{ color: colors.yellow }}
+          disabledDateNameStyle={{ color: colors.antWhite }}
+          disabledDateNumberStyle={{ color: colors.antWhite }}
+          iconContainer={{ flex: 0.1 }}
         />
-
         <View style={[styles.container]}>
           {tasks.length > 0 &&
             tasks.map((task) => {
