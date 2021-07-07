@@ -11,10 +11,12 @@ import {
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
 
+import UploadImage from "../../Components/UploadImage";
+
 export default function HomeScreen(props) {
-  //console.log("PROPS on HOMESCREEN", props);
   const [entityText, setEntityText] = useState("");
   const [pets, setPets] = useState([]);
+  //make single pet state to access specific pet to pass through as props to upload image component
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
@@ -46,7 +48,6 @@ export default function HomeScreen(props) {
         const newPets = [];
         querySnapshot.forEach((doc) => {
           const pet = doc.data();
-          console.log("PET>>>>>>>>>>>>", pet);
           pet.id = doc.id;
           newPets.push(pet);
         });
@@ -101,6 +102,9 @@ export default function HomeScreen(props) {
           <Text style={styles.buttonText}>To Calendar</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.container}>
+        <UploadImage />
+      </View>
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
@@ -115,17 +119,16 @@ export default function HomeScreen(props) {
           <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
       </View>
+
       {pets && (
         <View style={styles.listContainer}>
           <FlatList
+            //or put upload image component in render entity so each pet entity will render name and photo
             data={pets}
             renderItem={renderEntity}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
           />
-          {/* <Text>
-            {pets[0].petName}
-          </Text> */}
         </View>
       )}
     </View>

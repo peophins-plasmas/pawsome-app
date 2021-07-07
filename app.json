@@ -2,25 +2,19 @@
   "expo": {
     "name": "React Native Firebase",
     "slug": "react-native-firebase",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/pawsome_logo.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/pawsome_logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
