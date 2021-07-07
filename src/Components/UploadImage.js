@@ -25,7 +25,6 @@ const checkForCameraRollPermission = async () => {
 
 export default function UploadImage(props) {
   const user = props.user;
-  console.log("user id>>>>>>", user);
   let CLOUDINARY_URL = process.env.CLOUDINARY_URL;
   const [image, setImage] = useState(null);
   const [userImage, setUserImage] = useState("");
@@ -62,9 +61,7 @@ export default function UploadImage(props) {
       method: "POST",
     }).then(async (r) => {
       let data = await r.json();
-      console.log("data in post response>>>>>", data);
       setImage(data.url);
-      console.log("userimageref>>>>>", userImageRef);
       return userImageRef
         .update({
           image: data.url,
