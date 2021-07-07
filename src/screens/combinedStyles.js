@@ -11,6 +11,7 @@ export const colors = {
 
 export default StyleSheet.create({
   container: {
+    display: "flex",
     flex: 1,
     alignItems: "center",
   },
@@ -24,9 +25,19 @@ export default StyleSheet.create({
   //Homescreen formcontainer
   formContainer: {
     flexDirection: "column",
-    height: 80,
-    marginTop: 40,
+
+    marginTop: 20,
     marginBottom: 20,
+    flex: 1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  inputContainer: {
+    marginTop: 5,
     flex: 1,
     paddingTop: 10,
     paddingBottom: 10,
@@ -56,7 +67,7 @@ export default StyleSheet.create({
   button: {
     height: 47,
     borderRadius: 5,
-    backgroundColor: "#788eec",
+    backgroundColor: colors.dkblue,
     width: 80,
     alignItems: "center",
     justifyContent: "center",
@@ -89,7 +100,7 @@ export default StyleSheet.create({
   },
   entityContainer: {
     display: "flex",
-    flexBasis: 1,
+    flex: 1,
     marginTop: 16,
     borderBottomColor: "#cccccc",
     borderBottomWidth: 1,
