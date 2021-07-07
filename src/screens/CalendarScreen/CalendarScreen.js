@@ -8,6 +8,8 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  SafeAreaView,
+  SectionList,
   View,
   Alert,
 } from "react-native";
@@ -75,7 +77,7 @@ export default function CalendarScreen(props) {
         petId: entityPetId,
         status: entityStatus,
         frequency: entityFrequency,
-        userId: userId
+        userId: userId,
       };
       tasksRef
         .add(data)
@@ -94,120 +96,114 @@ export default function CalendarScreen(props) {
     }
   };
 
-  const renderEntity = ({ item, index }) => {
-    return (
-      <View style={styles.entityContainer}>
-        <Text style={styles.entityText}>Remember to {item.description} at {item.dueTime}</Text>
-      </View>
-    );
-  };
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-    <View style={styles.container}>
-      <View>
-        <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
-          <Text style={styles.buttonText}>Log out</Text>
-        </TouchableOpacity>
-
-        <Text>Hello world</Text>
-
-        <View>
-          <Calendar
-            current={currentDate}
-            markedDates={{
-              [taskDue]: {
-                selected: true,
-                disableTouchEvent: true,
-                selectedColor: "orange",
-                selectedTextColor: "red",
-              },
-            }}
-          />
+    <SafeAreaView>
+      <ScrollView>
+        <View style={styles.container}>
+          <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
+            <Text style={styles.buttonText}>Log out</Text>
+          </TouchableOpacity>
+          <Text>Hello world</Text>
         </View>
-        {tasks.length > 0 && (
-          <View>
-            <FlatList
-              data={tasks}
-              renderItem={renderEntity}
-              keyExtractor={(item) => item.id}
-              removeClippedSubviews={true}
-            />
+
+        <Calendar
+          current={currentDate}
+          markedDates={{
+            [taskDue]: {
+              selected: true,
+              disableTouchEvent: true,
+              selectedColor: "orange",
+              selectedTextColor: "red",
+            },
+          }}
+        />
+
+        <View style={[styles.container]}>
+          {tasks.length > 0 &&
+            tasks.map((task) => {
+              return (
+                <View key={task.id} style={styles.entityContainer}>
+                  <Text style={styles.entityText}>
+                    Remember to {task.description} at {task.dueTime}
+                  </Text>
+                </View>
+              );
+            })}
+          <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder='Add new task'
+                placeholderTextColor='#aaaaaa'
+                onChangeText={(text) => setEntityText(text)}
+                value={entityText}
+                underlineColorAndroid='transparent'
+                autoCapitalize='none'
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder='Add due date'
+                placeholderTextColor='#aaaaaa'
+                onChangeText={(text) => setEntityDueDate(text)}
+                value={entityDueDate}
+                underlineColorAndroid='transparent'
+                autoCapitalize='none'
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder='Add time due'
+                placeholderTextColor='#aaaaaa'
+                onChangeText={(text) => setEntityDueTime(text)}
+                value={entityDueTime}
+                underlineColorAndroid='transparent'
+                autoCapitalize='none'
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder='Add pet'
+                placeholderTextColor='#aaaaaa'
+                onChangeText={(text) => setEntityPetId(text)}
+                value={entityPetId}
+                underlineColorAndroid='transparent'
+                autoCapitalize='none'
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder='Add status'
+                placeholderTextColor='#aaaaaa'
+                onChangeText={(text) => setEntityStatus(text)}
+                value={entityStatus}
+                underlineColorAndroid='transparent'
+                autoCapitalize='none'
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder='Add frequency'
+                placeholderTextColor='#aaaaaa'
+                onChangeText={(text) => setEntityFrequency(text)}
+                value={entityFrequency}
+                underlineColorAndroid='transparent'
+                autoCapitalize='none'
+              />
+            </View>
           </View>
-        )}
-        <View style={styles.formContainer}>
-          <View>
-            <TextInput
-              style={styles.input}
-              placeholder="Add new task"
-              placeholderTextColor="#aaaaaa"
-              onChangeText={(text) => setEntityText(text)}
-              value={entityText}
-              underlineColorAndroid="transparent"
-              autoCapitalize="none"
-            />
-          </View>
-          <View>
-            <TextInput
-              style={styles.input}
-              placeholder="Add due date"
-              placeholderTextColor="#aaaaaa"
-              onChangeText={(text) => setEntityDueDate(text)}
-              value={entityDueDate}
-              underlineColorAndroid="transparent"
-              autoCapitalize="none"
-            />
-          </View>
-          <View>
-            <TextInput
-              style={styles.input}
-              placeholder="Add time due"
-              placeholderTextColor="#aaaaaa"
-              onChangeText={(text) => setEntityDueTime(text)}
-              value={entityDueTime}
-              underlineColorAndroid="transparent"
-              autoCapitalize="none"
-            />
-          </View>
-          <View>
-            <TextInput
-              style={styles.input}
-              placeholder="Add pet"
-              placeholderTextColor="#aaaaaa"
-              onChangeText={(text) => setEntityPetId(text)}
-              value={entityPetId}
-              underlineColorAndroid="transparent"
-              autoCapitalize="none"
-            />
-          </View>
-          <View>
-            <TextInput
-              style={styles.input}
-              placeholder="Add status"
-              placeholderTextColor="#aaaaaa"
-              onChangeText={(text) => setEntityStatus(text)}
-              value={entityStatus}
-              underlineColorAndroid="transparent"
-              autoCapitalize="none"
-            />
-          </View>
-          <View>
-            <TextInput
-              style={styles.input}
-              placeholder="Add frequency"
-              placeholderTextColor="#aaaaaa"
-              onChangeText={(text) => setEntityFrequency(text)}
-              value={entityFrequency}
-              underlineColorAndroid="transparent"
-              autoCapitalize="none"
-            />
-          </View>
+        </View>
+        <View style={styles.container}>
           <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
             <Text style={styles.buttonText}>Add</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
