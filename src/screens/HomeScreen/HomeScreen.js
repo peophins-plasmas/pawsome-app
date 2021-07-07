@@ -103,7 +103,7 @@ export default function HomeScreen(props) {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        <UploadImage />
+        <UploadImage user={props.extraData} />
       </View>
       <View style={styles.formContainer}>
         <TextInput

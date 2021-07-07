@@ -10,6 +10,8 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
+if (process.env.NODE_ENV !== "production") require("../../secrets");
+
 const checkForCameraRollPermission = async () => {
   //need to pass users in as props to upload image component and check user permissions if false, have the alert render
   const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
@@ -20,12 +22,13 @@ const checkForCameraRollPermission = async () => {
   }
 };
 
-useEffect(() => {
-  checkForCameraRollPermission();
-}, []);
-
-export default function UploadImage() {
+export default function UploadImage(props) {
+  let CLOUDINARY_URL = process.env.CLOUDINARY_URL;
   const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    checkForCameraRollPermission();
+  }, []);
 
   const addImage = async () => {
     let _image = await ImagePicker.launchImageLibraryAsync({
@@ -33,11 +36,30 @@ export default function UploadImage() {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64: true,
     });
-    console.log("image>>>>", _image);
-    if (!_image.cancelled) {
-      setImage();
+    if (_image.cancelled === true) {
+      return;
     }
+
+    let base64Img = `data:image/jpg;base64,${_image.base64}`;
+
+    let data = {
+      file: base64Img,
+      upload_preset: "d93plb6p",
+    };
+
+    fetch(CLOUDINARY_URL, {
+      body: JSON.stringify(data),
+      headers: {
+        "content-type": "application/json",
+      },
+      method: "POST",
+    }).then(async (r) => {
+      let data = await r.json();
+      console.log("data in post response>>>>>", data);
+      setImage(data.url);
+    });
   };
 
   return (
