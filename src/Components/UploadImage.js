@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { firebase } from "../firebase/config";
 
 if (process.env.NODE_ENV !== "production") require("../../secrets");
 
@@ -23,8 +24,12 @@ const checkForCameraRollPermission = async () => {
 };
 
 export default function UploadImage(props) {
+  const user = props.user;
+  console.log("user id>>>>>>", user);
   let CLOUDINARY_URL = process.env.CLOUDINARY_URL;
   const [image, setImage] = useState(null);
+  const [userImage, setUserImage] = useState("");
+  const userImageRef = firebase.firestore().collection("users").doc(user.id);
 
   useEffect(() => {
     checkForCameraRollPermission();
@@ -59,6 +64,17 @@ export default function UploadImage(props) {
       let data = await r.json();
       console.log("data in post response>>>>>", data);
       setImage(data.url);
+      console.log("userimageref>>>>>", userImageRef);
+      return userImageRef
+        .update({
+          image: data.url,
+        })
+        .then(() => {
+          console.log("Image successfully updated!");
+        })
+        .catch((error) => {
+          console.error("error updating document: ", error);
+        });
     });
   };
 
