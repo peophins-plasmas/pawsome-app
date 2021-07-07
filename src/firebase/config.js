@@ -2,7 +2,7 @@ import * as firebase from "firebase";
 import "@firebase/auth";
 import "@firebase/firestore";
 
-if (process.env.NODE_ENV !== "production") require("./secret_key");
+if (process.env.NODE_ENV !== "production") require("../../secrets");
 
 const FIRESTORE_API_KEY = process.env.FIRESTORE_API_KEY;
 const FIRESTORE_AUTH_DOMAIN = process.env.FIRESTORE_AUTH_DOMAIN;
