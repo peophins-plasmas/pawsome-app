@@ -21,8 +21,9 @@ export default function CalendarScreen(props) {
   currentDate = currentDate.toString();
 
   // date format: year/month/day/hrs/minutes
-  let taskDate = new XDate(2021, 6, 22, 8, 30);
-  taskDate = taskDate.toString();
+  // let taskDate = new XDate(2021, 6, 22, 8, 30);
+  // taskDate = taskDate.toString();
+  let taskDate = "2021-07-08";
 
   const [entityText, setEntityText] = useState("");
   const [entityDueDate, setEntityDueDate] = useState("");
@@ -106,7 +107,7 @@ export default function CalendarScreen(props) {
           <Text>Hello world</Text>
         </View>
 
-        <Calendar
+        <Agenda
           current={currentDate}
           markedDates={{
             [taskDue]: {
@@ -115,6 +116,12 @@ export default function CalendarScreen(props) {
               selectedColor: "orange",
               selectedTextColor: "red",
             },
+          }}
+          items={{
+            "2021-07-08": [],
+            "2021-07-09": [],
+            "2021-07-06": [],
+            "2021-07-07": [],
           }}
         />
 
