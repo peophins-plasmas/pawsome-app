@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   View,
   Alert,
-  Button
+  Button,
 } from "react-native";
 import { Card } from "react-native-paper";
 import CalendarStrip, {
@@ -18,7 +18,7 @@ import CalendarStrip, {
   setSelectedDate,
 } from "react-native-calendar-strip";
 import styles, { colors } from "../../screens/combinedStyles";
-import DateTimePicker from "@react-native-community/datetimepicker"
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function CalendarScreen(props) {
   let date = new Date();
@@ -43,7 +43,7 @@ export default function CalendarScreen(props) {
   const [selDate, setSelDate] = useState(date);
   const [dueDate, setDueDate] = useState(date);
   const [show, setShow] = useState(false);
-  const [mode, setMode] = useState('dueDate');
+  const [mode, setMode] = useState("dueDate");
 
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
@@ -116,11 +116,10 @@ export default function CalendarScreen(props) {
         });
     }
   };
-  const formatDate = new Date(selDate)
-  const onChange = (event, selectedDate) => {
-    console.log("selected date in picker", selectedDate)
-    const currentDate = selectedDate || formatDate;
-    setDueDate(currentDate);
+  const formatDate = new Date(selDate);
+  const onChange = (event, value) => {
+    console.log("selected date in picker", value);
+    setDueDate(value);
   };
 
   const showMode = (currentMode) => {
@@ -129,13 +128,12 @@ export default function CalendarScreen(props) {
   };
 
   const showDatepicker = () => {
-    showMode('date');
+    showMode("date");
   };
 
   const showTimepicker = () => {
-    showMode('time');
+    showMode("time");
   };
- 
 
   return (
     <SafeAreaView>
@@ -151,7 +149,10 @@ export default function CalendarScreen(props) {
           scrollable
           calendarAnimation={{ type: "sequence", duration: 30 }}
           selectedDate={currentDate}
-          onDateSelected={(date) => setSelDate(date)}
+          onDateSelected={(date) => {
+            setSelDate(date);
+            setDueDate(new Date(date));
+          }}
           daySelectionAnimation={{
             type: "border",
             duration: 200,
@@ -170,15 +171,15 @@ export default function CalendarScreen(props) {
           iconContainer={{ flex: 0.1 }}
         />
         {show && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  defaultValue={formatDate}
-                  mode={mode}
-                  is24Hour={true}
-                  display="default"
-                  onChange={onChange}
-                />
-              )}
+          <DateTimePicker
+            testID='dateTimePicker'
+            mode={mode}
+            value={dueDate}
+            is24Hour={true}
+            display='default'
+            onChange={onChange}
+          />
+        )}
         <View style={[styles.container]}>
           {tasks.length > 0 &&
             tasks.map((task) => {
@@ -202,12 +203,12 @@ export default function CalendarScreen(props) {
                 underlineColorAndroid='transparent'
                 autoCapitalize='none'
               />
-          </View>
-            <View>
-              <Button onPress={showDatepicker} title="Pick a date" />
             </View>
             <View>
-              <Button onPress={showTimepicker} title="Pick a time" />
+              <Button onPress={showDatepicker} title='Pick a date' />
+            </View>
+            <View>
+              <Button onPress={showTimepicker} title='Pick a time' />
             </View>
             {/* <View style={styles.inputContainer}>
               <TextInput
