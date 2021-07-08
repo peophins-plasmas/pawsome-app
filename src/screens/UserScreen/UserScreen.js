@@ -177,14 +177,24 @@ export default function UserScreen(props) {
     return (
       <View style={styles.container}>
         <Text>My Pets:</Text>
-        <Avatar
+        <View style={styles.petImage}>
+          <Avatar
+              activeOpacity={0.2}
+              containerStyle={{ backgroundColor: "#BDBDBD" }}
+              onPress={() => alert("onPress")}
+              rounded
+              size="large"
+              source={{ uri: item.image }}
+            />
+          <Avatar
             activeOpacity={0.2}
             containerStyle={{ backgroundColor: "#BDBDBD" }}
+            icon={{ name: "add" }}
             onPress={() => alert("onPress")}
             rounded
             size="large"
-            source={{ uri: item.image }}
           />
+        </View>
       </View>
     );
   };
@@ -193,15 +203,17 @@ export default function UserScreen(props) {
     return (
       <View style={styles.container}>
         <Text>Friends:</Text>
-        <Avatar
-            activeOpacity={0.2}
-            containerStyle={{ backgroundColor: "#BDBDBD" }}
-            onPress={() => alert("onPress")}
-            rounded
-            size="large"
-            source={{ uri: item.image }}
-          />
-
+        <View style={styles.petImage}>
+          <Avatar
+              avatarStyle={{ padding: 30 }}
+              activeOpacity={0.2}
+              containerStyle={{ backgroundColor: "#BDBDBD" }}
+              onPress={() => alert("onPress")}
+              rounded
+              size="large"
+              source={{ uri: item.image }}
+            />
+        </View>
       </View>
     );
   };

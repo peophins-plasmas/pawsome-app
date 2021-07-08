@@ -56,6 +56,7 @@ export default StyleSheet.create({
     color: "#333333",
   },
   petImage: {
-    flexDirection: "column",
+    flexDirection: "row",
+    padding: 10,
   }
 });
