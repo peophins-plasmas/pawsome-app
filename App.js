@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text } from "react-native";
 import { LoginScreen, HomeScreen, RegistrationScreen } from "./src/screens";
 import CalendarScreen from "./src/screens/CalendarScreen/CalendarScreen";
+import UserScreen from "./src/screens/UserScreen/UserScreen"
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
 if (!global.btoa) {
@@ -64,11 +65,15 @@ export default function App() {
             <Stack.Screen name="Calendar">
               {(props) => <CalendarScreen {...props} extraData={user} />}
             </Stack.Screen>
+            <Stack.Screen name="User">
+              {(props) => <UserScreen {...props} extraData={user} />}
+            </Stack.Screen>
           </>
         ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Registration" component={RegistrationScreen} />
+            <Stack.Screen name="User" component={UserScreen} />
           </>
         )}
       </Stack.Navigator>
