@@ -55,4 +55,7 @@ export default StyleSheet.create({
     fontSize: 20,
     color: "#333333",
   },
+  petImage: {
+    flexDirection: "column",
+  }
 });
