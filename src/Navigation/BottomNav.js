@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { HomeScreen } from '../screens';
 import CalendarScreen from '../screens/CalendarScreen/CalendarScreen';
 import {colors} from "../screens/combinedStyles.js"
+import UserScreen from "../screens/UserScreen/UserScreen"
 
 
 // function Feed() {
@@ -16,13 +17,13 @@ import {colors} from "../screens/combinedStyles.js"
 //     );
 //   }
   
-  function Profile() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Profile!</Text>
-      </View>
-    );
-  }
+  // function Profile() {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <Text>Profile!</Text>
+  //     </View>
+  //   );
+  // }
   
   function Notifications() {
     return (
@@ -65,7 +66,7 @@ import {colors} from "../screens/combinedStyles.js"
         />
         <Tab.Screen
           name="Profile"
-          component={Profile}
+          children={() => <UserScreen extraData={props.extraData} />}
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: ({ color }) => (
