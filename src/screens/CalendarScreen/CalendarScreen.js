@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import XDate from "xdate";
 import { firebase } from "../../firebase/config";
 import {
@@ -39,7 +39,6 @@ export default function CalendarScreen(props) {
   const [showMarkedDates, setShowMarkedDates] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [selDate, setSelDate] = useState(currentDate);
-  const calRef = useRef();
 
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
@@ -114,7 +113,6 @@ export default function CalendarScreen(props) {
         </View>
         <CalendarStrip
           scrollable
-          ref={calRef}
           calendarAnimation={{ type: "sequence", duration: 30 }}
           selectedDate={currentDate}
           onDateSelected={(date) => setSelDate(date)}

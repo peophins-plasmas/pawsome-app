@@ -7,22 +7,17 @@ import {
   TouchableOpacity,
   View,
   Alert,
-  SafeAreaView
 } from "react-native";
-import styles from "./styles";
+import styles from "../HomeScreen/styles"
 import { firebase } from "../../firebase/config";
-import UploadImage from "../../Components/UploadImage";
-import BottomNav from "../../Navigation/BottomNav";
 
-
-export default function HomeScreen(props) {
+export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
-  const [pets, setPets] = useState([]);
+  const [users, setUsers] = useState([]);
   //make single pet state to access specific pet to pass through as props to upload image component
 
-  const petsRef = firebase.firestore().collection("pets");
-  const userID = props.extraData.id;
-  
+  const usersRef = firebase.firestore().collection("users");
+  const userId = props.extraData.id;
 
   const onLogoutPress = () => {
     firebase
@@ -46,15 +41,16 @@ export default function HomeScreen(props) {
   };
 
   useEffect(() => {
-    petsRef.where("ownerId", "array-contains", userID).onSnapshot(
+    usersRef.where("id", "==", userId).onSnapshot(
       (querySnapshot) => {
-        const newPets = [];
+        const userInfo = [];
         querySnapshot.forEach((doc) => {
-          const pet = doc.data();
-          pet.id = doc.id;
-          newPets.push(pet);
+          const user = doc.data();
+          console.log('USER>>>>>>>>>>>>>>', user)
+          user.id = doc.id;
+          userInfo.push(user)
         });
-        setPets(newPets);
+        setUsers(userInfo)
       },
       (error) => {
         console.log(error);
@@ -62,44 +58,36 @@ export default function HomeScreen(props) {
     );
   }, []);
 
-  const onAddButtonPress = () => {
-    if (entityText && entityText.length > 0) {
-      const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-      const data = {
-        petName: entityText,
-        ownerId: [userID],
-        createdAt: timestamp,
-      };
-      petsRef
-        .add(data)
-        .then((_doc) => {
-          setEntityText("");
-          Keyboard.dismiss();
-        })
-        .catch((error) => {
-          alert(error);
-        });
-    }
-  };
-
   const renderEntity = ({ item, index }) => {
     return (
-      <View style={styles.entityContainer}>
-        <Text style={styles.entityText}>{item.petName}</Text>
+      <View>
+        <View style={styles.entityContainer}>
+          <Text style={styles.entityText}>Name:</Text>
+          <Text style={styles.entityText}>{item.firstName} {item.lastName}</Text>
+        </View>
+        <View style={styles.entityContainer}>
+          <Text style={styles.entityText}>Email:</Text>
+          <Text style={styles.entityText}>{item.email}</Text>
+        </View>
+        <View style={styles.entityContainer}>
+          <Text style={styles.entityText}>Address:</Text>
+         <Text style={styles.entityText}>{item.address}</Text>
+        </View>
       </View>
     );
   };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View>
         <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
           <Text style={styles.buttonText}>Log out</Text>
         </TouchableOpacity>
       </View>
-      {/* <View>
+      <View>
         <TouchableOpacity
           style={styles.button}
-          title="My Profile"
+          title="User"
           onPress={() => props.navigation.navigate("User")}
         >
           <Text style={styles.buttonText}>My Profile</Text>
@@ -111,36 +99,24 @@ export default function HomeScreen(props) {
         >
           <Text style={styles.buttonText}>To Calendar</Text>
         </TouchableOpacity>
-      </View> */}
-      <View style={styles.container}>
-        <UploadImage user={props.extraData} />
       </View>
-      <View style={styles.formContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Add new pet"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setEntityText(text)}
-          value={entityText}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
-        />
-        <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
+      <View>
+        <Text>
+          Hello!
+        </Text>
       </View>
 
-      {pets && (
+      {users && (
         <View style={styles.listContainer}>
           <FlatList
             //or put upload image component in render entity so each pet entity will render name and photo
-            data={pets}
+            data={users}
             renderItem={renderEntity}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
           />
         </View>
       )}
-    </SafeAreaView>
+    </View>
   );
 }

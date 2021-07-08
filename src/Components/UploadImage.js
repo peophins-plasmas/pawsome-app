@@ -14,9 +14,8 @@ import { firebase } from "../firebase/config";
 if (process.env.NODE_ENV !== "production") require("../../secrets");
 
 const checkForLibraryPermission = async () => {
-  const {
-    libraryPermission,
-  } = await ImagePicker.getMediaLibraryPermissionsAsync();
+  const { libraryPermission } =
+    await ImagePicker.getMediaLibraryPermissionsAsync();
   if (libraryPermission !== "granted") {
     alert("Please grant permission for this app to access your media library");
     await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -91,7 +90,6 @@ export default function UploadImage(props) {
   };
 
   const captureImageFromCamera = async () => {
-    console.log("camera was clicked");
     checkForCameraPermission();
     let _image = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -142,7 +140,7 @@ export default function UploadImage(props) {
           style={imageUploaderStyles.uploadBtn}
         >
           <Text>{image ? "Take new photo from" : "Upload from"} Camera</Text>
-          <AntDesign name="camerao" size={20} color="black" />
+          <AntDesign name='camerao' size={20} color='black' />
         </TouchableOpacity>
       </View>
 
@@ -156,7 +154,7 @@ export default function UploadImage(props) {
           style={imageUploaderStyles.uploadBtn}
         >
           <Text>{image ? "Edit" : "Upload"} Image</Text>
-          <AntDesign name="clouduploado" size={20} color="black" />
+          <AntDesign name='clouduploado' size={20} color='black' />
         </TouchableOpacity>
       </View>
     </View>
