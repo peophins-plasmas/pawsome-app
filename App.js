@@ -11,6 +11,7 @@ import { set } from "react-native-reanimated";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BottomNav from "./src/Navigation/BottomNav";
+import { Provider as PaperProvider } from "react-native-paper"
 
 
 if (!global.btoa) {
@@ -60,6 +61,7 @@ export default function App() {
   }
 
   return (
+    <PaperProvider>
     <NavigationContainer>
       
         {isSignedIn ? (
@@ -83,5 +85,6 @@ export default function App() {
         )}
       {/* <BottomNav/> */}
     </NavigationContainer>
+    </PaperProvider>
   );
 }

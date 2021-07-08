@@ -14,7 +14,6 @@ import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
 
-import UploadImage from "../../Components/UploadImage";
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -106,9 +105,6 @@ export default function HomeScreen(props) {
           <Text style={styles.buttonText}>To Calendar</Text>
         </TouchableOpacity>
       </View> */}
-      <View style={styles.container}>
-        <UploadImage user={props.extraData} />
-      </View>
       <View style={styles.container}>
         <UploadImage user={props.extraData} />
       </View>

@@ -7,6 +7,7 @@ import { HomeScreen } from '../screens';
 import CalendarScreen from '../screens/CalendarScreen/CalendarScreen';
 import {colors} from "../screens/combinedStyles.js"
 
+
 // function Feed() {
 //     return (
 //       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
