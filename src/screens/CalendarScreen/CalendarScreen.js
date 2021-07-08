@@ -1,28 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import XDate from "xdate";
 import { firebase } from "../../firebase/config";
 import {
-  FlatList,
   Keyboard,
   Text,
   TextInput,
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-  SectionList,
   View,
   Alert,
 } from "react-native";
-import styles from "../../screens/combinedStyles";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import { Card } from "react-native-paper";
+import CalendarStrip, {
+  getSelectedDate,
+  setSelectedDate,
+} from "react-native-calendar-strip";
+import styles, { colors } from "../../screens/combinedStyles";
 
 export default function CalendarScreen(props) {
-  let currentDate = new XDate();
-  currentDate = currentDate.toString();
+  let date = new Date();
+  let currentDate = date.toDateString();
+  let currentTime = date.toLocaleTimeString();
 
   // date format: year/month/day/hrs/minutes
-  let taskDate = new XDate(2021, 6, 22, 8, 30);
-  taskDate = taskDate.toString();
+  // let taskDate = new XDate(2021, 6, 22, 8, 30);
+  // taskDate = taskDate.toString();
+  let taskDate = "2021-07-08";
 
   const [entityText, setEntityText] = useState("");
   const [entityDueDate, setEntityDueDate] = useState("");
@@ -34,6 +38,8 @@ export default function CalendarScreen(props) {
   const [taskDue, setTaskDue] = useState(taskDate);
   const [showMarkedDates, setShowMarkedDates] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [selDate, setSelDate] = useState(currentDate);
+  const calRef = useRef();
 
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
@@ -56,7 +62,7 @@ export default function CalendarScreen(props) {
         const newTasks = [];
         querySnapshot.forEach((doc) => {
           const task = doc.data();
-          console.log("TASK>>>>>>>>>>>>", task);
+          //console.log("TASK>>>>>>>>>>>>", task);
           task.id = doc.id;
           newTasks.push(task);
         });
@@ -95,7 +101,7 @@ export default function CalendarScreen(props) {
         });
     }
   };
-
+  console.log(selDate, "SELDATE");
   return (
     <SafeAreaView>
       <ScrollView>
@@ -103,21 +109,32 @@ export default function CalendarScreen(props) {
           <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
             <Text style={styles.buttonText}>Log out</Text>
           </TouchableOpacity>
-          <Text>Hello world</Text>
+          <Text>Today is {currentDate}.</Text>
+          <Text>It is {currentTime}.</Text>
         </View>
-
-        <Calendar
-          current={currentDate}
-          markedDates={{
-            [taskDue]: {
-              selected: true,
-              disableTouchEvent: true,
-              selectedColor: "orange",
-              selectedTextColor: "red",
-            },
+        <CalendarStrip
+          scrollable
+          ref={calRef}
+          calendarAnimation={{ type: "sequence", duration: 30 }}
+          selectedDate={currentDate}
+          onDateSelected={(date) => setSelDate(date)}
+          daySelectionAnimation={{
+            type: "border",
+            duration: 200,
+            borderWidth: 1,
+            borderHighlightColor: colors.yellow,
           }}
+          style={{ height: 100, paddingTop: 20, paddingBottom: 10 }}
+          calendarHeaderStyle={{ color: "white" }}
+          calendarColor={colors.dkblue}
+          dateNumberStyle={{ color: "white" }}
+          dateNameStyle={{ color: "white" }}
+          highlightDateNumberStyle={{ color: colors.yellow }}
+          highlightDateNameStyle={{ color: colors.yellow }}
+          disabledDateNameStyle={{ color: colors.antWhite }}
+          disabledDateNumberStyle={{ color: colors.antWhite }}
+          iconContainer={{ flex: 0.1 }}
         />
-
         <View style={[styles.container]}>
           {tasks.length > 0 &&
             tasks.map((task) => {
