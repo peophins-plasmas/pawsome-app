@@ -9,13 +9,13 @@ const { resolve } = require("path");
 // Get your firebase credentials from
 // the firebase console for your project
 
-if (process.env.NODE_ENV !== "production") require("./secret_key");
+if (process.env.NODE_ENV !== "production") require("../secrets");
 
 const FIRESTORE_API_KEY = process.env.FIRESTORE_API_KEY;
 const FIRESTORE_AUTH_DOMAIN = process.env.FIRESTORE_AUTH_DOMAIN;
 const FIRESTORE_PROJECT_ID = process.env.FIRESTORE_PROJECT_ID;
 
-export const firebaseConfig = {
+const firebaseConfig = {
   apiKey: FIRESTORE_API_KEY,
   authDomain: FIRESTORE_AUTH_DOMAIN,
   projectId: FIRESTORE_PROJECT_ID,
