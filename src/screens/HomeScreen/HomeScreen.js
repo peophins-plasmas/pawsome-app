@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
-
 import UploadImage from "../../Components/UploadImage";
+import BottomNav from "../../Navigation/BottomNav";
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -20,6 +20,7 @@ export default function HomeScreen(props) {
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
+  console.log('userID', userID)
 
   const onLogoutPress = () => {
     firebase
