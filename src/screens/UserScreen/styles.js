@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    //flex: 1,
-    alignItems: "center",
+  userContainer: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "center"
   },
   formContainer: {
     flexDirection: "row",
@@ -43,6 +43,7 @@ export default StyleSheet.create({
   listContainer: {
     marginTop: 20,
     padding: 20,
+    borderColor: 'black'
   },
   entityContainer: {
     marginTop: 16,

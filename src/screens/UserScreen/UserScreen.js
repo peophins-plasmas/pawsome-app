@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  SafeAreaView,
   FlatList,
   Keyboard,
   Text,
@@ -7,17 +8,25 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  ScrollView
 } from "react-native";
-import styles from "../HomeScreen/styles"
+import styles from "./styles"
 import { firebase } from "../../firebase/config";
+import UploadImage from "../../Components/UploadImage";
+import { Card, Title, Paragraph } from 'react-native-paper';
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
   const [users, setUsers] = useState([]);
+  const [vets, setVets] = useState([]);
   //make single pet state to access specific pet to pass through as props to upload image component
 
   const usersRef = firebase.firestore().collection("users");
+  const vetsRef = firebase.firestore().collection("vets");
   const userId = props.extraData.id;
+  const vetId = props.extraData.vetId;
+  console.log('VETID', vetId)
+
 
   const onLogoutPress = () => {
     firebase
@@ -46,7 +55,6 @@ export default function UserScreen(props) {
         const userInfo = [];
         querySnapshot.forEach((doc) => {
           const user = doc.data();
-          console.log('USER>>>>>>>>>>>>>>', user)
           user.id = doc.id;
           userInfo.push(user)
         });
@@ -58,9 +66,30 @@ export default function UserScreen(props) {
     );
   }, []);
 
-  const renderEntity = ({ item, index }) => {
+  useEffect(() => {
+    vetsRef.where("id", "in", vetId).onSnapshot(
+      (querySnapshot) => {
+        const vets = [];
+        querySnapshot.forEach((doc) => {
+          const vet = doc.data();
+          console.log('VET IN OPERATOR>>>>>>>>>>>>>>', vet)
+          vet.id = doc.id;
+          vets.push(vet)
+        });
+        setVets(vets)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+  const renderUserEntity = ({ item, index }) => {
     return (
       <View>
+        <View style={styles.userContainer}>
+          <UploadImage user={item} />
+        </View>
         <View style={styles.entityContainer}>
           <Text style={styles.entityText}>Name:</Text>
           <Text style={styles.entityText}>{item.firstName} {item.lastName}</Text>
@@ -77,46 +106,52 @@ export default function UserScreen(props) {
     );
   };
 
+  const renderVetEntity = ({ item, index }) => {
+    return (
+      <View style={styles.container}>
+        <Card>
+            <Card.Content>
+              <Title>My Vet Info</Title>
+              <Paragraph>
+                {item.vetName}
+              </Paragraph>
+              <Paragraph>
+                {item.email}
+              </Paragraph>
+              <Paragraph>
+                {item.phoneNum}
+              </Paragraph>
+              <Paragraph>
+                {item.address}
+              </Paragraph>
+              <Paragraph>
+                {item.hours}
+              </Paragraph>
+            </Card.Content>
+        </Card>
+      </View>
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <View>
-        <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
-          <Text style={styles.buttonText}>Log out</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity
-          style={styles.button}
-          title="User"
-          onPress={() => props.navigation.navigate("User")}
-        >
-          <Text style={styles.buttonText}>My Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          title="Calendar View"
-          onPress={() => props.navigation.navigate("Calendar")}
-        >
-          <Text style={styles.buttonText}>To Calendar</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <Text>
-          Hello!
-        </Text>
-      </View>
+    <SafeAreaView style={styles.container}>
 
       {users && (
         <View style={styles.listContainer}>
           <FlatList
-            //or put upload image component in render entity so each pet entity will render name and photo
             data={users}
-            renderItem={renderEntity}
+            renderItem={renderUserEntity}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
           />
+          <FlatList
+            data={vets}
+            keyExtractor={(item) => item.id}
+            removeClippedSubviews={true}
+            renderItem={renderVetEntity}
+          />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
