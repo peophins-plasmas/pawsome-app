@@ -3,12 +3,18 @@ import React, { useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView, Text, View } from "react-native";
 import { LoginScreen, HomeScreen, RegistrationScreen } from "./src/screens";
 import CalendarScreen from "./src/screens/CalendarScreen/CalendarScreen";
 import UserScreen from "./src/screens/UserScreen/UserScreen"
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import BottomNav from "./src/Navigation/BottomNav";
+import { Provider as PaperProvider } from "react-native-paper"
+
+
 if (!global.btoa) {
   global.btoa = encode;
 }
@@ -17,6 +23,7 @@ if (!global.atob) {
 }
 
 const Stack = createStackNavigator();
+
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -55,28 +62,34 @@ export default function App() {
   }
 
   return (
+    <PaperProvider>
     <NavigationContainer>
-      <Stack.Navigator>
+      
         {isSignedIn ? (
           <>
+            
             <Stack.Screen name="Home">
               {(props) => <HomeScreen {...props} extraData={user} />}
             </Stack.Screen>
             <Stack.Screen name="Calendar">
               {(props) => <CalendarScreen {...props} extraData={user} />}
             </Stack.Screen>
+            <BottomNav extraData={user} />
             <Stack.Screen name="User">
               {(props) => <UserScreen {...props} extraData={user} />}
             </Stack.Screen>
           </>
         ) : (
+           <Stack.Navigator>
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Registration" component={RegistrationScreen} />
             <Stack.Screen name="User" component={UserScreen} />
           </>
+          </Stack.Navigator>
         )}
-      </Stack.Navigator>
+      {/* <BottomNav/> */}
     </NavigationContainer>
+    </PaperProvider>
   );
 }
