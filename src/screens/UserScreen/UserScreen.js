@@ -13,13 +13,16 @@ import {
 import styles from "./styles"
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
-import { Card, Title, Paragraph, Avatar } from 'react-native-paper';
+import { Card, Title, Paragraph } from 'react-native-paper';
+import { Avatar } from 'react-native-elements';
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
   const [users, setUsers] = useState([]);
   const [vets, setVets] = useState([]);
-  const [pets, setPets] = useState([]);
+  const [ownedPets, setOwnedPets] = useState([]);
+  const [caredPets, setCaredPets] = useState([]);
+
   //make single pet state to access specific pet to pass through as props to upload image component
 
   const usersRef = firebase.firestore().collection("users");
@@ -96,7 +99,24 @@ export default function UserScreen(props) {
           pet.id = doc.id;
           newPets.push(pet);
         });
-        setPets(newPets);
+        setOwnedPets(newPets);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    petsRef.where("caretakerId", "array-contains", userId).onSnapshot(
+      (querySnapshot) => {
+        const caredPets = [];
+        querySnapshot.forEach((doc) => {
+          const pet = doc.data();
+          pet.id = doc.id;
+          caredPets.push(pet);
+        });
+        setCaredPets(caredPets);
       },
       (error) => {
         console.log(error);
@@ -153,14 +173,35 @@ export default function UserScreen(props) {
     );
   };
 
-  const renderPetEntity = ({ item, index }) => {
+  const renderOwnedPetEntity = ({ item, index }) => {
     return (
       <View style={styles.container}>
-        <Text>Pets:</Text>
-        <Avatar.Image
-        style={styles.petImage}
-        source={{uri: item.image}}
-        />
+        <Text>My Pets:</Text>
+        <Avatar
+            activeOpacity={0.2}
+            containerStyle={{ backgroundColor: "#BDBDBD" }}
+            onPress={() => alert("onPress")}
+            rounded
+            size="large"
+            source={{ uri: item.image }}
+          />
+      </View>
+    );
+  };
+
+  const renderCaredPetEntity = ({ item, index }) => {
+    return (
+      <View style={styles.container}>
+        <Text>Friends:</Text>
+        <Avatar
+            activeOpacity={0.2}
+            containerStyle={{ backgroundColor: "#BDBDBD" }}
+            onPress={() => alert("onPress")}
+            rounded
+            size="large"
+            source={{ uri: item.image }}
+          />
+
       </View>
     );
   };
@@ -177,10 +218,16 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
           />
           <FlatList
-            data={pets}
+            data={ownedPets}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
-            renderItem={renderPetEntity}
+            renderItem={renderOwnedPetEntity}
+          />
+          <FlatList
+            data={caredPets}
+            keyExtractor={(item) => item.id}
+            removeClippedSubviews={true}
+            renderItem={renderCaredPetEntity}
           />
           <FlatList
             data={vets}
