@@ -7,13 +7,12 @@ import {
   TouchableOpacity,
   View,
   Alert,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
-
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -22,7 +21,6 @@ export default function HomeScreen(props) {
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
-  
 
   const onLogoutPress = () => {
     firebase
@@ -118,12 +116,12 @@ export default function HomeScreen(props) {
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Add new pet"
-          placeholderTextColor="#aaaaaa"
+          placeholder='Add new pet'
+          placeholderTextColor='#aaaaaa'
           onChangeText={(text) => setEntityText(text)}
           value={entityText}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
+          underlineColorAndroid='transparent'
+          autoCapitalize='none'
         />
         <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
           <Text style={styles.buttonText}>Add</Text>

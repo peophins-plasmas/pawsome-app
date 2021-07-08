@@ -38,7 +38,7 @@ export default function CalendarScreen(props) {
   const [taskDue, setTaskDue] = useState(taskDate);
   const [showMarkedDates, setShowMarkedDates] = useState(false);
   const [tasks, setTasks] = useState([]);
-  const [selDate, setSelDate] = useState(currentDate);
+  const [selDate, setSelDate] = useState(date);
 
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
@@ -53,25 +53,36 @@ export default function CalendarScreen(props) {
       });
   };
 
-  //click on date and show associated tasks?
-  // const onShowDatePress = () => {};
+  console.log(selDate, "SELDATE");
+  let selDateString = selDate.toString();
+  const dateArr = selDateString.split(" ");
+  const dayString = dateArr.slice(1, 4).join(" ");
+  const timeString = dateArr[4];
+  console.log(dayString, "dayString");
+  console.log(timeString, "TimeString");
+
   useEffect(() => {
-    tasksRef.where("userId", "==", userId).onSnapshot(
-      (querySnapshot) => {
-        const newTasks = [];
-        querySnapshot.forEach((doc) => {
-          const task = doc.data();
-          //console.log("TASK>>>>>>>>>>>>", task);
-          task.id = doc.id;
-          newTasks.push(task);
-        });
-        setTasks(newTasks);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, []);
+    console.log("useEffect runs");
+    tasksRef
+      .where("userId", "==", userId)
+      .where("dueDate", "==", dayString)
+      .onSnapshot(
+        (querySnapshot) => {
+          const newTasks = [];
+          querySnapshot.forEach((doc) => {
+            const task = doc.data();
+            console.log("TASK.due>>>>>>>>>>>>", task.dueDate);
+            console.log("dates equal?", task.dueDate == dayString);
+            task.id = doc.id;
+            newTasks.push(task);
+          });
+          setTasks(newTasks);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, [selDate]);
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
@@ -100,7 +111,7 @@ export default function CalendarScreen(props) {
         });
     }
   };
-  console.log(selDate, "SELDATE");
+
   return (
     <SafeAreaView>
       <ScrollView>
