@@ -12,12 +12,16 @@ import {
   Alert,
 } from "react-native";
 import { Card } from "react-native-paper";
+import CalendarStrip, {
+  getSelectedDate,
+  setSelectedDate,
+} from "react-native-calendar-strip";
 import styles, { colors } from "../../screens/combinedStyles";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 
 export default function CalendarScreen(props) {
-  let currentDate = new XDate();
-  currentDate = currentDate.toString();
+  let date = new Date();
+  let currentDate = date.toDateString();
+  let currentTime = date.toLocaleTimeString();
 
   // date format: year/month/day/hrs/minutes
   // let taskDate = new XDate(2021, 6, 22, 8, 30);
@@ -34,6 +38,7 @@ export default function CalendarScreen(props) {
   const [taskDue, setTaskDue] = useState(taskDate);
   const [showMarkedDates, setShowMarkedDates] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [selDate, setSelDate] = useState(currentDate);
 
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
@@ -47,34 +52,6 @@ export default function CalendarScreen(props) {
         alert(error);
       });
   };
-  const showDayTest = (date) => {
-    alert(date);
-  };
-
-  const renderItem = (item) => {
-    return (
-      <View style={styles.container}>
-        <Text>{item.description}</Text>
-      </View>
-    );
-  };
-
-  const renderDay = (day, item) => {
-    return (
-      <Card>
-        <Card.Content
-          style={{
-            backgroundColor: colors.antiqueWhite,
-            borderWidth: 2,
-            borderStyle: "solid",
-            borderColor: colors.dkblue,
-          }}
-        >
-          {renderItem}
-        </Card.Content>
-      </Card>
-    );
-  };
 
   //click on date and show associated tasks?
   // const onShowDatePress = () => {};
@@ -84,7 +61,7 @@ export default function CalendarScreen(props) {
         const newTasks = [];
         querySnapshot.forEach((doc) => {
           const task = doc.data();
-          console.log("TASK>>>>>>>>>>>>", task);
+          //console.log("TASK>>>>>>>>>>>>", task);
           task.id = doc.id;
           newTasks.push(task);
         });
@@ -123,7 +100,7 @@ export default function CalendarScreen(props) {
         });
     }
   };
-
+  console.log(selDate, "SELDATE");
   return (
     <SafeAreaView>
       <ScrollView>
@@ -131,39 +108,31 @@ export default function CalendarScreen(props) {
           <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
             <Text style={styles.buttonText}>Log out</Text>
           </TouchableOpacity>
-          <Text>Hello world</Text>
+          <Text>Today is {currentDate}.</Text>
+          <Text>It is {currentTime}.</Text>
         </View>
-
-        <Agenda
-          current={currentDate}
-          markedDates={{
-            [taskDue]: {
-              selected: true,
-              disableTouchEvent: true,
-              selectedColor: "orange",
-              selectedTextColor: "red",
-            },
-            "2021-07-09": {
-              selected: true,
-              disableTouchEvent: true,
-              selectedColor: "blue",
-              selectedTextColor: "white",
-            },
+        <CalendarStrip
+          scrollable
+          calendarAnimation={{ type: "sequence", duration: 30 }}
+          selectedDate={currentDate}
+          onDateSelected={(date) => setSelDate(date)}
+          daySelectionAnimation={{
+            type: "border",
+            duration: 200,
+            borderWidth: 1,
+            borderHighlightColor: colors.yellow,
           }}
-          items={{
-            "2021-07-08": [],
-            "2021-07-09": [],
-            "2021-07-06": [{ timestamp: "08:15", description: "feed cat" }],
-            "2021-07-07": [
-              { time: "09:30", description: "throw mouse" },
-              { time: "10:45", description: "give hairball remedy" },
-            ],
-          }}
-          renderDay={renderDay}
-          renderItem={renderItem}
-          onDayPress={(dateString) => showDayTest(dateString)}
+          style={{ height: 100, paddingTop: 20, paddingBottom: 10 }}
+          calendarHeaderStyle={{ color: "white" }}
+          calendarColor={colors.dkblue}
+          dateNumberStyle={{ color: "white" }}
+          dateNameStyle={{ color: "white" }}
+          highlightDateNumberStyle={{ color: colors.yellow }}
+          highlightDateNameStyle={{ color: colors.yellow }}
+          disabledDateNameStyle={{ color: colors.antWhite }}
+          disabledDateNumberStyle={{ color: colors.antWhite }}
+          iconContainer={{ flex: 0.1 }}
         />
-
         <View style={[styles.container]}>
           {tasks.length > 0 &&
             tasks.map((task) => {
