@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import XDate from "xdate";
 import { firebase } from "../../firebase/config";
 import {
@@ -19,8 +19,9 @@ import CalendarStrip, {
 import styles, { colors } from "../../screens/combinedStyles";
 
 export default function CalendarScreen(props) {
-  let currentDate = new Date();
-  currentDate = currentDate.toString();
+  let date = new Date();
+  let currentDate = date.toDateString();
+  let currentTime = date.toLocaleTimeString();
 
   // date format: year/month/day/hrs/minutes
   // let taskDate = new XDate(2021, 6, 22, 8, 30);
@@ -38,6 +39,7 @@ export default function CalendarScreen(props) {
   const [showMarkedDates, setShowMarkedDates] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [selDate, setSelDate] = useState(currentDate);
+  const calRef = useRef();
 
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
@@ -60,7 +62,7 @@ export default function CalendarScreen(props) {
         const newTasks = [];
         querySnapshot.forEach((doc) => {
           const task = doc.data();
-          console.log("TASK>>>>>>>>>>>>", task);
+          //console.log("TASK>>>>>>>>>>>>", task);
           task.id = doc.id;
           newTasks.push(task);
         });
@@ -99,7 +101,7 @@ export default function CalendarScreen(props) {
         });
     }
   };
-
+  console.log(selDate, "SELDATE");
   return (
     <SafeAreaView>
       <ScrollView>
@@ -107,16 +109,15 @@ export default function CalendarScreen(props) {
           <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
             <Text style={styles.buttonText}>Log out</Text>
           </TouchableOpacity>
-          <Text>Hello world</Text>
+          <Text>Today is {currentDate}.</Text>
+          <Text>It is {currentTime}.</Text>
         </View>
         <CalendarStrip
           scrollable
-          // ref={(calendarStrip: CalendarStrip) => {
-          //   this.calendarStrip = calendarStrip;
-          // }}
+          ref={calRef}
           calendarAnimation={{ type: "sequence", duration: 30 }}
           selectedDate={currentDate}
-          //onDateSelected={setSelDate()}
+          onDateSelected={(date) => setSelDate(date)}
           daySelectionAnimation={{
             type: "border",
             duration: 200,
