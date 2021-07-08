@@ -25,7 +25,6 @@ export default StyleSheet.create({
   //Homescreen formcontainer
   formContainer: {
     flexDirection: "column",
-
     marginTop: 20,
     marginBottom: 20,
     flex: 1,

@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   View,
   Alert,
+  Button
 } from "react-native";
 import { Card } from "react-native-paper";
 import CalendarStrip, {
@@ -17,6 +18,7 @@ import CalendarStrip, {
   setSelectedDate,
 } from "react-native-calendar-strip";
 import styles, { colors } from "../../screens/combinedStyles";
+import DateTimePicker from "@react-native-community/datetimepicker"
 
 export default function CalendarScreen(props) {
   let date = new Date();
@@ -39,6 +41,9 @@ export default function CalendarScreen(props) {
   const [showMarkedDates, setShowMarkedDates] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [selDate, setSelDate] = useState(date);
+  const [dueDate, setDueDate] = useState(date);
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState('dueDate');
 
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
@@ -91,7 +96,7 @@ export default function CalendarScreen(props) {
         dueDate: entityDueDate,
         dueTime: entityDueTime,
         petId: entityPetId,
-        status: entityStatus,
+        status: "open",
         frequency: entityFrequency,
         userId: userId,
       };
@@ -102,7 +107,7 @@ export default function CalendarScreen(props) {
           setEntityDueDate("");
           setEntityDueTime("");
           setEntityPetId("");
-          setEntityStatus("");
+          setEntityStatus("open");
           setEntityFrequency("");
           Keyboard.dismiss();
         })
@@ -111,6 +116,26 @@ export default function CalendarScreen(props) {
         });
     }
   };
+  const formatDate = new Date(selDate)
+  const onChange = (event, selectedDate) => {
+    console.log("selected date in picker", selectedDate)
+    const currentDate = selectedDate || formatDate;
+    setDueDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+ 
 
   return (
     <SafeAreaView>
@@ -144,6 +169,16 @@ export default function CalendarScreen(props) {
           disabledDateNumberStyle={{ color: colors.antWhite }}
           iconContainer={{ flex: 0.1 }}
         />
+        {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  defaultValue={formatDate}
+                  mode={mode}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
+                />
+              )}
         <View style={[styles.container]}>
           {tasks.length > 0 &&
             tasks.map((task) => {
@@ -157,17 +192,24 @@ export default function CalendarScreen(props) {
             })}
           <View style={styles.formContainer}>
             <View style={styles.inputContainer}>
+              <Text style={styles.entityText}>Add a task</Text>
               <TextInput
                 style={styles.input}
-                placeholder='Add new task'
+                placeholder='Task name'
                 placeholderTextColor='#aaaaaa'
                 onChangeText={(text) => setEntityText(text)}
                 value={entityText}
                 underlineColorAndroid='transparent'
                 autoCapitalize='none'
               />
+          </View>
+            <View>
+              <Button onPress={showDatepicker} title="Pick a date" />
             </View>
-            <View style={styles.inputContainer}>
+            <View>
+              <Button onPress={showTimepicker} title="Pick a time" />
+            </View>
+            {/* <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
                 placeholder='Add due date'
@@ -177,8 +219,8 @@ export default function CalendarScreen(props) {
                 underlineColorAndroid='transparent'
                 autoCapitalize='none'
               />
-            </View>
-            <View style={styles.inputContainer}>
+            </View> */}
+            {/* <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
                 placeholder='Add time due'
@@ -188,7 +230,7 @@ export default function CalendarScreen(props) {
                 underlineColorAndroid='transparent'
                 autoCapitalize='none'
               />
-            </View>
+            </View> */}
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -200,7 +242,7 @@ export default function CalendarScreen(props) {
                 autoCapitalize='none'
               />
             </View>
-            <View style={styles.inputContainer}>
+            {/* <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
                 placeholder='Add status'
@@ -210,7 +252,7 @@ export default function CalendarScreen(props) {
                 underlineColorAndroid='transparent'
                 autoCapitalize='none'
               />
-            </View>
+            </View> */}
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
