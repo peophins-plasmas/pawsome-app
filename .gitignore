@@ -1,5 +1,5 @@
 # Secrets
-src/firebase/secret_key.js
+secrets.js
 src/firebase/gitignoretest.js
 secrets.js
 
