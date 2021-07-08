@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  SafeAreaView
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
@@ -20,7 +21,7 @@ export default function HomeScreen(props) {
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
-  console.log('userID', userID)
+  
 
   const onLogoutPress = () => {
     firebase
@@ -88,13 +89,13 @@ export default function HomeScreen(props) {
     );
   };
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View>
         <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
           <Text style={styles.buttonText}>Log out</Text>
         </TouchableOpacity>
       </View>
-      <View>
+      {/* <View>
         <TouchableOpacity
           style={styles.button}
           title="Calendar View"
@@ -102,7 +103,7 @@ export default function HomeScreen(props) {
         >
           <Text style={styles.buttonText}>To Calendar</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={styles.container}>
         <UploadImage user={props.extraData} />
       </View>
@@ -132,6 +133,6 @@ export default function HomeScreen(props) {
           />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 }

@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { HomeScreen } from '../screens';
+import CalendarScreen from '../screens/CalendarScreen/CalendarScreen';
+import {colors} from "../screens/combinedStyles.js"
 
 // function Feed() {
 //     return (
@@ -34,10 +36,11 @@ import { HomeScreen } from '../screens';
   export default function BottomNav(props) {
     return (
       <Tab.Navigator
-        initialRouteName="Feed"
-        activeColor="#e91e63"
+        initialRouteName="Home"
+        activeColor={colors.yellow}
+        inactiveColor={'black'}
         labelStyle={{ fontSize: 12 }}
-        style={{ backgroundColor: 'tomato' }}
+        barStyle={{ backgroundColor: colors.pawsomeblue }}
       >
         <Tab.Screen
           name="Home"
@@ -50,12 +53,12 @@ import { HomeScreen } from '../screens';
           }}
         />
         <Tab.Screen
-          name="Notifications"
-          component={Notifications}
+          name="Calendar"
+          children={() => <CalendarScreen extraData={props.extraData} />}
           options={{
-            tabBarLabel: 'Updates',
+            tabBarLabel: 'Calendar',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="bell" color={color} size={26} />
+              <MaterialCommunityIcons name="calendar" color={color} size={26} />
             ),
           }}
         />
