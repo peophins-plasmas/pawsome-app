@@ -102,34 +102,34 @@ export default function UploadImage(props) {
       return;
     }
 
-    // let base64Img = `data:image/jpg;base64,${_image.base64}`;
+    let base64Img = `data:image/jpg;base64,${_image.base64}`;
 
-    // let data = {
-    //   file: base64Img,
-    //   upload_preset: "d93plb6p",
-    // };
+    let data = {
+      file: base64Img,
+      upload_preset: "d93plb6p",
+    };
 
-    // fetch(CLOUDINARY_URL, {
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     "content-type": "application/json",
-    //   },
-    //   method: "POST",
-    // }).then(async (r) => {
-    //   let data = await r.json();
-    //   console.log("data in post response>>>>>", data);
-    //   setImage(data.url);
-    //   return userImageRef
-    //     .update({
-    //       image: data.url,
-    //     })
-    //     .then(() => {
-    //       console.log("Image successfully updated!");
-    //     })
-    //     .catch((error) => {
-    //       console.error("error updating document: ", error);
-    //     });
-    // });
+    fetch(CLOUDINARY_URL, {
+      body: JSON.stringify(data),
+      headers: {
+        "content-type": "application/json",
+      },
+      method: "POST",
+    }).then(async (r) => {
+      let data = await r.json();
+      console.log("data in post response>>>>>", data);
+      setImage(data.url);
+      return userImageRef
+        .update({
+          image: data.url,
+        })
+        .then(() => {
+          console.log("Image successfully updated!");
+        })
+        .catch((error) => {
+          console.error("error updating document: ", error);
+        });
+    });
   };
 
   return (
