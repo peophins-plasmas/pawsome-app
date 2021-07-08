@@ -1,7 +1,7 @@
 # Secrets
 secrets.js
 src/firebase/gitignoretest.js
-secrets.js
+package-lock.json
 
 # Logs
 logs
