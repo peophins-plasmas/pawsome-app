@@ -22,6 +22,9 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function CalendarScreen(props) {
   let date = new Date();
+  let localDate = date.toLocaleString();
+  //console.log(date, "DATE");
+  //console.log(localDate, "LOCALDATE");
   let currentDate = date.toDateString();
   let currentTime = date.toLocaleTimeString();
 
@@ -58,16 +61,16 @@ export default function CalendarScreen(props) {
       });
   };
 
-  console.log(selDate, "SELDATE");
+  //console.log(selDate, "SELDATE");
   let selDateString = selDate.toString();
   const dateArr = selDateString.split(" ");
   const dayString = dateArr.slice(1, 4).join(" ");
   const timeString = dateArr[4];
-  console.log(dayString, "dayString");
-  console.log(timeString, "TimeString");
+  //console.log(dayString, "dayString");
+  //console.log(timeString, "TimeString");
 
   useEffect(() => {
-    console.log("useEffect runs");
+    //console.log("useEffect runs");
     tasksRef
       .where("userId", "==", userId)
       .where("dueDate", "==", dayString)
@@ -76,8 +79,8 @@ export default function CalendarScreen(props) {
           const newTasks = [];
           querySnapshot.forEach((doc) => {
             const task = doc.data();
-            console.log("TASK.due>>>>>>>>>>>>", task.dueDate);
-            console.log("dates equal?", task.dueDate == dayString);
+            //console.log("TASK.due>>>>>>>>>>>>", task.dueDate);
+            //console.log("dates equal?", task.dueDate == dayString);
             task.id = doc.id;
             newTasks.push(task);
           });
@@ -93,7 +96,7 @@ export default function CalendarScreen(props) {
     if (entityText && entityText.length > 0) {
       const data = {
         description: entityText,
-        dueDate: entityDueDate,
+        dueDate: dueDate,
         dueTime: entityDueTime,
         petId: entityPetId,
         status: "open",
@@ -104,7 +107,7 @@ export default function CalendarScreen(props) {
         .add(data)
         .then((_doc) => {
           setEntityText("");
-          setEntityDueDate("");
+          setEntityDueDate(dueDate);
           setEntityDueTime("");
           setEntityPetId("");
           setEntityStatus("open");
@@ -116,10 +119,12 @@ export default function CalendarScreen(props) {
         });
     }
   };
-  const formatDate = new Date(selDate);
+
   const onChange = (event, value) => {
     console.log("selected date in picker", value);
-    setDueDate(value);
+    const adjval = new Date(value.toLocaleString());
+    setDueDate(adjval);
+    console.log(dueDate, "DueDate at onChange");
   };
 
   const showMode = (currentMode) => {
@@ -151,7 +156,7 @@ export default function CalendarScreen(props) {
           selectedDate={currentDate}
           onDateSelected={(date) => {
             setSelDate(date);
-            setDueDate(new Date(date));
+            setDueDate(new Date(localDate));
           }}
           daySelectionAnimation={{
             type: "border",
