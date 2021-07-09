@@ -40,13 +40,20 @@ export default function UploadImage(props) {
 
   const user = props.user;
   const pet = props.pet;
+  const functionType = props.functionType;
   console.log("upload user>>>>", user);
   console.log("upload pet>>>>", pet);
-  const [image, setImage] = useState(null);
-  const [userImage, setUserImage] = useState("");
-  const [petImage, setPetImage] = useState("");
-  const userImageRef = firebase.firestore().collection("users").doc(user.id);
-  // const petImageRef = firebase.firestore().collection("pets").doc(pet.id);
+  const [image, setImage] = useState();
+  let userImageRef;
+  let petImageRef;
+
+  if (functionType === "userImg") {
+    userImageRef = firebase.firestore().collection("users").doc(user.id);
+    // setImage(user.image);
+  } else if (functionType === "petImg") {
+    petImageRef = firebase.firestore().collection("pets").doc(pet.id);
+    // setImage(pet.image);
+  }
 
   let _image = "";
 
@@ -96,18 +103,30 @@ export default function UploadImage(props) {
       method: "POST",
     }).then(async (r) => {
       let data = await r.json();
-      console.log("data in post response>>>>>", data);
       setImage(data.url);
-      return userImageRef
-        .update({
-          image: data.url,
-        })
-        .then(() => {
-          console.log("Image successfully updated!");
-        })
-        .catch((error) => {
-          console.error("error updating document: ", error);
-        });
+      if (functionType === "userImg") {
+        return userImageRef
+          .update({
+            image: data.url,
+          })
+          .then(() => {
+            console.log("Image successfully updated!");
+          })
+          .catch((error) => {
+            console.error("error updating document: ", error);
+          });
+      } else if (functionType === "petImg") {
+        return petImageRef
+          .update({
+            image: data.url,
+          })
+          .then(() => {
+            console.log("Image successfully updated!");
+          })
+          .catch((error) => {
+            console.error("error updating document: ", error);
+          });
+      }
     });
   };
 

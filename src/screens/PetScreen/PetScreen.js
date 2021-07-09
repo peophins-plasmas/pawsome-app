@@ -88,7 +88,7 @@ export default function PetScreen(props) {
           <View>
             <Text>{pet.petName}</Text>
             <View style={styles.petContainer}>
-              <UploadImage pet={pet} />
+              <UploadImage pet={pet} functionType={"petImg"} />
             </View>
           </View>
         </View>

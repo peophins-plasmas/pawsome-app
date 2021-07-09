@@ -127,7 +127,7 @@ export default function UserScreen(props) {
     return (
       <View>
         <View style={styles.userContainer}>
-          <UploadImage user={item} />
+          <UploadImage user={item} functionType={"userImg"} />
         </View>
         <View style={styles.entityContainer}>
           <Text style={styles.entityText}>Name:</Text>
