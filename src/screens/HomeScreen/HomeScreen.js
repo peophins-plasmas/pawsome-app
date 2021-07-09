@@ -28,18 +28,7 @@ export default function HomeScreen(props) {
     firebase
       .auth()
       .signOut()
-      .then(() =>
-        Alert.alert(
-          "Logged Out",
-          "You are now logged out"
-          // [
-          //   {
-          //     text: "Return to login page",
-          //     onPress: () => props.navigation.navigate("Login"),
-          //   },
-          // ]
-        )
-      )
+      .then(() => Alert.alert("Logged Out", "You are now logged out"))
       .catch((error) => {
         alert(error);
       });
@@ -103,34 +92,19 @@ export default function HomeScreen(props) {
           <Text style={styles.buttonText}>Log out</Text>
         </TouchableOpacity>
       </View>
-      {/* <View>
-        <TouchableOpacity
-          style={styles.button}
-          title="My Profile"
-          onPress={() => props.navigation.navigate("User")}
-        >
-          <Text style={styles.buttonText}>My Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          title="Calendar View"
-          onPress={() => props.navigation.navigate("Calendar")}
-        >
-          <Text style={styles.buttonText}>To Calendar</Text>
-        </TouchableOpacity>
-      </View> */}
+
       <View style={styles.container}>
         <UploadImage user={props.extraData} />
       </View>
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Add new pet"
-          placeholderTextColor="#aaaaaa"
+          placeholder='Add new pet'
+          placeholderTextColor='#aaaaaa'
           onChangeText={(text) => setEntityText(text)}
           value={entityText}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
+          underlineColorAndroid='transparent'
+          autoCapitalize='none'
         />
         <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
           <Text style={styles.buttonText}>Add</Text>

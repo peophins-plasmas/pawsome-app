@@ -10,13 +10,13 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { firebase } from "../firebase/config";
+import styles from "../screens/combinedStyles";
 
 if (process.env.NODE_ENV !== "production") require("../../secrets");
 
 const checkForLibraryPermission = async () => {
-  const {
-    libraryPermission,
-  } = await ImagePicker.getMediaLibraryPermissionsAsync();
+  const { libraryPermission } =
+    await ImagePicker.getMediaLibraryPermissionsAsync();
   if (libraryPermission !== "granted") {
     alert("Please grant permission for this app to access your media library");
     await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -43,29 +43,17 @@ export default function UploadImage(props) {
   const functionType = props.functionType;
   console.log("upload user>>>>", user);
   console.log("upload pet>>>>", pet);
-  let img = props.user || props.pet;
-  img = img.image;
-  const [image, setImage] = useState(img);
+  const [image, setImage] = useState();
   let userImageRef;
   let petImageRef;
 
-  let _image = "";
+  if (functionType === "userImg") {
+    userImageRef = firebase.firestore().collection("users").doc(user.id);
+  } else if (functionType === "petImg") {
+    petImageRef = firebase.firestore().collection("pets").doc(pet.id);
+  }
 
-  useEffect(() => {
-    if (functionType === "userImg") {
-      userImageRef = firebase.firestore().collection("users").doc(user.id);
-      console.log("user image url>>>>", user.image);
-      // setImage(user.image);
-    } else if (functionType === "petImg") {
-      petImageRef = firebase.firestore().collection("pets").doc(pet.id);
-      // setImage(pet.image);
-    }
-    // if (functionType === "userImg") {
-    //   setImage(user.image);
-    // } else if (functionType === "petImg") {
-    //   setImage(pet.image);
-    // }
-  }, []);
+  let _image = "";
 
   const addImageFromLibrary = async () => {
     checkForLibraryPermission();
@@ -113,7 +101,6 @@ export default function UploadImage(props) {
       method: "POST",
     }).then(async (r) => {
       let data = await r.json();
-      console.log("url upload >>>>>>", data.url);
       setImage(data.url);
       if (functionType === "userImg") {
         return userImageRef
@@ -142,66 +129,30 @@ export default function UploadImage(props) {
   };
 
   return (
-    <View style={imageUploaderStyles.container}>
-      {/* <Text>Hello world</Text> */}
-      <View style={imageUploaderStyles.cameraBtnContainer}>
+    <View style={styles.photoContainer}>
+      <View style={styles.cameraBtnContainer}>
         <TouchableOpacity
           onPress={captureImageFromCamera}
-          style={imageUploaderStyles.uploadBtn}
+          style={styles.uploadBtn}
         >
           <Text>{image ? "Take new photo from" : "Upload from"} Camera</Text>
-          <AntDesign name="camerao" size={20} color="black" />
+          <AntDesign name='camerao' size={20} color='black' />
         </TouchableOpacity>
       </View>
 
       {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />
       )}
 
-      <View style={imageUploaderStyles.uploadBtnContainer}>
+      <View style={styles.uploadBtnContainer}>
         <TouchableOpacity
           onPress={addImageFromLibrary}
-          style={imageUploaderStyles.uploadBtn}
+          style={styles.uploadBtn}
         >
           <Text>{image ? "Edit" : "Upload"} Image</Text>
-          <AntDesign name="clouduploado" size={20} color="black" />
+          <AntDesign name='clouduploado' size={20} color='black' />
         </TouchableOpacity>
       </View>
     </View>
   );
 }
-
-const imageUploaderStyles = StyleSheet.create({
-  container: {
-    margin: 20,
-    elevation: 2,
-    height: 200,
-    width: 200,
-    backgroundColor: "#efefef",
-    position: "relative",
-    borderRadius: 999,
-    overflow: "hidden",
-  },
-  uploadBtnContainer: {
-    opacity: 0.7,
-    position: "absolute",
-    right: 0,
-    bottom: 0,
-    backgroundColor: "lightgrey",
-    width: "100%",
-    height: "25%",
-  },
-  uploadBtn: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  cameraBtnContainer: {
-    opacity: 0.7,
-    right: 0,
-    top: 30,
-    backgroundColor: "lightgrey",
-    width: "100%",
-    height: "25%",
-  },
-});

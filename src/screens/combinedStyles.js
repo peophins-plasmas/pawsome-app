@@ -110,6 +110,39 @@ export default StyleSheet.create({
     fontSize: 20,
     color: "#333333",
   },
+  sectionHeaderText: {
+    color: colors.pawsomeblue,
+    fontSize: 30,
+    fontWeight: "bold",
+    borderBottomColor: colors.pawsomeblue,
+    borderBottomWidth: 2,
+    margin: 5,
+  },
+  introContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "flex-start",
+    borderWidth: 1,
+  },
+  stack: {
+    flexDirection: "column",
+    justifyContent: "center",
+    margin: 20,
+  },
+  stackHeaderText: {
+    fontWeight: "bold",
+    color: colors.pawsomeblue,
+  },
+
+  nameText: {
+    color: "black",
+    fontSize: 30,
+    fontWeight: "bold",
+    margin: 5,
+  },
+
   //Registration screen and Login screen: footerview, footertext, footerlink
   footerView: {
     flex: 1,
@@ -124,5 +157,43 @@ export default StyleSheet.create({
     color: "#788eec",
     fontWeight: "bold",
     fontSize: 16,
+  },
+  smallAvatarImage: {
+    flexDirection: "row",
+    padding: 10,
+  },
+
+  //uploadImage
+  uploadBtnContainer: {
+    opacity: 0.7,
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    backgroundColor: "lightgrey",
+    width: "100%",
+    height: "25%",
+  },
+  uploadBtn: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  cameraBtnContainer: {
+    opacity: 0.7,
+    right: 0,
+    top: 30,
+    backgroundColor: "lightgrey",
+    width: "100%",
+    height: "25%",
+  },
+  photoContainer: {
+    margin: 20,
+    elevation: 2,
+    height: 300,
+    width: 300,
+    backgroundColor: "#efefef",
+    position: "relative",
+    borderRadius: 999,
+    overflow: "hidden",
   },
 });

@@ -10,7 +10,7 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import styles from "./styles";
+import styles from "../combinedStyles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import { Card, Title, Paragraph } from "react-native-paper";
@@ -80,11 +80,13 @@ export default function PetScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       {pet ? (
-        <View style={styles.listContainer}>
-          <View>
-            <Text>{pet.petName}</Text>
-            <View style={styles.petContainer}>
-              <UploadImage pet={pet} functionType={"petImg"} />
+        <View style={styles.container}>
+          <UploadImage pet={pet} functionType={"petImg"} />
+          <View style={styles.introContainer}>
+            <Text style={styles.nameText}>{pet.petName}</Text>
+            <View style={[styles.stack]}>
+              <Text style={styles.stackHeaderText}>Species</Text>
+              <Text>{pet.species ? pet.species : "animal"}</Text>
             </View>
           </View>
         </View>
