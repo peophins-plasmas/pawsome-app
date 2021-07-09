@@ -25,7 +25,6 @@ export default StyleSheet.create({
   //Homescreen formcontainer
   formContainer: {
     flexDirection: "column",
-
     marginTop: 20,
     marginBottom: 20,
     flex: 1,
@@ -102,13 +101,13 @@ export default StyleSheet.create({
     display: "flex",
     flex: 1,
     marginTop: 16,
-    borderBottomColor: "#cccccc",
+    borderBottomColor: "black",
     borderBottomWidth: 1,
     paddingBottom: 16,
   },
   entityText: {
     fontSize: 20,
-    color: "#333333",
+    color: "black",
   },
   //Registration screen and Login screen: footerview, footertext, footerlink
   footerView: {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { HomeScreen } from '../screens';
 import CalendarScreen from '../screens/CalendarScreen/CalendarScreen';
 import {colors} from "../screens/combinedStyles.js"
@@ -38,6 +38,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
   export default function BottomNav(props) {
     return (
       <Tab.Navigator
+        shifting={true}
         initialRouteName="Home"
         activeColor={colors.yellow}
         inactiveColor={'black'}
@@ -50,7 +51,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="home" color={color} size={26} />
+              <Ionicons name="ios-paw-outline" color={color} size={26} />
             ),
           }}
         />
@@ -60,7 +61,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
           options={{
             tabBarLabel: 'Calendar',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="calendar" color={color} size={26} />
+              <Ionicons name="ios-calendar-outline" color={color} size={26} />
             ),
           }}
         />
@@ -70,7 +71,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="account" color={color} size={26} />
+              <Ionicons name="ios-person" color={color} size={26} />
             ),
           }}
         />
