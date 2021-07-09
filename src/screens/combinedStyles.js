@@ -109,6 +109,20 @@ export default StyleSheet.create({
     fontSize: 20,
     color: "black",
   },
+
+  sectionHeaderText: {
+    color: colors.pawsomeblue,
+    fontSize: 30,
+    fontWeight: "bold",
+    borderBottomColor: colors.pawsomeblue,
+    borderBottomWidth: 2,
+    margin: 5,
+  },
+  subHeaderText: {
+    color: "black",
+    fontSize: 20,
+  },
+
   //Registration screen and Login screen: footerview, footertext, footerlink
   footerView: {
     flex: 1,
