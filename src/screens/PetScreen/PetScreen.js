@@ -17,7 +17,7 @@ import { Card, Title, Paragraph } from "react-native-paper";
 import { Avatar } from "react-native-elements";
 
 export default function PetScreen(props) {
-  const [pets, setPets] = useState([]);
+  //   const [pet, setPet] = useState({});
   const [owners, setOwners] = useState([]);
   const [vets, setVets] = useState([]);
   const [caretakers, setCaretakers] = useState([]);
@@ -26,12 +26,10 @@ export default function PetScreen(props) {
   const vetsRef = firebase.firestore().collection("vets");
 
   let pet = props.route.params.pet;
-  useEffect(() => {
-    const petInfo = [];
-    petInfo.push(pet);
-    setPets(petInfo);
-  });
-  console.log("pets array>>>>", pets);
+  //   useEffect(() => {
+  //     setPet(petInfo);
+  //   });
+  console.log("pet obj>>>>", pet);
 
   //to find pet's owners
   useEffect(() => {
@@ -83,27 +81,20 @@ export default function PetScreen(props) {
     );
   }, []);
 
-  const renderPetEntity = ({ item, index }) => {
-    return (
-      <View>
-        <Text>{item.petName}</Text>
-        <View style={styles.petContainer}>
-          <UploadImage pet={item} />
-        </View>
-      </View>
-    );
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      {pets && (
+      {pet ? (
         <View style={styles.listContainer}>
-          <FlatList
-            data={pets}
-            renderItem={renderPetEntity}
-            keyExtractor={(item) => item.id}
-            removeClippedSubviews={true}
-          />
+          <View>
+            <Text>{pet.petName}</Text>
+            <View style={styles.petContainer}>
+              <UploadImage pet={pet} />
+            </View>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.listContainer}>
+          <Text>Pet does not exist</Text>
         </View>
       )}
     </SafeAreaView>
