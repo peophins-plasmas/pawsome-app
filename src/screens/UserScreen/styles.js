@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    //flex: 1,
-    alignItems: "center",
+  userContainer: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "center"
   },
   formContainer: {
     flexDirection: "row",
@@ -43,15 +43,27 @@ export default StyleSheet.create({
   listContainer: {
     marginTop: 20,
     padding: 20,
+    borderColor: 'black'
   },
   entityContainer: {
-    marginTop: 16,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
     borderBottomColor: "#cccccc",
     borderBottomWidth: 1,
-    paddingBottom: 16,
+    paddingBottom: 10,
   },
   entityText: {
-    fontSize: 20,
+    fontSize: 16,
     color: "#333333",
   },
+  imageContainer: {
+    height: 20,
+    width: 20
+  },
+  petImage: {
+    flexDirection: "row",
+    padding: 10,
+  }
 });

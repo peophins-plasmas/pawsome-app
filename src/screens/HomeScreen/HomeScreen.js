@@ -13,6 +13,7 @@ import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
+import UserScreen from "../UserScreen/UserScreen"
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
