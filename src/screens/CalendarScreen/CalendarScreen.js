@@ -117,9 +117,9 @@ export default function CalendarScreen(props) {
     }
   };
   const formatDate = new Date(selDate)
-  const onChange = (event, selectedDate) => {
-    console.log("selected date in picker", selectedDate)
-    const currentDate = selectedDate || formatDate;
+  const onChange = (event, value) => {
+    // console.log("selected date in picker", selectedDate)
+    const currentDate = value || formatDate;
     setDueDate(currentDate);
   };
 
@@ -173,6 +173,7 @@ export default function CalendarScreen(props) {
                 <DateTimePicker
                   testID="dateTimePicker"
                   defaultValue={formatDate}
+                  value={date}
                   mode={mode}
                   is24Hour={true}
                   display="default"
