@@ -71,7 +71,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: ({ color }) => (
-              <Ionicons name="ios-person" color={color} size={26} />
+              <Ionicons name="ios-person-outline" color={color} size={26} />
             ),
           }}
         />
