@@ -40,16 +40,19 @@ export default function UploadImage(props) {
 
   const user = props.user;
   const pet = props.pet;
-  console.log("upload props>>>>", props);
+  console.log("upload user>>>>", user);
+  console.log("upload pet>>>>", pet);
   const [image, setImage] = useState(null);
   const [userImage, setUserImage] = useState("");
   const [petImage, setPetImage] = useState("");
-  // const userImageRef = firebase.firestore().collection("users").doc(user.id);
+  const userImageRef = firebase.firestore().collection("users").doc(user.id);
   // const petImageRef = firebase.firestore().collection("pets").doc(pet.id);
+
+  let _image = "";
 
   const addImageFromLibrary = async () => {
     checkForLibraryPermission();
-    let _image = await ImagePicker.launchImageLibraryAsync({
+    _image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
@@ -59,35 +62,7 @@ export default function UploadImage(props) {
     if (_image.cancelled === true) {
       return;
     }
-
-    let base64Img = `data:image/jpg;base64,${_image.base64}`;
-
-    let data = {
-      file: base64Img,
-      upload_preset: "d93plb6p",
-    };
-
-    fetch(CLOUDINARY_URL, {
-      body: JSON.stringify(data),
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "POST",
-    }).then(async (r) => {
-      let data = await r.json();
-      console.log("data in post response>>>>>", data);
-      setImage(data.url);
-      return userImageRef
-        .update({
-          image: data.url,
-        })
-        .then(() => {
-          console.log("Image successfully updated!");
-        })
-        .catch((error) => {
-          console.error("error updating document: ", error);
-        });
-    });
+    uploadToCloud(_image);
   };
 
   const captureImageFromCamera = async () => {
@@ -102,7 +77,10 @@ export default function UploadImage(props) {
     if (_image.cancelled === true) {
       return;
     }
+    uploadToCloud(_image);
+  };
 
+  const uploadToCloud = async (_image) => {
     let base64Img = `data:image/jpg;base64,${_image.base64}`;
 
     let data = {
