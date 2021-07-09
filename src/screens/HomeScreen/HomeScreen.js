@@ -13,6 +13,7 @@ import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
+import UserScreen from "../UserScreen/UserScreen"
 
 
 export default function HomeScreen(props) {
@@ -22,7 +23,7 @@ export default function HomeScreen(props) {
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
-  
+
 
   const onLogoutPress = () => {
     firebase
