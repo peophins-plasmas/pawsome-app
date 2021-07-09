@@ -19,16 +19,12 @@ import CalendarStrip, {
 } from "react-native-calendar-strip";
 import styles, { colors } from "../../screens/combinedStyles";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { add } from "react-native-reanimated";
 
 export default function CalendarScreen(props) {
   let date = new Date();
   let currentDate = date.toDateString();
   let currentTime = date.toLocaleTimeString();
-
-  // date format: year/month/day/hrs/minutes
-  // let taskDate = new XDate(2021, 6, 22, 8, 30);
-  // taskDate = taskDate.toString();
-  let taskDate = "2021-07-08";
 
   const [entityText, setEntityText] = useState("");
   const [entityDueDate, setEntityDueDate] = useState("");
@@ -37,11 +33,16 @@ export default function CalendarScreen(props) {
   const [entityStatus, setEntityStatus] = useState("");
   const [entityFrequency, setEntityFrequency] = useState("");
 
-  const [taskDue, setTaskDue] = useState(taskDate);
   const [showMarkedDates, setShowMarkedDates] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [selDate, setSelDate] = useState(date);
   const [dueDate, setDueDate] = useState(date);
+  const [addingTask, setAddingTask] = useState(false);
+
+  let addTaskText = "Add a task";
+  if (addingTask) {
+    addTaskText = "Cancel";
+  }
 
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
@@ -158,7 +159,7 @@ export default function CalendarScreen(props) {
           <Text style={styles.sectionHeaderText}>Remember to</Text>
         </View>
         <View style={styles.container}>
-          {tasks.length > 0 &&
+          {tasks.length > 0 ? (
             tasks.map((task) => {
               return (
                 <View key={task.id} style={styles.entityContainer}>
@@ -167,64 +168,83 @@ export default function CalendarScreen(props) {
                   </Text>
                 </View>
               );
-            })}
-          <View style={styles.formContainer}>
-            <View style={styles.inputContainer}>
-              <Text style={styles.entityText}>Add a task</Text>
-              <TextInput
-                style={styles.input}
-                placeholder='Task name'
-                placeholderTextColor='#aaaaaa'
-                onChangeText={(text) => setEntityText(text)}
-                value={entityText}
-                underlineColorAndroid='transparent'
-                autoCapitalize='none'
-              />
+            })
+          ) : (
+            <View style={styles.container}>
+              <Text>No chores for today!</Text>
             </View>
+          )}
 
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder='Add pet'
-                placeholderTextColor='#aaaaaa'
-                onChangeText={(text) => setEntityPetId(text)}
-                value={entityPetId}
-                underlineColorAndroid='transparent'
-                autoCapitalize='none'
+          {addingTask && (
+            <View style={styles.formContainer}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.entityText}>Add a task</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder='Task name'
+                  placeholderTextColor='#aaaaaa'
+                  onChangeText={(text) => setEntityText(text)}
+                  value={entityText}
+                  underlineColorAndroid='transparent'
+                  autoCapitalize='none'
+                />
+              </View>
+
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder='Add pet'
+                  placeholderTextColor='#aaaaaa'
+                  onChangeText={(text) => setEntityPetId(text)}
+                  value={entityPetId}
+                  underlineColorAndroid='transparent'
+                  autoCapitalize='none'
+                />
+              </View>
+
+              <DateTimePicker
+                testID='dateTimePicker'
+                mode='datetime'
+                is24Hour={true}
+                display='default'
+                onChange={onChange}
+                value={dueDate}
+                style={{
+                  justifyContent: "center",
+                  alignContent: "center",
+                  display: "flex",
+                  width: 220,
+                }}
               />
-            </View>
 
-            <DateTimePicker
-              testID='dateTimePicker'
-              mode='datetime'
-              is24Hour={true}
-              display='default'
-              onChange={onChange}
-              value={dueDate}
-              style={{
-                justifyContent: "center",
-                alignContent: "center",
-                display: "flex",
-                width: 220,
-              }}
-            />
-
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder='Add frequency'
-                placeholderTextColor='#aaaaaa'
-                onChangeText={(text) => setEntityFrequency(text)}
-                value={entityFrequency}
-                underlineColorAndroid='transparent'
-                autoCapitalize='none'
-              />
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder='Add frequency'
+                  placeholderTextColor='#aaaaaa'
+                  onChangeText={(text) => setEntityFrequency(text)}
+                  value={entityFrequency}
+                  underlineColorAndroid='transparent'
+                  autoCapitalize='none'
+                />
+              </View>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={onAddButtonPress}
+              >
+                <Text style={styles.buttonText}>Add</Text>
+              </TouchableOpacity>
             </View>
-          </View>
-        </View>
-        <View style={styles.container}>
-          <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
-            <Text style={styles.buttonText}>Add</Text>
+          )}
+
+          <TouchableOpacity
+            style={[
+              styles.button,
+              { borderRadius: 30, padding: 10, margin: 15, width: 100 },
+            ]}
+            onPress={() => setAddingTask(!addingTask)}
+          >
+            <Text style={styles.buttonText}>{addTaskText}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
