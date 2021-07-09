@@ -163,11 +163,11 @@ export default function CalendarScreen(props) {
           {tasks.length > 0 ? (
             tasks.map((task) => {
               return (
-                <View key={task.id} style={styles.entityContainer}>
+                <Card key={task.id} style={styles.entityContainer}>
                   <Text style={styles.entityText}>
                     {task.petId}: {task.description} at {task.dueTime}
                   </Text>
-                </View>
+                </Card>
               );
             })
           ) : (
