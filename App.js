@@ -6,14 +6,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text, View } from "react-native";
 import { LoginScreen, HomeScreen, RegistrationScreen } from "./src/screens";
 import CalendarScreen from "./src/screens/CalendarScreen/CalendarScreen";
-import UserScreen from "./src/screens/UserScreen/UserScreen"
+import UserScreen from "./src/screens/UserScreen/UserScreen";
+import PetScreen from "./src/screens/PetScreen/PetScreen";
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BottomNav from "./src/Navigation/BottomNav";
-import { Provider as PaperProvider } from "react-native-paper"
-
+import { Provider as PaperProvider } from "react-native-paper";
 
 if (!global.btoa) {
   global.btoa = encode;
@@ -23,7 +23,6 @@ if (!global.atob) {
 }
 
 const Stack = createStackNavigator();
-
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -63,33 +62,39 @@ export default function App() {
 
   return (
     <PaperProvider>
-    <NavigationContainer>
-      
+      <NavigationContainer>
         {isSignedIn ? (
           <>
-            
-            <Stack.Screen name="Home">
-              {(props) => <HomeScreen {...props} extraData={user} />}
-            </Stack.Screen>
-            <Stack.Screen name="Calendar">
-              {(props) => <CalendarScreen {...props} extraData={user} />}
-            </Stack.Screen>
-            <BottomNav extraData={user} />
-            <Stack.Screen name="User">
-              {(props) => <UserScreen {...props} extraData={user} />}
-            </Stack.Screen>
+            <Stack.Navigator>
+              <Stack.Screen name="Home">
+                {(props) => <HomeScreen {...props} extraData={user} />}
+              </Stack.Screen>
+              <Stack.Screen name="Calendar">
+                {(props) => <CalendarScreen {...props} extraData={user} />}
+              </Stack.Screen>
+              {/* <BottomNav extraData={user} /> */}
+              <Stack.Screen name="User">
+                {(props) => <UserScreen {...props} extraData={user} />}
+              </Stack.Screen>
+              <Stack.Screen name="Pet">
+                {(props) => <PetScreen {...props} extraData={user} />}
+              </Stack.Screen>
+            </Stack.Navigator>
           </>
         ) : (
-           <Stack.Navigator>
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Registration" component={RegistrationScreen} />
-            {/* <Stack.Screen name="User" component={UserScreen} /> */}
-          </>
+          <Stack.Navigator>
+            <>
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen
+                name="Registration"
+                component={RegistrationScreen}
+              />
+              {/* <Stack.Screen name="User" component={UserScreen} /> */}
+            </>
           </Stack.Navigator>
         )}
-      {/* <BottomNav/> */}
-    </NavigationContainer>
+        {/* <BottomNav/> */}
+      </NavigationContainer>
     </PaperProvider>
   );
 }

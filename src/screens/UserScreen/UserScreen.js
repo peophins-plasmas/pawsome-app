@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
   View,
   Alert,
-  ScrollView
+  ScrollView,
 } from "react-native";
-import styles from "./styles"
+import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
-import { Card, Title, Paragraph } from 'react-native-paper';
-import { Avatar } from 'react-native-elements';
+import { Card, Title, Paragraph } from "react-native-paper";
+import { Avatar } from "react-native-elements";
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -31,8 +31,7 @@ export default function UserScreen(props) {
 
   const userId = props.extraData.id;
   const vetId = props.extraData.vetId;
-  console.log('VETID', vetId)
-
+  console.log("VETID", vetId);
 
   const onLogoutPress = () => {
     firebase
@@ -62,9 +61,9 @@ export default function UserScreen(props) {
         querySnapshot.forEach((doc) => {
           const user = doc.data();
           user.id = doc.id;
-          userInfo.push(user)
+          userInfo.push(user);
         });
-        setUsers(userInfo)
+        setUsers(userInfo);
       },
       (error) => {
         console.log(error);
@@ -78,11 +77,11 @@ export default function UserScreen(props) {
         const vets = [];
         querySnapshot.forEach((doc) => {
           const vet = doc.data();
-          console.log('VET IN OPERATOR>>>>>>>>>>>>>>', vet)
+          console.log("VET IN OPERATOR>>>>>>>>>>>>>>", vet);
           vet.id = doc.id;
-          vets.push(vet)
+          vets.push(vet);
         });
-        setVets(vets)
+        setVets(vets);
       },
       (error) => {
         console.log(error);
@@ -132,7 +131,9 @@ export default function UserScreen(props) {
         </View>
         <View style={styles.entityContainer}>
           <Text style={styles.entityText}>Name:</Text>
-          <Text style={styles.entityText}>{item.firstName} {item.lastName}</Text>
+          <Text style={styles.entityText}>
+            {item.firstName} {item.lastName}
+          </Text>
         </View>
         <View style={styles.entityContainer}>
           <Text style={styles.entityText}>Email:</Text>
@@ -140,7 +141,7 @@ export default function UserScreen(props) {
         </View>
         <View style={styles.entityContainer}>
           <Text style={styles.entityText}>Address:</Text>
-         <Text style={styles.entityText}>{item.address}</Text>
+          <Text style={styles.entityText}>{item.address}</Text>
         </View>
       </View>
     );
@@ -150,24 +151,14 @@ export default function UserScreen(props) {
     return (
       <View style={styles.container}>
         <Card>
-            <Card.Content>
-              <Title>My Vet Info</Title>
-              <Paragraph>
-                {item.vetName}
-              </Paragraph>
-              <Paragraph>
-                {item.email}
-              </Paragraph>
-              <Paragraph>
-                {item.phoneNum}
-              </Paragraph>
-              <Paragraph>
-                {item.address}
-              </Paragraph>
-              <Paragraph>
-                {item.hours}
-              </Paragraph>
-            </Card.Content>
+          <Card.Content>
+            <Title>My Vet Info</Title>
+            <Paragraph>{item.vetName}</Paragraph>
+            <Paragraph>{item.email}</Paragraph>
+            <Paragraph>{item.phoneNum}</Paragraph>
+            <Paragraph>{item.address}</Paragraph>
+            <Paragraph>{item.hours}</Paragraph>
+          </Card.Content>
         </Card>
       </View>
     );
@@ -179,13 +170,13 @@ export default function UserScreen(props) {
         <Text>My Pets:</Text>
         <View style={styles.petImage}>
           <Avatar
-              activeOpacity={0.2}
-              containerStyle={{ backgroundColor: "#BDBDBD" }}
-              onPress={() => alert("onPress")}
-              rounded
-              size="large"
-              source={{ uri: item.image }}
-            />
+            activeOpacity={0.2}
+            containerStyle={{ backgroundColor: "#BDBDBD" }}
+            onPress={() => alert("onPress")}
+            rounded
+            size="large"
+            source={{ uri: item.image }}
+          />
           <Avatar
             activeOpacity={0.2}
             containerStyle={{ backgroundColor: "#BDBDBD" }}
@@ -205,14 +196,14 @@ export default function UserScreen(props) {
         <Text>Friends:</Text>
         <View style={styles.petImage}>
           <Avatar
-              avatarStyle={{ padding: 30 }}
-              activeOpacity={0.2}
-              containerStyle={{ backgroundColor: "#BDBDBD" }}
-              onPress={() => alert("onPress")}
-              rounded
-              size="large"
-              source={{ uri: item.image }}
-            />
+            avatarStyle={{ padding: 30 }}
+            activeOpacity={0.2}
+            containerStyle={{ backgroundColor: "#BDBDBD" }}
+            onPress={() => alert("onPress")}
+            rounded
+            size="large"
+            source={{ uri: item.image }}
+          />
         </View>
       </View>
     );
@@ -220,7 +211,6 @@ export default function UserScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-
       {users && (
         <View style={styles.listContainer}>
           <FlatList
@@ -247,7 +237,6 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderVetEntity}
           />
-
         </View>
       )}
     </SafeAreaView>

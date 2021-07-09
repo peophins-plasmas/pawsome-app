@@ -14,8 +14,9 @@ import { firebase } from "../firebase/config";
 if (process.env.NODE_ENV !== "production") require("../../secrets");
 
 const checkForLibraryPermission = async () => {
-  const { libraryPermission } =
-    await ImagePicker.getMediaLibraryPermissionsAsync();
+  const {
+    libraryPermission,
+  } = await ImagePicker.getMediaLibraryPermissionsAsync();
   if (libraryPermission !== "granted") {
     alert("Please grant permission for this app to access your media library");
     await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -35,16 +36,16 @@ const checkForCameraPermission = async () => {
 };
 
 export default function UploadImage(props) {
-  const user = props.user;
   let CLOUDINARY_URL = process.env.CLOUDINARY_URL;
+
+  const user = props.user;
+  const pet = props.pet;
+  console.log("upload props>>>>", props);
   const [image, setImage] = useState(null);
   const [userImage, setUserImage] = useState("");
-  const userImageRef = firebase.firestore().collection("users").doc(user.id);
-
-  //   useEffect(() => {
-  //     checkForLibraryPermission();
-  //     checkForCameraPermission();
-  //   }, []);
+  const [petImage, setPetImage] = useState("");
+  // const userImageRef = firebase.firestore().collection("users").doc(user.id);
+  // const petImageRef = firebase.firestore().collection("pets").doc(pet.id);
 
   const addImageFromLibrary = async () => {
     checkForLibraryPermission();
@@ -140,7 +141,7 @@ export default function UploadImage(props) {
           style={imageUploaderStyles.uploadBtn}
         >
           <Text>{image ? "Take new photo from" : "Upload from"} Camera</Text>
-          <AntDesign name='camerao' size={20} color='black' />
+          <AntDesign name="camerao" size={20} color="black" />
         </TouchableOpacity>
       </View>
 
@@ -154,7 +155,7 @@ export default function UploadImage(props) {
           style={imageUploaderStyles.uploadBtn}
         >
           <Text>{image ? "Edit" : "Upload"} Image</Text>
-          <AntDesign name='clouduploado' size={20} color='black' />
+          <AntDesign name="clouduploado" size={20} color="black" />
         </TouchableOpacity>
       </View>
     </View>
