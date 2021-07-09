@@ -118,6 +118,10 @@ export default StyleSheet.create({
     borderBottomWidth: 2,
     margin: 5,
   },
+  subHeaderText: {
+    color: "black",
+    fontSize: 20,
+  },
 
   //Registration screen and Login screen: footerview, footertext, footerlink
   footerView: {

@@ -156,7 +156,8 @@ export default function CalendarScreen(props) {
         />
 
         <View style={[styles.container]}>
-          <Text style={styles.sectionHeaderText}>Remember to</Text>
+          <Text style={styles.sectionHeaderText}>Today&apos;s Chores</Text>
+          <Text style={styles.subHeaderText}>Pets: Ragnar, SomeOtherPet</Text>
         </View>
         <View style={styles.container}>
           {tasks.length > 0 ? (
