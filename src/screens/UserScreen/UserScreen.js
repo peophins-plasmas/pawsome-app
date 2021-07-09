@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   View,
   Alert,
-  ScrollView
+  ScrollView,
+  SectionList
 } from "react-native";
 import styles from "./styles"
 import { firebase } from "../../firebase/config";
@@ -126,7 +127,7 @@ export default function UserScreen(props) {
 
   const renderUserEntity = ({ item, index }) => {
     return (
-      <View>
+      <View style={styles.container}>
         <View style={styles.userContainer}>
           <UploadImage user={item} />
         </View>
@@ -230,12 +231,14 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
           />
           <FlatList
+            horizontal
             data={ownedPets}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
             renderItem={renderOwnedPetEntity}
           />
           <FlatList
+            horizontal
             data={caredPets}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
@@ -247,7 +250,6 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderVetEntity}
           />
-
         </View>
       )}
     </SafeAreaView>
