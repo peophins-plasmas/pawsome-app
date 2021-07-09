@@ -22,7 +22,6 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function CalendarScreen(props) {
   let date = new Date();
-  //console.log(date, "DATE");
   let currentDate = date.toDateString();
   let currentTime = date.toLocaleTimeString();
 
@@ -57,7 +56,6 @@ export default function CalendarScreen(props) {
       });
   };
 
-  //console.log(selDate, "SELDATE");
   let selDateString = selDate.toString();
   const dateArr = selDateString.split(" ");
   const dayString = dateArr.slice(1, 4).join(" ");
@@ -66,7 +64,6 @@ export default function CalendarScreen(props) {
   //console.log(timeString, "TimeString");
 
   useEffect(() => {
-    //console.log("useEffect runs");
     tasksRef
       .where("userId", "==", userId)
       .where("dueDate", "==", dayString)
@@ -75,8 +72,7 @@ export default function CalendarScreen(props) {
           const newTasks = [];
           querySnapshot.forEach((doc) => {
             const task = doc.data();
-            //console.log("TASK.due>>>>>>>>>>>>", task.dueDate);
-            //console.log("dates equal?", task.dueDate == dayString);
+            console.log("TASK>>>>>>>>>>>>", task);
             task.id = doc.id;
             newTasks.push(task);
           });
@@ -117,15 +113,11 @@ export default function CalendarScreen(props) {
   };
 
   const onChange = (event, value) => {
-    console.log("selected date in picker", value);
     setDueDate(value);
     const time = value.toLocaleTimeString();
-    console.log(time, "Time at onChange");
     setEntityDueTime(time);
   };
-  console.log(selDate, "SELDATE");
-  console.log(dueDate, "DUEDATE");
-  console.log(entityDueTime, "DUETIME");
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -163,12 +155,15 @@ export default function CalendarScreen(props) {
         />
 
         <View style={[styles.container]}>
+          <Text style={styles.sectionHeaderText}>Remember to</Text>
+        </View>
+        <View style={styles.container}>
           {tasks.length > 0 &&
             tasks.map((task) => {
               return (
                 <View key={task.id} style={styles.entityContainer}>
                   <Text style={styles.entityText}>
-                    Remember to {task.description} at {task.dueTime}
+                    {task.petId}: {task.description} at {task.dueTime}
                   </Text>
                 </View>
               );
@@ -198,22 +193,22 @@ export default function CalendarScreen(props) {
                 autoCapitalize='none'
               />
             </View>
-          </View>
-        </View>
-        <DateTimePicker
-          testID='dateTimePicker'
-          mode='datetime'
-          is24Hour={true}
-          display='default'
-          onChange={onChange}
-          value={dueDate}
-          style={{
-            justifyContent: "center",
-            display: "flex",
-          }}
-        />
-        <View style={styles.container}>
-          <View style={styles.formContainer}>
+
+            <DateTimePicker
+              testID='dateTimePicker'
+              mode='datetime'
+              is24Hour={true}
+              display='default'
+              onChange={onChange}
+              value={dueDate}
+              style={{
+                justifyContent: "center",
+                alignContent: "center",
+                display: "flex",
+                width: 220,
+              }}
+            />
+
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
