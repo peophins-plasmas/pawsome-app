@@ -17,7 +17,6 @@ import { Card, Title, Paragraph } from "react-native-paper";
 import { Avatar } from "react-native-elements";
 
 export default function PetScreen(props) {
-  //   const [pet, setPet] = useState({});
   const [owners, setOwners] = useState([]);
   const [vets, setVets] = useState([]);
   const [caretakers, setCaretakers] = useState([]);
@@ -26,9 +25,6 @@ export default function PetScreen(props) {
   const vetsRef = firebase.firestore().collection("vets");
 
   let pet = props.route.params.pet;
-  //   useEffect(() => {
-  //     setPet(petInfo);
-  //   });
   console.log("pet obj>>>>", pet);
 
   //to find pet's owners
@@ -50,7 +46,7 @@ export default function PetScreen(props) {
 
   //to find pet's caretakers
   useEffect(() => {
-    usersRef.where("id", "in", pet.caretakerId).onSnapshot(
+    usersRef.where("id", "array-contains", pet.caretakerId).onSnapshot(
       (querySnapshot) => {
         const caretakerInfo = [];
         querySnapshot.forEach((doc) => {

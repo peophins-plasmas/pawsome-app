@@ -43,19 +43,29 @@ export default function UploadImage(props) {
   const functionType = props.functionType;
   console.log("upload user>>>>", user);
   console.log("upload pet>>>>", pet);
-  const [image, setImage] = useState();
+  let img = props.user || props.pet;
+  img = img.image;
+  const [image, setImage] = useState(img);
   let userImageRef;
   let petImageRef;
 
-  if (functionType === "userImg") {
-    userImageRef = firebase.firestore().collection("users").doc(user.id);
-    // setImage(user.image);
-  } else if (functionType === "petImg") {
-    petImageRef = firebase.firestore().collection("pets").doc(pet.id);
-    // setImage(pet.image);
-  }
-
   let _image = "";
+
+  useEffect(() => {
+    if (functionType === "userImg") {
+      userImageRef = firebase.firestore().collection("users").doc(user.id);
+      console.log("user image url>>>>", user.image);
+      // setImage(user.image);
+    } else if (functionType === "petImg") {
+      petImageRef = firebase.firestore().collection("pets").doc(pet.id);
+      // setImage(pet.image);
+    }
+    // if (functionType === "userImg") {
+    //   setImage(user.image);
+    // } else if (functionType === "petImg") {
+    //   setImage(pet.image);
+    // }
+  }, []);
 
   const addImageFromLibrary = async () => {
     checkForLibraryPermission();
@@ -103,6 +113,7 @@ export default function UploadImage(props) {
       method: "POST",
     }).then(async (r) => {
       let data = await r.json();
+      console.log("url upload >>>>>>", data.url);
       setImage(data.url);
       if (functionType === "userImg") {
         return userImageRef
@@ -132,6 +143,7 @@ export default function UploadImage(props) {
 
   return (
     <View style={imageUploaderStyles.container}>
+      {/* <Text>Hello world</Text> */}
       <View style={imageUploaderStyles.cameraBtnContainer}>
         <TouchableOpacity
           onPress={captureImageFromCamera}
