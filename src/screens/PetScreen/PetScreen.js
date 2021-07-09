@@ -13,8 +13,8 @@ import {
 import styles from "../combinedStyles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
-import { Card, Title, Paragraph } from "react-native-paper";
-import { Avatar } from "react-native-elements";
+import { Title, Paragraph } from "react-native-paper";
+import { Avatar, Card } from "react-native-elements";
 
 export default function PetScreen(props) {
   const [owners, setOwners] = useState([]);
@@ -79,22 +79,54 @@ export default function PetScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {pet ? (
-        <View style={styles.container}>
-          <UploadImage pet={pet} functionType={"petImg"} />
-          <View style={styles.introContainer}>
-            <Text style={styles.nameText}>{pet.petName}</Text>
-            <View style={[styles.stack]}>
-              <Text style={styles.stackHeaderText}>Species</Text>
-              <Text>{pet.species ? pet.species : "animal"}</Text>
+      <ScrollView>
+        {pet ? (
+          <View style={styles.container}>
+            <UploadImage pet={pet} functionType={"petImg"} />
+            <View style={styles.introContainer}>
+              <Text style={styles.nameText}>{pet.petName}</Text>
+              <View style={[styles.stack]}>
+                <Text style={styles.stackHeaderText}>Species</Text>
+                <Text>{pet.species ? pet.species : "animal"}</Text>
+              </View>
             </View>
+
+            <Card style={styles.introContainer}>
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>Birthday</Text>
+                <Text>{pet.birthday ? pet.birthday : "I was born!"}</Text>
+              </View>
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>Weight</Text>
+                <Text>{pet.weight ? pet.weight : "Feed me more."}</Text>
+              </View>
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>Sex</Text>
+                <Text>
+                  {pet.sex ? pet.sex : "It does't matter; I am cute."}
+                </Text>
+              </View>
+            </Card>
+
+            <Card style={styles.introContainer}>
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>Likes</Text>
+                <Text>{pet.likes ? pet.likes : "I like you!"}</Text>
+              </View>
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>Dislikes</Text>
+                <Text>
+                  {pet.dislikes ? pet.dislikes : "Being home alone :("}
+                </Text>
+              </View>
+            </Card>
           </View>
-        </View>
-      ) : (
-        <View style={styles.listContainer}>
-          <Text>Pet does not exist</Text>
-        </View>
-      )}
+        ) : (
+          <View style={styles.listContainer}>
+            <Text>Pet does not exist</Text>
+          </View>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }

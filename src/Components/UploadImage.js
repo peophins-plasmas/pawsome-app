@@ -43,7 +43,9 @@ export default function UploadImage(props) {
   const functionType = props.functionType;
   console.log("upload user>>>>", user);
   console.log("upload pet>>>>", pet);
-  const [image, setImage] = useState();
+  let img = props.user || props.pet;
+  img = img.image;
+  const [image, setImage] = useState(img);
   let userImageRef;
   let petImageRef;
 
