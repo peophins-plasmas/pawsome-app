@@ -5,4 +5,20 @@
     "email": "carol@email.com",
     "address": "333 Puppies Drive",
     "hours": "9-7p Monday-Saturday"
+},
+{
+    "id": "2",
+    "vetName": "Dr. Richard Gear",
+    "phoneNum": "888-888-8888",
+    "email": "richard@email.com",
+    "address": "333 Puppies Drive",
+    "hours": "9-7p Monday-Saturday"
+},
+{
+    "id": "3",
+    "vetName": "Dr. Brenda Wong",
+    "phoneNum": "888-888-8888",
+    "email": "brenda@email.com",
+    "address": "333 Puppies Drive",
+    "hours": "9-7p Monday-Saturday"
 }]

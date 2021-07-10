@@ -24,15 +24,26 @@ export default function HomeScreen(props) {
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
 
-  const onLogoutPress = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => Alert.alert("Logged Out", "You are now logged out"))
-      .catch((error) => {
-        alert(error);
-      });
-  };
+  // const onLogoutPress = () => {
+  //   firebase
+  //     .auth()
+  //     .signOut()
+  //     .then(() =>
+  //       Alert.alert(
+  //         "Logged Out",
+  //         "You are now logged out"
+  //         // [
+  //         //   {
+  //         //     text: "Return to login page",
+  //         //     onPress: () => props.navigation.navigate("Login"),
+  //         //   },
+  //         // ]
+  //       )
+  //     )
+  //     .catch((error) => {
+  //       alert(error);
+  //     });
+  // };
 
   useEffect(() => {
     petsRef.where("ownerId", "array-contains", userID).onSnapshot(
@@ -87,15 +98,27 @@ export default function HomeScreen(props) {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      {/* <View>
         <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
           <Text style={styles.buttonText}>Log out</Text>
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.container}>
-        <UploadImage user={props.extraData} />
-      </View>
+      </View> */}
+      {/* <View>
+        <TouchableOpacity
+          style={styles.button}
+          title="My Profile"
+          onPress={() => props.navigation.navigate("User")}
+        >
+          <Text style={styles.buttonText}>My Profile</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          title="Calendar View"
+          onPress={() => props.navigation.navigate("Calendar")}
+        >
+          <Text style={styles.buttonText}>To Calendar</Text>
+        </TouchableOpacity>
+      </View> */}
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}

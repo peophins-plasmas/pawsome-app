@@ -25,7 +25,6 @@ export default StyleSheet.create({
   //Homescreen formcontainer
   formContainer: {
     flexDirection: "column",
-
     marginTop: 20,
     marginBottom: 20,
     flex: 1,
@@ -102,13 +101,22 @@ export default StyleSheet.create({
     display: "flex",
     flex: 1,
     marginTop: 16,
-    borderBottomColor: "#cccccc",
+    borderBottomColor: "black",
     borderBottomWidth: 1,
     paddingBottom: 16,
   },
   entityText: {
     fontSize: 20,
-    color: "#333333",
+    color: "black",
+  },
+
+  sectionHeaderText: {
+    color: colors.pawsomeblue,
+    fontSize: 30,
+    fontWeight: "bold",
+    borderBottomColor: colors.pawsomeblue,
+    borderBottomWidth: 2,
+    margin: 5,
   },
   sectionHeaderText: {
     color: colors.pawsomeblue,

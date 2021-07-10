@@ -46,14 +46,21 @@ export default StyleSheet.create({
     borderColor: 'black'
   },
   entityContainer: {
-    marginTop: 16,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
     borderBottomColor: "#cccccc",
     borderBottomWidth: 1,
-    paddingBottom: 16,
+    paddingBottom: 10,
   },
   entityText: {
-    fontSize: 20,
+    fontSize: 16,
     color: "#333333",
+  },
+  imageContainer: {
+    height: 20,
+    width: 20
   },
   petImage: {
     flexDirection: "row",

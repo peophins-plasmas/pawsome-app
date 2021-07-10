@@ -9,6 +9,7 @@ import {
   View,
   Alert,
   ScrollView,
+  SectionList,
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
@@ -125,7 +126,7 @@ export default function UserScreen(props) {
 
   const renderUserEntity = ({ item, index }) => {
     return (
-      <View>
+      <View style={styles.container}>
         <View style={styles.userContainer}>
           <UploadImage user={item} functionType={"userImg"} />
         </View>
@@ -174,7 +175,7 @@ export default function UserScreen(props) {
             containerStyle={{ backgroundColor: "#BDBDBD" }}
             onPress={() => alert("onPress")}
             rounded
-            size="large"
+            size='large'
             source={{ uri: item.image }}
           />
           <Avatar
@@ -183,7 +184,7 @@ export default function UserScreen(props) {
             icon={{ name: "add" }}
             onPress={() => alert("onPress")}
             rounded
-            size="large"
+            size='large'
           />
         </View>
       </View>
@@ -201,7 +202,7 @@ export default function UserScreen(props) {
             containerStyle={{ backgroundColor: "#BDBDBD" }}
             onPress={() => alert("onPress")}
             rounded
-            size="large"
+            size='large'
             source={{ uri: item.image }}
           />
         </View>
@@ -220,12 +221,14 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
           />
           <FlatList
+            horizontal
             data={ownedPets}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
             renderItem={renderOwnedPetEntity}
           />
           <FlatList
+            horizontal
             data={caredPets}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
