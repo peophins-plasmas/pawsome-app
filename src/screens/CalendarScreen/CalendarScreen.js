@@ -116,8 +116,6 @@ export default function CalendarScreen(props) {
             </View>
           )}
 
-          {addingTask && <AddTask extraData={userId} calDate={selDate} />}
-
           <TouchableOpacity
             style={[
               styles.button,
@@ -127,6 +125,8 @@ export default function CalendarScreen(props) {
           >
             <Text style={styles.buttonText}>{addTaskText}</Text>
           </TouchableOpacity>
+
+          {addingTask && <AddTask extraData={userId} calDate={selDate} />}
         </View>
       </ScrollView>
     </SafeAreaView>

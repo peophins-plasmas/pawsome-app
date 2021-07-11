@@ -10,7 +10,10 @@ import {
 } from "react-native";
 import styles, { colors } from "../screens/combinedStyles";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { RadioButton } from "react-native-paper";
+// import RNPickerSelect from "react-native-picker-select";
 import { add } from "react-native-reanimated";
+import { Alert } from "react-native";
 
 export default function AddTask(props) {
   let date = new Date();
@@ -29,14 +32,14 @@ export default function AddTask(props) {
   const [selDate, setSelDate] = useState(dateCheck);
   const [dueDate, setDueDate] = useState(dateCheck);
   const [ownedPetIds, setOwnedPetIds] = useState([]);
-  const ownedPetNames = [];
+  const [ownedPets, setOwnedPets] = useState([]);
+  const [checked, setChecked] = useState();
 
   const tasksRef = firebase.firestore().collection("tasks");
   const usersRef = firebase.firestore().collection("users");
   const petsRef = firebase.firestore().collection("pets");
 
   const userId = props.extraData;
-
   let selDateString = selDate.toString();
   const dateArr = selDateString.split(" ");
   const dayString = dateArr.slice(1, 4).join(" ");
@@ -45,8 +48,7 @@ export default function AddTask(props) {
   //console.log(timeString, "TimeString");
 
   useEffect(() => {
-    console.log("PROPS", props);
-    //console.log("ONWERID", userId);
+    //console.log(userId);
     usersRef
       .doc(userId)
       .get()
@@ -58,23 +60,28 @@ export default function AddTask(props) {
       .catch((error) => {
         console.error("Pets not found");
       });
-    console.log("ownedPetsId", ownedPetIds);
+    //console.log("ownedPetsId", ownedPetIds);
+  }, []);
 
+  useEffect(() => {
     ownedPetIds.forEach((petId) => {
       petsRef
         .doc(petId)
         .get()
         .then((document) => {
-          const petData = document.data();
-          ownedPetNames.push(petData.petName);
-          console.log(petData.petName, "PETDATA.petname");
-          console.log("OwnedPetNames", ownedPetNames);
+          const { petName, id } = document.data();
+          const newEl = [petName, id];
+          if (!ownedPets.some((pet) => pet.includes(id))) {
+            setOwnedPets([...ownedPets, newEl]);
+          }
+
+          console.log(ownedPets, "OwnedPets line 74");
         })
         .catch((error) => {
-          console.error("Pets not found");
+          console.error("Pets not found line 79");
         });
     });
-  }, []);
+  }, [ownedPetIds]);
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
@@ -102,6 +109,7 @@ export default function AddTask(props) {
           alert(error);
         });
     }
+    Alert.alert("Submitted!", "Chore added");
   };
 
   const onChange = (event, value) => {
@@ -109,8 +117,7 @@ export default function AddTask(props) {
     const time = value.toLocaleTimeString();
     setEntityDueTime(time);
   };
-
-  console.log(ownedPetNames, "Before render I guess");
+  console.log(ownedPets, "OwnedPets line 153");
   return (
     <SafeAreaView>
       <View style={styles.formContainer}>
@@ -127,16 +134,39 @@ export default function AddTask(props) {
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder='Add pet'
-            placeholderTextColor='#aaaaaa'
-            onChangeText={(text) => setEntityPetId(text)}
-            value={entityPetId}
-            underlineColorAndroid='transparent'
-            autoCapitalize='none'
-          />
+        <View style={[styles.container, { width: 250, borderWidth: 2 }]}>
+          {ownedPets.length > 0 ? (
+            ownedPets.map((pet) => {
+              return (
+                <View
+                  style={[styles.container, { flexDirection: "row" }]}
+                  key={pet[1]}
+                >
+                  <View>
+                    <Text>{pet[0]}</Text>
+                  </View>
+                  <View>
+                    <RadioButton.IOS
+                      value={pet[1]}
+                      status={checked === pet[1] ? "checked" : "unchecked"}
+                      onPress={() => {
+                        setChecked(pet[1]);
+                        setEntityPetId(pet[1]);
+                      }}
+                      style={styles.container}
+                      color={colors.pawsomeblue}
+                      uncheckedColor={colors.wheat}
+                    />
+                  </View>
+                </View>
+              );
+            })
+          ) : (
+            <Text>
+              You cannot add tasks to any pets. Ask the pet&apos;s owner to add
+              a task for you!
+            </Text>
+          )}
         </View>
 
         <DateTimePicker
