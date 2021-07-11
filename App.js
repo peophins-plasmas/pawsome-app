@@ -8,11 +8,15 @@ import { LoginScreen, HomeScreen, RegistrationScreen } from "./src/screens";
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
 import BottomNav from "./src/Navigation/BottomNav";
-import { Provider as PaperProvider } from "react-native-paper"
-import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from "@react-navigation/drawer"
-import {Ionicons} from "@expo/vector-icons"
-import {colors} from "./src/screens/combinedStyles"
-
+import { Provider as PaperProvider } from "react-native-paper";
+import {
+  createDrawerNavigator,
+  DrawerItem,
+  DrawerItemList,
+  DrawerContentScrollView,
+} from "@react-navigation/drawer";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "./src/screens/combinedStyles";
 
 if (!global.btoa) {
   global.btoa = encode;
@@ -21,13 +25,9 @@ if (!global.atob) {
   global.atob = decode;
 }
 
-
-<<<<<<< HEAD
-=======
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
->>>>>>> 39c8ad1690a6e90a2cc3245abe156b40c77a43d4
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -36,37 +36,47 @@ export default function App() {
   function LogoTitle() {
     return (
       <Image
-        style={{ width: 300, height: 40, resizeMode: "contain"}}
-        source={require('./assets/pawsome_logo.png')}
+        style={{ width: 300, height: 40, resizeMode: "contain" }}
+        source={require("./assets/pawsome_logo.png")}
       />
     );
   }
   function StackNavigator() {
-    return (
-      isSignedIn ? (
-        <>
-        <Stack.Navigator screenOptions={({navigation}) => ( {
-          headerLeft: () => <Ionicons name="ios-menu" size={32} color={colors.yellow} onPress={() => navigation.toggleDrawer() } />,
-          headerStyle: {
-            backgroundColor: colors.pawsomeblue
-          }
-        })}>
-          <Stack.Screen name="pawsome" options={{
-            headerTitle: props => <LogoTitle {...props} />
-          }}>
-          {(props) => <BottomNav {...props} extraData={user} />}
+    return isSignedIn ? (
+      <>
+        <Stack.Navigator
+          screenOptions={({ navigation }) => ({
+            headerLeft: () => (
+              <Ionicons
+                name='ios-menu'
+                size={32}
+                color={colors.yellow}
+                onPress={() => navigation.toggleDrawer()}
+              />
+            ),
+            headerStyle: {
+              backgroundColor: colors.pawsomeblue,
+            },
+          })}
+        >
+          <Stack.Screen
+            name='pawsome'
+            options={{
+              headerTitle: (props) => <LogoTitle {...props} />,
+            }}
+          >
+            {(props) => <BottomNav {...props} extraData={user} />}
           </Stack.Screen>
         </Stack.Navigator>
-        </>
-      ) : (
-         <Stack.Navigator>
+      </>
+    ) : (
+      <Stack.Navigator>
         <>
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Registration" component={RegistrationScreen} />
+          <Stack.Screen name='Login' component={LoginScreen} />
+          <Stack.Screen name='Registration' component={RegistrationScreen} />
         </>
-        </Stack.Navigator>
-      )
-    )
+      </Stack.Navigator>
+    );
   }
 
   function CustomDrawerContent(props) {
@@ -74,8 +84,10 @@ export default function App() {
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
         <DrawerItem
-          label="Logout"
-          icon={() => <Ionicons name="ios-exit-outline" size={32} color={colors.yellow} />}
+          label='Logout'
+          icon={() => (
+            <Ionicons name='ios-exit-outline' size={32} color={colors.yellow} />
+          )}
           onPress={() => {
             firebase
               .auth()
@@ -103,22 +115,46 @@ export default function App() {
 
   function MyDrawer() {
     return (
-      <Drawer.Navigator drawerContentOptions={{
-        activeTintColor: colors.yellow
-      }} drawerContent={(props) => <CustomDrawerContent {...props} />} drawerType="slide" drawerStyle={{
-        backgroundColor: colors.pawsomeblue,
-        width: 200
-      }}>
-        <Drawer.Screen name="Menu" component={StackNavigator} options={{
-          drawerIcon: () => <Ionicons name="ios-paw-outline" size={32} color={colors.yellow} />
-        }}/>
-        <Drawer.Screen name="Home" options={{
-          drawerIcon: () => <Ionicons name="ios-home-outline" size={32} color={colors.yellow} />
-        }}>
+      <Drawer.Navigator
+        drawerContentOptions={{
+          activeTintColor: colors.yellow,
+        }}
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        drawerType='slide'
+        drawerStyle={{
+          backgroundColor: colors.pawsomeblue,
+          width: 200,
+        }}
+      >
+        <Drawer.Screen
+          name='Menu'
+          component={StackNavigator}
+          options={{
+            drawerIcon: () => (
+              <Ionicons
+                name='ios-paw-outline'
+                size={32}
+                color={colors.yellow}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name='Home'
+          options={{
+            drawerIcon: () => (
+              <Ionicons
+                name='ios-home-outline'
+                size={32}
+                color={colors.yellow}
+              />
+            ),
+          }}
+        >
           {(props) => <HomeScreen {...props} extraData={user} />}
         </Drawer.Screen>
       </Drawer.Navigator>
-    )
+    );
   }
 
   useEffect(() => {
@@ -154,9 +190,9 @@ export default function App() {
 
   return (
     <PaperProvider>
-    <NavigationContainer>
-      <MyDrawer />
-    </NavigationContainer>
+      <NavigationContainer>
+        <MyDrawer />
+      </NavigationContainer>
     </PaperProvider>
   );
 }
