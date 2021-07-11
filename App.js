@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { SafeAreaView, Text, View, Button, Image } from "react-native";
+import { SafeAreaView, Text, View, Button, Image, Alert } from "react-native";
 import { LoginScreen, HomeScreen, RegistrationScreen } from "./src/screens";
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";

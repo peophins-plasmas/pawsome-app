@@ -28,11 +28,14 @@ export default function AddTask(props) {
   dateCheck = new Date(dateCheck);
   const [selDate, setSelDate] = useState(dateCheck);
   const [dueDate, setDueDate] = useState(dateCheck);
+  const [ownedPetIds, setOwnedPetIds] = useState([]);
+  const ownedPetNames = [];
 
   const tasksRef = firebase.firestore().collection("tasks");
   const usersRef = firebase.firestore().collection("users");
+  const petsRef = firebase.firestore().collection("pets");
 
-  const userId = props.extraData.id;
+  const userId = props.extraData;
 
   let selDateString = selDate.toString();
   const dateArr = selDateString.split(" ");
@@ -42,21 +45,36 @@ export default function AddTask(props) {
   //console.log(timeString, "TimeString");
 
   useEffect(() => {
-    // usersRef.where("userId", "==", userId).onSnapshot(
-    //   (querySnapshot) => {
-    //     const ownedPetId = [];
-    //     querySnapshot.forEach((doc) => {
-    //       const pet = doc.data();
-    //       console.log("PET>>>>>>>>>>>>", pet);
-    //       pet.id = doc.id;
-    //       ownedPetId.push(pet);
-    // });
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
-  }, [selDate]);
+    console.log("PROPS", props);
+    //console.log("ONWERID", userId);
+    usersRef
+      .doc(userId)
+      .get()
+      .then((document) => {
+        const userData = document.data();
+        setOwnedPetIds(userData.ownedPetId);
+        // console.log("USERDATA", userData);
+      })
+      .catch((error) => {
+        console.error("Pets not found");
+      });
+    console.log("ownedPetsId", ownedPetIds);
+
+    ownedPetIds.forEach((petId) => {
+      petsRef
+        .doc(petId)
+        .get()
+        .then((document) => {
+          const petData = document.data();
+          ownedPetNames.push(petData.petName);
+          console.log(petData.petName, "PETDATA.petname");
+          console.log("OwnedPetNames", ownedPetNames);
+        })
+        .catch((error) => {
+          console.error("Pets not found");
+        });
+    });
+  }, []);
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
@@ -92,6 +110,7 @@ export default function AddTask(props) {
     setEntityDueTime(time);
   };
 
+  console.log(ownedPetNames, "Before render I guess");
   return (
     <SafeAreaView>
       <View style={styles.formContainer}>
@@ -128,6 +147,7 @@ export default function AddTask(props) {
           onChange={onChange}
           value={dueDate}
           style={{
+            color: "black",
             justifyContent: "center",
             alignContent: "center",
             display: "flex",
