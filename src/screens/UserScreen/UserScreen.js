@@ -215,30 +215,30 @@ export default function UserScreen(props) {
     );
   };
 
-  // const renderCaredPetEntity = ({ item, index }) => {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>Friends:</Text>
-  //       <View style={styles.petImage}>
-  //         <Avatar
-  //             avatarStyle={{ padding: 30 }}
-  //             activeOpacity={0.2}
-  //             containerStyle={{ backgroundColor: "#BDBDBD" }}
-  //             onPress={() => alert("onPress")}
-  //             rounded
-  //             size="large"
-  //             source={{ uri: item.image }}
-  //           />
-  //       </View>
-  //     </View>
-  //   );
-  // };
+  const renderCaredPetEntity = ({ item, index }) => {
+    return (
+      <View style={styles.container}>
+        <Text>Friends:</Text>
+        <View style={styles.petImage}>
+          <Avatar
+              avatarStyle={{ padding: 30 }}
+              activeOpacity={0.2}
+              containerStyle={{ backgroundColor: "#BDBDBD" }}
+              onPress={() => alert("onPress")}
+              rounded
+              size="large"
+              source={{ uri: item.image }}
+            />
+        </View>
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
 
       {users && (
-        <View style={styles.listContainer}>
+          <ScrollView style={styles.listContainer}>
           <FlatList
             data={users}
             renderItem={renderUserEntity}
@@ -252,20 +252,21 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderOwnedPetEntity}
           />
-          {/* <FlatList
+          <FlatList
             horizontal
             data={caredPets}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
             renderItem={renderCaredPetEntity}
-          /> */}
+          />
           <FlatList
             data={vets}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
             renderItem={renderVetEntity}
           />
-        </View>
+          </ScrollView>
+
       )}
     </SafeAreaView>
   );
