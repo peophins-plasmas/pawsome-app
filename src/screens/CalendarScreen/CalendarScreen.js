@@ -35,13 +35,6 @@ export default function CalendarScreen(props) {
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
 
-  // let selDateString = selDate.toString();
-  // const dateArr = selDateString.split(" ");
-  // const dayString = dateArr.slice(1, 4).join(" ");
-  // const timeString = dateArr[4];
-  //console.log(dayString, "dayString");
-  //console.log(timeString, "TimeString");
-
   useEffect(() => {
     console.log("dueDate, line 44", dueDate);
     // console.log("running");
@@ -105,7 +98,6 @@ export default function CalendarScreen(props) {
 
         <View style={[styles.container]}>
           <Text style={styles.sectionHeaderText}>Today&apos;s Chores</Text>
-          <Text style={styles.subHeaderText}>Pets: Ragnar, SomeOtherPet</Text>
         </View>
         <View style={styles.container}>
           {tasks.length > 0 ? (

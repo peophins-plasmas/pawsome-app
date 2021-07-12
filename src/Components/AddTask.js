@@ -17,10 +17,10 @@ import { Alert } from "react-native";
 
 export default function AddTask(props) {
   let date = new Date();
-  console.log("calDate", props.calDate);
+  //console.log("calDate", props.calDate);
   //console.log(date, "Date");
   // let string = props.calDate.toLocaleDateString();
-  console.log(props, "Props line 22");
+  //console.log(props, "Props line 22");
   let dateCheck = props.calDate || date.toLocaleDateString();
 
   const [selDate, setSelDate] = useState(props.startTimeStamp || date);
@@ -58,7 +58,7 @@ export default function AddTask(props) {
       .catch((error) => {
         console.error("Pets not found");
       });
-    //console.log("ownedPetsId", ownedPetIds);
+    console.log("ownedPetsId line 61", ownedPetIds);
   }, []);
 
   useEffect(() => {
@@ -67,19 +67,25 @@ export default function AddTask(props) {
         .doc(petId)
         .get()
         .then((document) => {
-          const { petName, id } = document.data();
-          const newEl = [petName, id];
-          if (!ownedPets.some((pet) => pet.includes(id))) {
-            setOwnedPets([...ownedPets, newEl]);
+          const { petName } = document.data();
+          const newEl = [petName, petId];
+          if (!ownedPets.some((el) => el.includes(petId))) {
+            setOwnedPets(ownedPets.concat(newEl));
           }
 
-          //console.log(ownedPets, "OwnedPets line 74");
+          // console.log(ownedPets, "OwnedPets line 74");
+          // console.log("ownedPetsId line77", ownedPetIds);
         })
         .catch((error) => {
           console.error("Pets not found line 79");
         });
     });
   }, [ownedPetIds]);
+
+  useEffect(() => {
+    console.log(ownedPets, "OwnedPets line 86");
+    console.log("ownedPetsId line 87", ownedPetIds);
+  });
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
