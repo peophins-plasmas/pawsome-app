@@ -39,27 +39,6 @@ export default function UserScreen(props) {
   const vetId = props.extraData.vetId;
   console.log("VETID", vetId);
 
-  const onLogoutPress = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() =>
-        Alert.alert(
-          "Logged Out",
-          "You are now logged out"
-          // [
-          //   {
-          //     text: "Return to login page",
-          //     onPress: () => props.navigation.navigate("Login"),
-          //   },
-          // ]
-        )
-      )
-      .catch((error) => {
-        alert(error);
-      });
-  };
-
   useEffect(() => {
     usersRef.where("id", "==", userId).onSnapshot(
       (querySnapshot) => {
@@ -205,14 +184,6 @@ export default function UserScreen(props) {
             size="large"
             source={{ uri: item.image }}
           />
-          {/* <Avatar
-            activeOpacity={0.2}
-            containerStyle={{ backgroundColor: "#BDBDBD" }}
-            icon={{ name: "add" }}
-            onPress={() => alert("onPress")}
-            rounded
-            size="large"
-          /> */}
           <Modal visible={modalOpen} animationType="slide">
             <SafeAreaView style={styles.modalContent}>
               <Avatar
@@ -227,7 +198,7 @@ export default function UserScreen(props) {
                 size="small"
                 onPress={() => setModalOpen(false)}
               />
-              <PetForm />
+              <PetForm extraData={props.extraData} />
             </SafeAreaView>
           </Modal>
 
@@ -280,7 +251,7 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderOwnedPetEntity}
           />
-          <FlatList
+          {/* <FlatList
             data={ownedPets}
             renderItem={({ item }) => (
               <TouchableOpacity
@@ -289,7 +260,7 @@ export default function UserScreen(props) {
                 <Text style={styles.titleTextForm}>{item.title}</Text>
               </TouchableOpacity>
             )}
-          />
+          /> */}
           <FlatList
             horizontal
             data={caredPets}

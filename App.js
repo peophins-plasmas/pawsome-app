@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { SafeAreaView, Text, View, Button, Image } from "react-native";
+import { SafeAreaView, Text, View, Button, Image, Alert } from "react-native";
 import {
   LoginScreen,
   HomeScreen,
@@ -14,8 +14,6 @@ import {
 } from "./src/screens";
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BottomNav from "./src/Navigation/BottomNav";
 import { navigationRef } from "./src/Navigation/RootNavigator";
 import { Provider as PaperProvider } from "react-native-paper";

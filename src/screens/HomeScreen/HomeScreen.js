@@ -67,16 +67,6 @@ export default function HomeScreen(props) {
     }
   };
 
-  const Header = ({ name, openDrawer }) => (
-    <View style={styles.header}>
-      <TouchableOpacity onPress={() => openDrawer()}>
-        <Ionicons name="ios-menu" size={32} />
-      </TouchableOpacity>
-      <Text>{name}</Text>
-      <Text style={{ width: 50 }}></Text>
-    </View>
-  );
-
   // const petStack = createStackNavigator();
 
   const renderEntity = ({ item, index }) => {

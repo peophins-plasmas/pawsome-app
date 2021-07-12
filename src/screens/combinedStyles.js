@@ -13,6 +13,7 @@ export default StyleSheet.create({
   container: {
     display: "flex",
     flex: 1,
+    flexGrow: 1,
     alignItems: "center",
   },
   logo: {
@@ -124,14 +125,6 @@ export default StyleSheet.create({
     borderBottomWidth: 2,
     margin: 5,
   },
-  sectionHeaderText: {
-    color: colors.pawsomeblue,
-    fontSize: 30,
-    fontWeight: "bold",
-    borderBottomColor: colors.pawsomeblue,
-    borderBottomWidth: 2,
-    margin: 5,
-  },
   introContainer: {
     display: "flex",
     flexDirection: "row",
@@ -217,5 +210,9 @@ export default StyleSheet.create({
     backgroundColor: "#efefef",
     position: "relative",
     overflow: "hidden",
+  },
+
+  scrollPad: {
+    height: 100,
   },
 });
