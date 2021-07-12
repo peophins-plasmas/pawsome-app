@@ -16,8 +16,9 @@ import {
 import styles from "./styles"
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
-import { Card, Title, Paragraph } from 'react-native-paper';
 import { Avatar } from 'react-native-elements';
+import PetForm from './petForm'
+import { colors } from "../combinedStyles";
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -26,6 +27,7 @@ export default function UserScreen(props) {
   const [ownedPets, setOwnedPets] = useState([]);
   const [caredPets, setCaredPets] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   //make single pet state to access specific pet to pass through as props to upload image component
 
   const usersRef = firebase.firestore().collection("users");
@@ -192,7 +194,7 @@ export default function UserScreen(props) {
   const renderOwnedPetEntity = ({ item, index }) => {
     return (
       <View style={styles.container}>
-        <Text>My Pets:</Text>
+        <Text style={styles.entityText}>My Pets:</Text>
         <View style={styles.petImage}>
           <Avatar
               activeOpacity={0.2}
@@ -202,15 +204,39 @@ export default function UserScreen(props) {
               size="large"
               source={{ uri: item.image }}
             />
-          <Avatar
+          {/* <Avatar
             activeOpacity={0.2}
             containerStyle={{ backgroundColor: "#BDBDBD" }}
             icon={{ name: "add" }}
             onPress={() => alert("onPress")}
             rounded
             size="large"
-          />
+          /> */}
+          <Modal visible={modalOpen} animationType='slide'>
+            <SafeAreaView style={styles.modalContent}>
+              <Avatar
+                activeOpacity={0.2}
+                containerStyle={{backgroundColor: colors.wheat, alignSelf: 'center', marginTop: 30}}
+                title='X'
+                rounded
+                size="small"
+                onPress={() => setModalOpen(false)}
+              />
+            <PetForm />
+          </SafeAreaView>
+      </Modal>
+
+      <Avatar
+        activeOpacity={0.2}
+        containerStyle={{ backgroundColor: colors.wheat }}
+        onPress={() => setModalOpen(true)}
+        icon={{ name: "add" }}
+        rounded
+        size="large"
+      />
         </View>
+
+
       </View>
     );
   };
@@ -218,7 +244,7 @@ export default function UserScreen(props) {
   const renderCaredPetEntity = ({ item, index }) => {
     return (
       <View style={styles.container}>
-        <Text>Friends:</Text>
+        <Text style={styles.entityText}>Friends:</Text>
         <View style={styles.petImage}>
           <Avatar
               avatarStyle={{ padding: 30 }}
@@ -252,6 +278,13 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderOwnedPetEntity}
           />
+          <FlatList data={ownedPets} renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => navigation.navigate('PetDetails', item)}>
+
+                 <Text style={styles.titleTextForm}>{ item.title }</Text>
+
+            </TouchableOpacity>
+           )} />
           <FlatList
             horizontal
             data={caredPets}

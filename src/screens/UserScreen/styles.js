@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { colors } from "../combinedStyles"
 
 export default StyleSheet.create({
+
   userContainer: {
     flexDirection: "row",
     flex: 1,
@@ -20,6 +21,13 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  header: {
+    fontSize: 25,
+    alignSelf: 'center',
+    padding: 10,
+    fontWeight: 'bold',
+    color: colors.dkblue
+  },
   input: {
     height: 48,
     borderRadius: 5,
@@ -28,18 +36,6 @@ export default StyleSheet.create({
     paddingLeft: 16,
     flex: 1,
     marginRight: 5,
-  },
-  button: {
-    height: 47,
-    borderRadius: 5,
-    backgroundColor: "#788eec",
-    width: 80,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
   },
   listContainer: {
     marginTop: 20,
@@ -57,6 +53,7 @@ export default StyleSheet.create({
   },
   entityText: {
     fontSize: 16,
+    padding: 2,
     color: "#333333",
   },
   imageContainer: {
@@ -108,5 +105,46 @@ export default StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  titleTextForm: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.dkblue,
+  },
+  paragraphForm: {
+    marginVertical: 8,
+    lineHeight: 20,
+  },
+  containerForm: {
+    flex: 1,
+    padding: 20,
+  },
+  inputForm: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    padding: 10,
+    fontSize: 16,
+    borderRadius: 6,
+  },
+  modalToggle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    height: 65,
+    width: 65,
+    borderWidth: 1,
+    color: 'white',
+    borderColor: colors.wheat,
+    backgroundColor: colors.wheat,
+    padding: 10,
+    borderRadius: 10,
+    alignSelf: 'center',
+  },
+  modalClose: {
+    marginTop: 20,
+    marginBottom: 0,
+  },
+  modalContent: {
+    flex: 1,
   }
 });
