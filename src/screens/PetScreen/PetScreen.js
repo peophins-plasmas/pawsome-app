@@ -18,14 +18,14 @@ import { Avatar, Card } from "react-native-elements";
 
 export default function PetScreen(props) {
   const [owners, setOwners] = useState([]);
-  const [vets, setVets] = useState([]);
+  const [vet, setVet] = useState({});
   const [caretakers, setCaretakers] = useState([]);
 
   const usersRef = firebase.firestore().collection("users");
-  const vetsRef = firebase.firestore().collection("vets");
+  const vetRef = firebase.firestore().collection("vets");
 
+  console.log("props>>>>", props);
   let pet = props.route.params.pet;
-  console.log("pet obj>>>>", pet);
 
   //to find pet's owners
   useEffect(() => {
@@ -46,14 +46,14 @@ export default function PetScreen(props) {
 
   //to find pet's caretakers
   useEffect(() => {
-    usersRef.where("id", "array-contains", pet.caretakerId).onSnapshot(
+    usersRef.where("id", "in", pet.caretakerId).onSnapshot(
       (querySnapshot) => {
         const caretakerInfo = [];
         querySnapshot.forEach((doc) => {
           const caretaker = doc.data();
           caretakerInfo.push(caretaker);
         });
-        setCaretakers(caretakers);
+        setCaretakers(caretakerInfo);
       },
       (error) => {
         console.log(error);
@@ -62,14 +62,12 @@ export default function PetScreen(props) {
   }, []);
 
   useEffect(() => {
-    vetsRef.where("id", "array-contains", pet.vetId).onSnapshot(
+    vetRef.where("id", "in", pet.vetId).onSnapshot(
       (querySnapshot) => {
-        const vets = [];
         querySnapshot.forEach((doc) => {
-          const vet = doc.data();
-          vets.push(vet);
+          const vetInfo = doc.data();
+          setVet(vetInfo);
         });
-        setVets(vets);
       },
       (error) => {
         console.log(error);
@@ -86,38 +84,141 @@ export default function PetScreen(props) {
             <View style={styles.introContainer}>
               <Text style={styles.nameText}>{pet.petName}</Text>
               <View style={[styles.stack]}>
-                <Text style={styles.stackHeaderText}>Species</Text>
+                <Text style={styles.stackHeaderText}>SPECIES</Text>
                 <Text>{pet.species ? pet.species : "animal"}</Text>
               </View>
             </View>
 
-            <Card style={styles.introContainer}>
+            <Card style={styles.stackContainer}>
               <View style={styles.stack}>
-                <Text style={styles.stackHeaderText}>Birthday</Text>
+                <Text style={styles.stackHeaderText}>BIRTHDAY</Text>
                 <Text>{pet.birthday ? pet.birthday : "I was born!"}</Text>
               </View>
               <View style={styles.stack}>
-                <Text style={styles.stackHeaderText}>Weight</Text>
+                <Text style={styles.stackHeaderText}>WEIGHT</Text>
                 <Text>{pet.weight ? pet.weight : "Feed me more."}</Text>
               </View>
               <View style={styles.stack}>
-                <Text style={styles.stackHeaderText}>Sex</Text>
+                <Text style={styles.stackHeaderText}>SEX</Text>
                 <Text>
                   {pet.sex ? pet.sex : "It does't matter; I am cute."}
                 </Text>
               </View>
-            </Card>
-
-            <Card style={styles.introContainer}>
               <View style={styles.stack}>
-                <Text style={styles.stackHeaderText}>Likes</Text>
+                <Text style={styles.stackHeaderText}>LIKES</Text>
                 <Text>{pet.likes ? pet.likes : "I like you!"}</Text>
               </View>
               <View style={styles.stack}>
-                <Text style={styles.stackHeaderText}>Dislikes</Text>
+                <Text style={styles.stackHeaderText}>DISLIKES</Text>
                 <Text>
                   {pet.dislikes ? pet.dislikes : "Being home alone :("}
                 </Text>
+              </View>
+              <View style={styles.stack}>
+                <Text style={styles.cautionHeaderText}>ALLERGIES</Text>
+                <Text>{pet.allergies ? pet.allergies : "None"}</Text>
+              </View>
+              <View style={styles.stack}>
+                <Text style={styles.cautionHeaderText}>MEDICATIONS</Text>
+                {pet.medications.map((medication, index) => {
+                  return (
+                    <Text key={index}>
+                      {medication.medicationName
+                        ? medication.medicationName
+                        : "None"}
+                    </Text>
+                  );
+                })}
+              </View>
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>
+                  DISTINGUISHING FEATURES
+                </Text>
+                <Text>{pet.features ? pet.features : "Lovable face"}</Text>
+              </View>
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>BEHAVIOR</Text>
+                <Text>
+                  {pet.behavior ? pet.behavior : "Adorable all the time"}
+                </Text>
+              </View>
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>FEEDING INFO</Text>
+                <Text>
+                  Dry food: {pet.dryFoodBrand ? pet.dryFoodBrand : "None"}
+                </Text>
+                <Text>
+                  Wet food: {pet.wetFoodBrand ? pet.wetFoodBrand : "None"}
+                </Text>
+              </View>
+
+              <View style={styles.stack}>
+                <Text style={styles.cautionHeaderText}>TOXICITY NOTICE</Text>
+                <Text>list of items that are toxic to {pet.species}s</Text>
+              </View>
+
+              <View style={styles.stack}>
+                <Text style={styles.cautionHeaderText}>
+                  MESSAGE FOR CARETAKERS
+                </Text>
+                <Text>
+                  {pet.additionalInfo
+                    ? pet.additionalInfo
+                    : `Please take good care of ${pet.petName}!`}
+                </Text>
+              </View>
+
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>VET CONTACT INFO</Text>
+                <Text>{vet.vetName ? vet.vetName : `No assigned vet`}</Text>
+              </View>
+
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>HUMANS</Text>
+                {owners.map((owner) => {
+                  return (
+                    <View key={owner.id} style={styles.stack}>
+                      <View style={styles.smallAvatarImage}>
+                        <Avatar
+                          avatarStyle={{ padding: 30 }}
+                          activeOpacity={0.2}
+                          containerStyle={{ backgroundColor: "#BDBDBD" }}
+                          onPress={() =>
+                            alert(`Go to ${owner.firstName}'s profile`)
+                          }
+                          rounded
+                          size="large"
+                          source={{ uri: owner.image }}
+                        />
+                        <Text>{owner.firstName}</Text>
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+
+              <View style={styles.stack}>
+                <Text style={styles.stackHeaderText}>CARETAKERS</Text>
+                {caretakers.map((caretaker) => {
+                  return (
+                    <View key={caretaker.id} style={styles.stack}>
+                      <View style={styles.smallAvatarImage}>
+                        <Avatar
+                          avatarStyle={{ padding: 30 }}
+                          activeOpacity={0.2}
+                          containerStyle={{ backgroundColor: "#BDBDBD" }}
+                          onPress={() =>
+                            alert(`Go to ${caretaker.firstName}'s profile`)
+                          }
+                          rounded
+                          size="large"
+                          source={{ uri: caretaker.image }}
+                        />
+                        <Text>{caretaker.firstName}</Text>
+                      </View>
+                    </View>
+                  );
+                })}
               </View>
             </Card>
           </View>

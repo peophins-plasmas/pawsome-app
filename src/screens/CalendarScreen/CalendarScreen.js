@@ -12,6 +12,8 @@ import {
 import { Card } from "react-native-paper";
 import CalendarStrip from "react-native-calendar-strip";
 import styles, { colors } from "../../screens/combinedStyles";
+import { add } from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
 import AddTask from "../../Components/AddTask";
 
 export default function CalendarScreen(props) {

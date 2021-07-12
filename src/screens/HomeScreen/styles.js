@@ -36,6 +36,14 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  // header:{
+  //   width:"100%",
+  //   height:60,
+  //   flexDirection:"row",
+  //   justifyContent:"space-between",
+  //   alignItems:"center",
+  //   paddingHorizontal:20
+  // },
   buttonText: {
     color: "white",
     fontSize: 16,
