@@ -47,7 +47,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
       >
         <Tab.Screen
           name="Home"
-          children={() => <HomeScreen extraData={props.extraData} />}
+          children={() => <HomeScreen {...props} extraData={props.extraData} />}
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ color }) => (

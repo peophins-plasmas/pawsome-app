@@ -8,42 +8,25 @@ import {
   View,
   Alert,
   SafeAreaView,
+  Button,
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
-import UserScreen from "../UserScreen/UserScreen";
+import { UserScreen, PetScreen } from "../";
+import { Ionicons } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
+import * as RootNavigator from "../../Navigation/RootNavigator";
+import { createStackNavigator } from "@react-navigation/stack";
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
   const [pets, setPets] = useState([]);
-  //make single pet state to access specific pet to pass through as props to upload image component
+  const [chosenPet, setChosenPet] = useState({});
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
-
-  // const onLogoutPress = () => {
-  //   firebase
-  //     .auth()
-  //     .signOut()
-  //     .then(() =>
-  //       Alert.alert(
-  //         "Logged Out",
-  //         "You are now logged out"
-  //         // [
-  //         //   {
-  //         //     text: "Return to login page",
-  //         //     onPress: () => props.navigation.navigate("Login"),
-  //         //   },
-  //         // ]
-  //       )
-  //     )
-  //     .catch((error) => {
-  //       alert(error);
-  //     });
-  // };
 
   useEffect(() => {
     petsRef.where("ownerId", "array-contains", userID).onSnapshot(
@@ -69,6 +52,8 @@ export default function HomeScreen(props) {
         petName: entityText,
         ownerId: [userID],
         createdAt: timestamp,
+        image:
+          "https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png",
       };
       petsRef
         .add(data)
@@ -82,6 +67,8 @@ export default function HomeScreen(props) {
     }
   };
 
+  // const petStack = createStackNavigator();
+
   const renderEntity = ({ item, index }) => {
     return (
       <View style={styles.entityContainer}>
@@ -89,45 +76,35 @@ export default function HomeScreen(props) {
           source={{ uri: item.image }}
           style={{ width: 200, height: 200 }}
           onPress={() => {
-            props.navigation.navigate("Pet", { pet: item });
+            // return
+            // (<petStack.Navigator>
+            //       <petStack.Screen name="Pet">
+            //        {() => <PetScreen pet={item}/>}
+            //      </petStack.Screen>
+            //      </petStack.Navigator>);
+
+            RootNavigator.navigate("Pet", { pet: item });
           }}
         />
         <Text style={styles.entityText}>{item.petName}</Text>
       </View>
     );
   };
+
   return (
-    <SafeAreaView style={styles.container}>
-      {/* <View>
-        <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
-          <Text style={styles.buttonText}>Log out</Text>
-        </TouchableOpacity>
-      </View> */}
-      {/* <View>
-        <TouchableOpacity
-          style={styles.button}
-          title="My Profile"
-          onPress={() => props.navigation.navigate("User")}
-        >
-          <Text style={styles.buttonText}>My Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          title="Calendar View"
-          onPress={() => props.navigation.navigate("Calendar")}
-        >
-          <Text style={styles.buttonText}>To Calendar</Text>
-        </TouchableOpacity>
-      </View> */}
+    <SafeAreaView>
+      <View style={styles.container}>
+        <UploadImage user={props.extraData} />
+      </View>
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
-          placeholder='Add new pet'
-          placeholderTextColor='#aaaaaa'
+          placeholder="Add new pet"
+          placeholderTextColor="#aaaaaa"
           onChangeText={(text) => setEntityText(text)}
           value={entityText}
-          underlineColorAndroid='transparent'
-          autoCapitalize='none'
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
         />
         <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
           <Text style={styles.buttonText}>Add</Text>
