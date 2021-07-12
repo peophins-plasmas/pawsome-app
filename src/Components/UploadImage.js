@@ -15,8 +15,9 @@ import styles from "../screens/combinedStyles";
 if (process.env.NODE_ENV !== "production") require("../../secrets");
 
 const checkForLibraryPermission = async () => {
-  const { libraryPermission } =
-    await ImagePicker.getMediaLibraryPermissionsAsync();
+  const {
+    libraryPermission,
+  } = await ImagePicker.getMediaLibraryPermissionsAsync();
   if (libraryPermission !== "granted") {
     alert("Please grant permission for this app to access your media library");
     await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -41,8 +42,6 @@ export default function UploadImage(props) {
   const user = props.user;
   const pet = props.pet;
   const functionType = props.functionType;
-  console.log("upload user>>>>", user);
-  console.log("upload pet>>>>", pet);
   let img = props.user || props.pet;
   img = img.image;
   const [image, setImage] = useState(img);
@@ -132,27 +131,25 @@ export default function UploadImage(props) {
 
   return (
     <View style={styles.photoContainer}>
+      {image && (
+        <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />
+      )}
       <View style={styles.cameraBtnContainer}>
         <TouchableOpacity
           onPress={captureImageFromCamera}
           style={styles.uploadBtn}
         >
           <Text>{image ? "Take new photo from" : "Upload from"} Camera</Text>
-          <AntDesign name='camerao' size={20} color='black' />
+          <AntDesign name="camerao" size={20} color="black" />
         </TouchableOpacity>
       </View>
-
-      {image && (
-        <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />
-      )}
-
       <View style={styles.uploadBtnContainer}>
         <TouchableOpacity
           onPress={addImageFromLibrary}
           style={styles.uploadBtn}
         >
           <Text>{image ? "Edit" : "Upload"} Image</Text>
-          <AntDesign name='clouduploado' size={20} color='black' />
+          <AntDesign name="clouduploado" size={20} color="black" />
         </TouchableOpacity>
       </View>
     </View>

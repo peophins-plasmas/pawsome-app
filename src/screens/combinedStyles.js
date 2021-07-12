@@ -126,6 +126,10 @@ export default StyleSheet.create({
     alignSelf: "flex-start",
     borderWidth: 1,
   },
+  stackContainer: {
+    display: "flex",
+    flexDirection: "row",
+  },
   stack: {
     flexDirection: "column",
     justifyContent: "center",
@@ -134,6 +138,11 @@ export default StyleSheet.create({
   stackHeaderText: {
     fontWeight: "bold",
     color: colors.pawsomeblue,
+  },
+
+  cautionHeaderText: {
+    fontWeight: "bold",
+    color: "red",
   },
 
   nameText: {
@@ -168,7 +177,7 @@ export default StyleSheet.create({
     opacity: 0.7,
     position: "absolute",
     right: 0,
-    bottom: 0,
+    bottom: -50,
     backgroundColor: "lightgrey",
     width: "100%",
     height: "25%",
@@ -181,7 +190,7 @@ export default StyleSheet.create({
   cameraBtnContainer: {
     opacity: 0.7,
     right: 0,
-    top: 30,
+    bottom: 0,
     backgroundColor: "lightgrey",
     width: "100%",
     height: "25%",
@@ -189,11 +198,10 @@ export default StyleSheet.create({
   photoContainer: {
     margin: 20,
     elevation: 2,
-    height: 300,
+    height: 400,
     width: 300,
     backgroundColor: "#efefef",
     position: "relative",
-    borderRadius: 999,
     overflow: "hidden",
   },
 });
