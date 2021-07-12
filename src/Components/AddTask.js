@@ -17,9 +17,11 @@ import { Alert } from "react-native";
 
 export default function AddTask(props) {
   let date = new Date();
-  console.log("Props add task", props);
+  console.log("calDate", props.calDate);
+  //console.log(date, "Date");
+  // let string = props.calDate.toLocaleDateString();
+  // console.log(string, "STRING line 22");
   let dateCheck = props.calDate || date.toLocaleDateString();
-  //dateCheck = dateCheck.toLocaleDateString();
 
   const [selDate, setSelDate] = useState(dateCheck);
   const [dueDate, setDueDate] = useState(dateCheck);
@@ -109,8 +111,10 @@ export default function AddTask(props) {
   };
 
   const onChange = (event, value) => {
-    setDueDate(value);
+    setDueDate(value.toDateString());
+    //console.log(value.toDateString(), "value 115");
     const time = value.toLocaleTimeString();
+    //console.log(time, "time 117");
     setEntityDueTime(time);
   };
   //console.log(ownedPets, "OwnedPets line 153");

@@ -42,8 +42,8 @@ export default function CalendarScreen(props) {
   //console.log(timeString, "TimeString");
 
   useEffect(() => {
-    console.log("dueDate, line 44", dueDate.toString());
-    console.log("running");
+    console.log("dueDate, line 44", dueDate);
+    // console.log("running");
     tasksRef
       .where("userId", "==", userId)
       .where("dueDate", "==", dueDate.toString())
@@ -75,10 +75,13 @@ export default function CalendarScreen(props) {
           scrollable
           calendarAnimation={{ type: "sequence", duration: 30 }}
           selectedDate={date}
-          onDateSelected={(date) => {
-            console.log(date.toString(), "Line 79");
-            setSelDate(date);
-            setDueDate(date);
+          onDateSelected={(d) => {
+            //console.log(d, "Line 79");
+            let d2 = new Date(d);
+            d2 = d2.toDateString();
+            console.log(d2, "line 81");
+            setSelDate(d2);
+            setDueDate(d2);
           }}
           daySelectionAnimation={{
             type: "border",
@@ -131,6 +134,7 @@ export default function CalendarScreen(props) {
 
           {addingTask && <AddTask extraData={userId} calDate={dueDate} />}
         </View>
+        <View style={styles.scrollPad}></View>
         <View style={styles.scrollPad}></View>
       </ScrollView>
     </SafeAreaView>
