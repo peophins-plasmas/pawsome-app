@@ -20,6 +20,7 @@ import CalendarStrip, {
 import styles, { colors } from "../../screens/combinedStyles";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { add } from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function CalendarScreen(props) {
   let date = new Date();
@@ -119,9 +120,22 @@ export default function CalendarScreen(props) {
     setEntityDueTime(time);
   };
 
+  const Header =({name, openDrawer})=> (
+    <View style={styles.header}>
+      <TouchableOpacity onPress={()=>openDrawer()}>
+        <Ionicons name="ios-menu" size={32} />
+      </TouchableOpacity>
+      <Text>{name}</Text>
+      <Text style={{width:50}}></Text>
+    </View>
+  )
+
   return (
     <SafeAreaView>
       <ScrollView>
+      <View>
+        <Header name="Calendar" openDrawer={props.navigation.openDrawer} />
+      </View>
         <View style={styles.container}>
           <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
             <Text style={styles.buttonText}>Log out</Text>

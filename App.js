@@ -12,6 +12,8 @@ import { Provider as PaperProvider } from "react-native-paper"
 import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from "@react-navigation/drawer"
 import {Ionicons} from "@expo/vector-icons"
 import {colors} from "./src/screens/combinedStyles"
+import CalendarScreen from "./src/screens/CalendarScreen/CalendarScreen";
+import { UserScreen } from "./src/screens";
 
 
 if (!global.btoa) {
@@ -30,41 +32,6 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(null);
 
-  function LogoTitle() {
-    return (
-      <Image
-        style={{ width: 300, height: 40, resizeMode: "contain"}}
-        source={require('./assets/pawsome_logo.png')}
-      />
-    );
-  }
-  function StackNavigator() {
-    return (
-      isSignedIn ? (
-        <>
-        <Stack.Navigator screenOptions={({navigation}) => ( {
-          headerLeft: () => <Ionicons name="ios-menu" size={32} color={colors.yellow} onPress={() => navigation.toggleDrawer() } />,
-          headerStyle: {
-            backgroundColor: colors.pawsomeblue
-          }
-        })}>
-          <Stack.Screen name="pawsome" options={{
-            headerTitle: props => <LogoTitle {...props} />
-          }}>
-          {(props) => <BottomNav {...props} extraData={user} />}
-          </Stack.Screen>
-        </Stack.Navigator>
-        </>
-      ) : (
-         <Stack.Navigator>
-        <>
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Registration" component={RegistrationScreen} />
-        </>
-        </Stack.Navigator>
-      )
-    )
-  }
 
   function CustomDrawerContent(props) {
     return (
@@ -106,13 +73,20 @@ export default function App() {
         backgroundColor: colors.pawsomeblue,
         width: 200
       }}>
-        <Drawer.Screen name="Menu" component={StackNavigator} options={{
-          drawerIcon: () => <Ionicons name="ios-paw-outline" size={32} color={colors.yellow} />
-        }}/>
         <Drawer.Screen name="Home" options={{
           drawerIcon: () => <Ionicons name="ios-home-outline" size={32} color={colors.yellow} />
         }}>
-          {(props) => <HomeScreen {...props} extraData={user} />}
+          {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="Profile" options={{
+          drawerIcon: () => <Ionicons name="ios-person-outline" size={32} color={colors.yellow} />
+        }}>
+          {(props) => <UserScreen {...props} extraData={user} navigation={props.navigation} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="Calendar" options={{
+          drawerIcon: () => <Ionicons name="ios-calendar-outline" size={32} color={colors.yellow} />
+        }}>
+          {(props) => <CalendarScreen {...props} extraData={user} navigation={props.navigation} />}
         </Drawer.Screen>
       </Drawer.Navigator>
     )
@@ -152,7 +126,18 @@ export default function App() {
   return (
     <PaperProvider>
     <NavigationContainer>
-      <MyDrawer />
+    {isSignedIn ? (
+        <>
+        <MyDrawer />
+        </>
+      ) : (
+         <Stack.Navigator>
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Registration" component={RegistrationScreen} />
+        </>
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
     </PaperProvider>
   );

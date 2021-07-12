@@ -8,12 +8,18 @@ import {
   View,
   Alert,
   SafeAreaView,
+  Button
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
 import UserScreen from "../UserScreen/UserScreen"
+import { createStackNavigator } from "@react-navigation/stack";
+import { Ionicons } from "@expo/vector-icons";
+
+
+const Stack = createStackNavigator();
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -68,6 +74,8 @@ export default function HomeScreen(props) {
         petName: entityText,
         ownerId: [userID],
         createdAt: timestamp,
+        image: "https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png",
+        
       };
       petsRef
         .add(data)
@@ -81,6 +89,16 @@ export default function HomeScreen(props) {
     }
   };
 
+  const Header =({name, openDrawer})=> (
+    <View style={styles.header}>
+      <TouchableOpacity onPress={()=>openDrawer()}>
+        <Ionicons name="ios-menu" size={32} />
+      </TouchableOpacity>
+      <Text>{name}</Text>
+      <Text style={{width:50}}></Text>
+    </View>
+  )
+
   const renderEntity = ({ item, index }) => {
     return (
       <View style={styles.entityContainer}>
@@ -89,7 +107,15 @@ export default function HomeScreen(props) {
     );
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
+      <View>
+        <Header name="Home" openDrawer={props.navigation.openDrawer} />
+      </View>
+      {/* <Stack.Navigator>
+      <Stack.Screen name="pawsome">
+          {(props) => <BottomNav {...props} extraData={props.extraData} />}
+          </Stack.Screen>
+      </Stack.Navigator> */}
       {/* <View>
         <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
           <Text style={styles.buttonText}>Log out</Text>
