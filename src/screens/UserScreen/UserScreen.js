@@ -64,6 +64,10 @@ export default function UserScreen(props) {
       });
   };
 
+  const addPet = (pet) => {
+
+  }
+
   useEffect(() => {
     usersRef.where("id", "==", userId).onSnapshot(
       (querySnapshot) => {
@@ -212,16 +216,6 @@ export default function UserScreen(props) {
               size="large"
               source={{ uri: item.image }}
             />
-          {/* <Avatar
-
-            activeOpacity={0.2}
-            containerStyle={{ backgroundColor: "#BDBDBD" }}
-            icon={{ name: "add" }}
-            onPress={() => alert("onPress")}
-            rounded
-
-            size="large"
-          /> */}
           <Modal visible={modalOpen} animationType='slide'>
             <SafeAreaView style={styles.modalContent}>
               <Avatar
@@ -232,7 +226,7 @@ export default function UserScreen(props) {
                 size="small"
                 onPress={() => setModalOpen(false)}
               />
-            <PetForm />
+            <PetForm extraData={props.extraData}/>
           </SafeAreaView>
       </Modal>
 
