@@ -10,6 +10,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { firebase } from "../firebase/config";
+import styles from "../screens/combinedStyles";
 
 if (process.env.NODE_ENV !== "production") require("../../secrets");
 
@@ -35,20 +36,30 @@ const checkForCameraPermission = async () => {
 };
 
 export default function UploadImage(props) {
-  const user = props.user;
   let CLOUDINARY_URL = process.env.CLOUDINARY_URL;
-  const [image, setImage] = useState(null);
-  const [userImage, setUserImage] = useState("");
-  const userImageRef = firebase.firestore().collection("users").doc(user.id);
 
-  //   useEffect(() => {
-  //     checkForLibraryPermission();
-  //     checkForCameraPermission();
-  //   }, []);
+  const user = props.user;
+  const pet = props.pet;
+  const functionType = props.functionType;
+  console.log("upload user>>>>", user);
+  console.log("upload pet>>>>", pet);
+  let img = props.user || props.pet;
+  img = img.image;
+  const [image, setImage] = useState(img);
+  let userImageRef;
+  let petImageRef;
+
+  if (functionType === "userImg") {
+    userImageRef = firebase.firestore().collection("users").doc(user.id);
+  } else if (functionType === "petImg") {
+    petImageRef = firebase.firestore().collection("pets").doc(pet.id);
+  }
+
+  let _image = "";
 
   const addImageFromLibrary = async () => {
     checkForLibraryPermission();
-    let _image = await ImagePicker.launchImageLibraryAsync({
+    _image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
@@ -58,35 +69,7 @@ export default function UploadImage(props) {
     if (_image.cancelled === true) {
       return;
     }
-
-    let base64Img = `data:image/jpg;base64,${_image.base64}`;
-
-    let data = {
-      file: base64Img,
-      upload_preset: "d93plb6p",
-    };
-
-    fetch(CLOUDINARY_URL, {
-      body: JSON.stringify(data),
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "POST",
-    }).then(async (r) => {
-      let data = await r.json();
-      console.log("data in post response>>>>>", data);
-      setImage(data.url);
-      return userImageRef
-        .update({
-          image: data.url,
-        })
-        .then(() => {
-          console.log("Image successfully updated!");
-        })
-        .catch((error) => {
-          console.error("error updating document: ", error);
-        });
-    });
+    uploadToCloud(_image);
   };
 
   const captureImageFromCamera = async () => {
@@ -101,7 +84,10 @@ export default function UploadImage(props) {
     if (_image.cancelled === true) {
       return;
     }
+    uploadToCloud(_image);
+  };
 
+  const uploadToCloud = async (_image) => {
     let base64Img = `data:image/jpg;base64,${_image.base64}`;
 
     let data = {
@@ -117,27 +103,39 @@ export default function UploadImage(props) {
       method: "POST",
     }).then(async (r) => {
       let data = await r.json();
-      console.log("data in post response>>>>>", data);
       setImage(data.url);
-      return userImageRef
-        .update({
-          image: data.url,
-        })
-        .then(() => {
-          console.log("Image successfully updated!");
-        })
-        .catch((error) => {
-          console.error("error updating document: ", error);
-        });
+      if (functionType === "userImg") {
+        return userImageRef
+          .update({
+            image: data.url,
+          })
+          .then(() => {
+            console.log("Image successfully updated!");
+          })
+          .catch((error) => {
+            console.error("error updating document: ", error);
+          });
+      } else if (functionType === "petImg") {
+        return petImageRef
+          .update({
+            image: data.url,
+          })
+          .then(() => {
+            console.log("Image successfully updated!");
+          })
+          .catch((error) => {
+            console.error("error updating document: ", error);
+          });
+      }
     });
   };
 
   return (
-    <View style={imageUploaderStyles.container}>
-      <View style={imageUploaderStyles.cameraBtnContainer}>
+    <View style={styles.photoContainer}>
+      <View style={styles.cameraBtnContainer}>
         <TouchableOpacity
           onPress={captureImageFromCamera}
-          style={imageUploaderStyles.uploadBtn}
+          style={styles.uploadBtn}
         >
           <Text>{image ? "Take new photo from" : "Upload from"} Camera</Text>
           <AntDesign name='camerao' size={20} color='black' />
@@ -145,13 +143,13 @@ export default function UploadImage(props) {
       </View>
 
       {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />
       )}
 
-      <View style={imageUploaderStyles.uploadBtnContainer}>
+      <View style={styles.uploadBtnContainer}>
         <TouchableOpacity
           onPress={addImageFromLibrary}
-          style={imageUploaderStyles.uploadBtn}
+          style={styles.uploadBtn}
         >
           <Text>{image ? "Edit" : "Upload"} Image</Text>
           <AntDesign name='clouduploado' size={20} color='black' />
@@ -160,38 +158,3 @@ export default function UploadImage(props) {
     </View>
   );
 }
-
-const imageUploaderStyles = StyleSheet.create({
-  container: {
-    margin: 20,
-    elevation: 2,
-    height: 200,
-    width: 200,
-    backgroundColor: "#efefef",
-    position: "relative",
-    borderRadius: 999,
-    overflow: "hidden",
-  },
-  uploadBtnContainer: {
-    opacity: 0.7,
-    position: "absolute",
-    right: 0,
-    bottom: 0,
-    backgroundColor: "lightgrey",
-    width: "100%",
-    height: "25%",
-  },
-  uploadBtn: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  cameraBtnContainer: {
-    opacity: 0.7,
-    right: 0,
-    top: 30,
-    backgroundColor: "lightgrey",
-    width: "100%",
-    height: "25%",
-  },
-});
