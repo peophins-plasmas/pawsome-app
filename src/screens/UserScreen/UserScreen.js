@@ -13,12 +13,13 @@ import {
   Modal,
   Pressable
 } from "react-native";
-import styles from "./styles"
+import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import { Avatar } from 'react-native-elements';
 import PetForm from './petForm'
-import { colors } from "../combinedStyles";
+import { Card, Title, Paragraph } from "react-native-paper";
+
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -37,8 +38,7 @@ export default function UserScreen(props) {
 
   const userId = props.extraData.id;
   const vetId = props.extraData.vetId;
-  console.log('VETID', vetId)
-
+  console.log("VETID", vetId);
 
   const onLogoutPress = () => {
     firebase
@@ -68,9 +68,9 @@ export default function UserScreen(props) {
         querySnapshot.forEach((doc) => {
           const user = doc.data();
           user.id = doc.id;
-          userInfo.push(user)
+          userInfo.push(user);
         });
-        setUsers(userInfo)
+        setUsers(userInfo);
       },
       (error) => {
         console.log(error);
@@ -84,11 +84,11 @@ export default function UserScreen(props) {
         const vets = [];
         querySnapshot.forEach((doc) => {
           const vet = doc.data();
-          console.log('VET IN OPERATOR>>>>>>>>>>>>>>', vet)
+          console.log("VET IN OPERATOR>>>>>>>>>>>>>>", vet);
           vet.id = doc.id;
-          vets.push(vet)
+          vets.push(vet);
         });
-        setVets(vets)
+        setVets(vets);
       },
       (error) => {
         console.log(error);
@@ -134,11 +134,13 @@ export default function UserScreen(props) {
     return (
       <View style={styles.container}>
         <View style={styles.userContainer}>
-          <UploadImage user={item} />
+          <UploadImage user={item} functionType={"userImg"} />
         </View>
         <View style={styles.entityContainer}>
           <Text style={styles.entityText}>Name:</Text>
-          <Text style={styles.entityText}>{item.firstName} {item.lastName}</Text>
+          <Text style={styles.entityText}>
+            {item.firstName} {item.lastName}
+          </Text>
         </View>
         <View style={styles.entityContainer}>
           <Text style={styles.entityText}>Email:</Text>
@@ -146,7 +148,7 @@ export default function UserScreen(props) {
         </View>
         <View style={styles.entityContainer}>
           <Text style={styles.entityText}>Address:</Text>
-         <Text style={styles.entityText}>{item.address}</Text>
+          <Text style={styles.entityText}>{item.address}</Text>
         </View>
       </View>
     );
@@ -247,14 +249,14 @@ export default function UserScreen(props) {
         <Text style={styles.entityText}>Friends:</Text>
         <View style={styles.petImage}>
           <Avatar
-              avatarStyle={{ padding: 30 }}
-              activeOpacity={0.2}
-              containerStyle={{ backgroundColor: "#BDBDBD" }}
-              onPress={() => alert("onPress")}
-              rounded
-              size="large"
-              source={{ uri: item.image }}
-            />
+            avatarStyle={{ padding: 30 }}
+            activeOpacity={0.2}
+            containerStyle={{ backgroundColor: "#BDBDBD" }}
+            onPress={() => alert("onPress")}
+            rounded
+            size="large"
+            source={{ uri: item.image }}
+          />
         </View>
       </View>
     );
@@ -262,7 +264,6 @@ export default function UserScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-
       {users && (
           <ScrollView style={styles.listContainer}>
           <FlatList

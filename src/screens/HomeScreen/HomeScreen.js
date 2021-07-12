@@ -14,41 +14,20 @@ import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
-import UserScreen from "../UserScreen/UserScreen"
+import {UserScreen, PetScreen} from "../src/screens"
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
-
+import { Image } from "react-native-elements";
+import * as RootNavigator from "../../Navigation/RootNavigator";
 
 const Stack = createStackNavigator();
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
   const [pets, setPets] = useState([]);
-  //make single pet state to access specific pet to pass through as props to upload image component
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
-
-  // const onLogoutPress = () => {
-  //   firebase
-  //     .auth()
-  //     .signOut()
-  //     .then(() =>
-  //       Alert.alert(
-  //         "Logged Out",
-  //         "You are now logged out"
-  //         // [
-  //         //   {
-  //         //     text: "Return to login page",
-  //         //     onPress: () => props.navigation.navigate("Login"),
-  //         //   },
-  //         // ]
-  //       )
-  //     )
-  //     .catch((error) => {
-  //       alert(error);
-  //     });
-  // };
 
   useEffect(() => {
     petsRef.where("ownerId", "array-contains", userID).onSnapshot(
@@ -102,6 +81,13 @@ export default function HomeScreen(props) {
   const renderEntity = ({ item, index }) => {
     return (
       <View style={styles.entityContainer}>
+        <Image
+          source={{ uri: item.image }}
+          style={{ width: 200, height: 200 }}
+          onPress={() => {
+            RootNavigator.navigate("Pet", { pet: item });
+          }}
+        />
         <Text style={styles.entityText}>{item.petName}</Text>
       </View>
     );
@@ -111,32 +97,10 @@ export default function HomeScreen(props) {
       <View>
         <Header name="Home" openDrawer={props.navigation.openDrawer} />
       </View>
-      {/* <Stack.Navigator>
-      <Stack.Screen name="pawsome">
-          {(props) => <BottomNav {...props} extraData={props.extraData} />}
-          </Stack.Screen>
-      </Stack.Navigator> */}
-      {/* <View>
-        <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
-          <Text style={styles.buttonText}>Log out</Text>
-        </TouchableOpacity>
-      </View> */}
-      {/* <View>
-        <TouchableOpacity
-          style={styles.button}
-          title="My Profile"
-          onPress={() => props.navigation.navigate("User")}
-        >
-          <Text style={styles.buttonText}>My Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          title="Calendar View"
-          onPress={() => props.navigation.navigate("Calendar")}
-        >
-          <Text style={styles.buttonText}>To Calendar</Text>
-        </TouchableOpacity>
-      </View> */}
+
+      <View style={styles.container}>
+        <UploadImage user={props.extraData} />
+      </View>
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
@@ -155,7 +119,6 @@ export default function HomeScreen(props) {
       {pets && (
         <View style={styles.listContainer}>
           <FlatList
-            //or put upload image component in render entity so each pet entity will render name and photo
             data={pets}
             renderItem={renderEntity}
             keyExtractor={(item) => item.id}

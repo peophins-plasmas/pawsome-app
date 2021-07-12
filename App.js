@@ -4,16 +4,24 @@ import { firebase } from "./src/firebase/config";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text, View, Button, Image } from "react-native";
-import { LoginScreen, HomeScreen, RegistrationScreen } from "./src/screens";
+import {
+  LoginScreen,
+  HomeScreen,
+  RegistrationScreen,
+  CalendarScreen,
+  UserScreen,
+  PetScreen,
+} from "./src/screens";
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BottomNav from "./src/Navigation/BottomNav";
-import { Provider as PaperProvider } from "react-native-paper"
+import { navigationRef } from "./src/Navigation/RootNavigator";
+import { Provider as PaperProvider } from "react-native-paper";
 import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from "@react-navigation/drawer"
 import {Ionicons} from "@expo/vector-icons"
 import {colors} from "./src/screens/combinedStyles"
-import CalendarScreen from "./src/screens/CalendarScreen/CalendarScreen";
-import { UserScreen } from "./src/screens";
 
 
 if (!global.btoa) {
