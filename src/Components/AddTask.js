@@ -17,35 +17,31 @@ import { Alert } from "react-native";
 
 export default function AddTask(props) {
   let date = new Date();
-  let currentDate = date.toDateString();
-  let currentTime = date.toLocaleTimeString();
+  console.log("Props add task", props);
+  let dateCheck = props.calDate || date.toLocaleDateString();
+  //dateCheck = dateCheck.toLocaleDateString();
 
-  const [entityText, setEntityText] = useState("");
-  const [entityDueDate, setEntityDueDate] = useState("");
-  const [entityDueTime, setEntityDueTime] = useState("");
-  const [entityPetId, setEntityPetId] = useState("");
-  const [entityStatus, setEntityStatus] = useState("");
-  const [entityFrequency, setEntityFrequency] = useState("");
-
-  let dateCheck = props.calDate || date;
-  dateCheck = new Date(dateCheck);
   const [selDate, setSelDate] = useState(dateCheck);
   const [dueDate, setDueDate] = useState(dateCheck);
   const [ownedPetIds, setOwnedPetIds] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
   const [checked, setChecked] = useState();
+  const [entityText, setEntityText] = useState("");
+  const [entityDueDate, setEntityDueDate] = useState(
+    dateCheck.toLocaleDateString
+  );
+  const [entityDueTime, setEntityDueTime] = useState(
+    dateCheck.toLocaleTimeString
+  );
+  const [entityPetId, setEntityPetId] = useState("");
+  const [entityStatus, setEntityStatus] = useState("");
+  const [entityFrequency, setEntityFrequency] = useState("");
 
   const tasksRef = firebase.firestore().collection("tasks");
   const usersRef = firebase.firestore().collection("users");
   const petsRef = firebase.firestore().collection("pets");
 
   const userId = props.extraData;
-  let selDateString = selDate.toString();
-  const dateArr = selDateString.split(" ");
-  const dayString = dateArr.slice(1, 4).join(" ");
-  const timeString = dateArr[4];
-  //console.log(dayString, "dayString");
-  //console.log(timeString, "TimeString");
 
   useEffect(() => {
     //console.log(userId);
@@ -75,7 +71,7 @@ export default function AddTask(props) {
             setOwnedPets([...ownedPets, newEl]);
           }
 
-          console.log(ownedPets, "OwnedPets line 74");
+          //console.log(ownedPets, "OwnedPets line 74");
         })
         .catch((error) => {
           console.error("Pets not found line 79");
@@ -117,12 +113,15 @@ export default function AddTask(props) {
     const time = value.toLocaleTimeString();
     setEntityDueTime(time);
   };
-  console.log(ownedPets, "OwnedPets line 153");
+  //console.log(ownedPets, "OwnedPets line 153");
   return (
     <SafeAreaView>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
           <Text style={styles.entityText}>Add a task</Text>
+          <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
+            <Text style={styles.buttonText}>Add</Text>
+          </TouchableOpacity>
           <TextInput
             style={styles.input}
             placeholder='Task name'
@@ -142,10 +141,10 @@ export default function AddTask(props) {
                   style={[styles.container, { flexDirection: "row" }]}
                   key={pet[1]}
                 >
-                  <View>
+                  <View style={styles.container}>
                     <Text>{pet[0]}</Text>
                   </View>
-                  <View>
+                  <View style={styles.container}>
                     <RadioButton.IOS
                       value={pet[1]}
                       status={checked === pet[1] ? "checked" : "unchecked"}
@@ -175,7 +174,7 @@ export default function AddTask(props) {
           is24Hour={true}
           display='default'
           onChange={onChange}
-          value={dueDate}
+          value={date}
           style={{
             color: "black",
             justifyContent: "center",
@@ -196,9 +195,6 @@ export default function AddTask(props) {
             autoCapitalize='none'
           />
         </View>
-        <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

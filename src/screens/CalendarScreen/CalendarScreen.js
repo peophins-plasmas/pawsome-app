@@ -12,19 +12,18 @@ import {
 import { Card } from "react-native-paper";
 import CalendarStrip from "react-native-calendar-strip";
 import styles, { colors } from "../../screens/combinedStyles";
-
-import { add } from "react-native-reanimated";
 import AddTask from "../../Components/AddTask";
 
 export default function CalendarScreen(props) {
   let date = new Date();
-  let currentDate = date.toDateString();
+  const dateString = date.toString();
+  let currentDate = date.toDateString().toString();
   let currentTime = date.toLocaleTimeString();
+  console.log("currentDate line22", currentDate);
 
-  const [showMarkedDates, setShowMarkedDates] = useState(false);
   const [tasks, setTasks] = useState([]);
-  const [selDate, setSelDate] = useState(date);
-  const [dueDate, setDueDate] = useState(date);
+  const [selDate, setSelDate] = useState(dateString);
+  const [dueDate, setDueDate] = useState(currentDate);
   const [addingTask, setAddingTask] = useState(false);
 
   let addTaskText = "Add a task";
@@ -35,17 +34,19 @@ export default function CalendarScreen(props) {
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
 
-  let selDateString = selDate.toString();
-  const dateArr = selDateString.split(" ");
-  const dayString = dateArr.slice(1, 4).join(" ");
-  const timeString = dateArr[4];
+  // let selDateString = selDate.toString();
+  // const dateArr = selDateString.split(" ");
+  // const dayString = dateArr.slice(1, 4).join(" ");
+  // const timeString = dateArr[4];
   //console.log(dayString, "dayString");
   //console.log(timeString, "TimeString");
 
   useEffect(() => {
+    console.log("dueDate, line 44", dueDate.toString());
+    console.log("running");
     tasksRef
       .where("userId", "==", userId)
-      .where("dueDate", "==", dayString)
+      .where("dueDate", "==", dueDate.toString())
       .onSnapshot(
         (querySnapshot) => {
           const newTasks = [];
@@ -73,9 +74,11 @@ export default function CalendarScreen(props) {
         <CalendarStrip
           scrollable
           calendarAnimation={{ type: "sequence", duration: 30 }}
-          selectedDate={currentDate}
+          selectedDate={date}
           onDateSelected={(date) => {
+            console.log(date.toString(), "Line 79");
             setSelDate(date);
+            setDueDate(date);
           }}
           daySelectionAnimation={{
             type: "border",
@@ -126,8 +129,9 @@ export default function CalendarScreen(props) {
             <Text style={styles.buttonText}>{addTaskText}</Text>
           </TouchableOpacity>
 
-          {addingTask && <AddTask extraData={userId} calDate={selDate} />}
+          {addingTask && <AddTask extraData={userId} calDate={dueDate} />}
         </View>
+        <View style={styles.scrollPad}></View>
       </ScrollView>
     </SafeAreaView>
   );
