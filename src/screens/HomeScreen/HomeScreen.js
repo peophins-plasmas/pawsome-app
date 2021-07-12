@@ -18,6 +18,7 @@ import { UserScreen, PetScreen } from "../";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
 import * as RootNavigator from "../../Navigation/RootNavigator";
+import { createStackNavigator } from "@react-navigation/stack";
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -76,6 +77,8 @@ export default function HomeScreen(props) {
     </View>
   );
 
+  // const petStack = createStackNavigator();
+
   const renderEntity = ({ item, index }) => {
     return (
       <View style={styles.entityContainer}>
@@ -83,6 +86,13 @@ export default function HomeScreen(props) {
           source={{ uri: item.image }}
           style={{ width: 200, height: 200 }}
           onPress={() => {
+            // return
+            // (<petStack.Navigator>
+            //       <petStack.Screen name="Pet">
+            //        {() => <PetScreen pet={item}/>}
+            //      </petStack.Screen>
+            //      </petStack.Navigator>);
+
             RootNavigator.navigate("Pet", { pet: item });
           }}
         />
@@ -90,8 +100,6 @@ export default function HomeScreen(props) {
       </View>
     );
   };
-
-  console.log("chosen pet>>>>", chosenPet);
 
   return (
     <SafeAreaView>

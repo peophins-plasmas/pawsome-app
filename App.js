@@ -87,9 +87,6 @@ export default function App() {
   // function HomeStack() {
   //   return (
   //     <Stack.Navigator>
-  //       <Stack.Screen name="Home">
-  //         {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation} />}
-  //       </Stack.Screen>
   //       <Stack.Screen name="Pet">
   //         {(props) => <PetScreen {...props} pet={chosenPet} navigation={props.navigation}/>}
   //       </Stack.Screen>
@@ -190,6 +187,7 @@ export default function App() {
         <Drawer.Screen
           name="Pet"
           options={{
+            styles: { color: "red" },
             headerStyle: {
               backgroundColor: colors.pawsomeblue,
             },

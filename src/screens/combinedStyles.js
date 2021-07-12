@@ -24,7 +24,9 @@ export default StyleSheet.create({
   },
 
   //Drawer styling
-  hiddenDrawer: {},
+  hiddenDrawer: {
+    color: "red",
+  },
 
   //Homescreen formcontainer
   formContainer: {
