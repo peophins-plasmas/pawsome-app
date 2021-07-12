@@ -24,6 +24,7 @@ export default function PetScreen(props) {
   const usersRef = firebase.firestore().collection("users");
   const vetRef = firebase.firestore().collection("vets");
 
+  console.log("props>>>>", props);
   let pet = props.route.params.pet;
 
   //to find pet's owners

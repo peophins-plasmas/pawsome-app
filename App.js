@@ -19,10 +19,14 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BottomNav from "./src/Navigation/BottomNav";
 import { navigationRef } from "./src/Navigation/RootNavigator";
 import { Provider as PaperProvider } from "react-native-paper";
-import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from "@react-navigation/drawer"
-import {Ionicons} from "@expo/vector-icons"
-import {colors} from "./src/screens/combinedStyles"
-
+import {
+  createDrawerNavigator,
+  DrawerItem,
+  DrawerItemList,
+  DrawerContentScrollView,
+} from "@react-navigation/drawer";
+import { Ionicons } from "@expo/vector-icons";
+import styles, { colors } from "./src/screens/combinedStyles";
 
 if (!global.btoa) {
   global.btoa = encode;
@@ -30,7 +34,6 @@ if (!global.btoa) {
 if (!global.atob) {
   global.atob = decode;
 }
-
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -40,14 +43,15 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(null);
 
-
   function CustomDrawerContent(props) {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
         <DrawerItem
           label="Logout"
-          icon={() => <Ionicons name="ios-exit-outline" size={32} color={colors.yellow} />}
+          icon={() => (
+            <Ionicons name="ios-exit-outline" size={32} color={colors.yellow} />
+          )}
           onPress={() => {
             firebase
               .auth()
@@ -73,31 +77,119 @@ export default function App() {
     );
   }
 
+  // function HomeStack() {
+  //   return (
+  //     <Stack.Navigator>
+  //       <Stack.Screen name="Home">
+  //         {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation} />}
+  //       </Stack.Screen>
+  //       <Stack.Screen name="Pet">
+  //         {(props) => <PetScreen {...props} pet={chosenPet} navigation={props.navigation}/>}
+  //       </Stack.Screen>
+  //     </Stack.Navigator>
+  //   );
+  // }
+
+  class Hidden extends React.Component {
+    render() {
+      return null;
+    }
+  }
+
   function MyDrawer() {
     return (
-      <Drawer.Navigator drawerContentOptions={{
-        activeTintColor: colors.yellow
-      }} drawerContent={(props) => <CustomDrawerContent {...props} />} drawerType="slide" drawerStyle={{
-        backgroundColor: colors.pawsomeblue,
-        width: 200
-      }}>
-        <Drawer.Screen name="Home" options={{
-          drawerIcon: () => <Ionicons name="ios-home-outline" size={32} color={colors.yellow} />
-        }}>
-          {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation} />}
+      <Drawer.Navigator
+        drawerContentOptions={{
+          activeTintColor: colors.yellow,
+        }}
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        drawerType="slide"
+        drawerStyle={{
+          backgroundColor: colors.pawsomeblue,
+          width: 200,
+        }}
+      >
+        <Drawer.Screen
+          name="Home"
+          options={{
+            drawerIcon: () => (
+              <Ionicons
+                name="ios-home-outline"
+                size={32}
+                color={colors.yellow}
+              />
+            ),
+          }}
+        >
+          {(props) => (
+            <HomeScreen
+              {...props}
+              extraData={user}
+              navigation={props.navigation}
+            />
+          )}
         </Drawer.Screen>
-        <Drawer.Screen name="Profile" options={{
-          drawerIcon: () => <Ionicons name="ios-person-outline" size={32} color={colors.yellow} />
-        }}>
-          {(props) => <UserScreen {...props} extraData={user} navigation={props.navigation} />}
+        <Drawer.Screen
+          name="Profile"
+          options={{
+            drawerIcon: () => (
+              <Ionicons
+                name="ios-person-outline"
+                size={32}
+                color={colors.yellow}
+              />
+            ),
+          }}
+        >
+          {(props) => (
+            <UserScreen
+              {...props}
+              extraData={user}
+              navigation={props.navigation}
+            />
+          )}
         </Drawer.Screen>
-        <Drawer.Screen name="Calendar" options={{
-          drawerIcon: () => <Ionicons name="ios-calendar-outline" size={32} color={colors.yellow} />
-        }}>
-          {(props) => <CalendarScreen {...props} extraData={user} navigation={props.navigation} />}
+
+        <Drawer.Screen
+          name="Calendar"
+          options={{
+            drawerIcon: () => (
+              <Ionicons
+                name="ios-calendar-outline"
+                size={32}
+                color={colors.yellow}
+              />
+            ),
+          }}
+        >
+          {(props) => (
+            <CalendarScreen
+              {...props}
+              extraData={user}
+              navigation={props.navigation}
+            />
+          )}
+        </Drawer.Screen>
+
+        <Drawer.Screen
+          name="Pet"
+          options={{
+            drawerLabel: () => null,
+            title: "",
+            drawerIcon: () => null,
+            headerShown: false,
+          }}
+        >
+          {(props) => (
+            <PetScreen
+              {...props}
+              extraData={user}
+              navigation={props.navigation}
+            />
+          )}
         </Drawer.Screen>
       </Drawer.Navigator>
-    )
+    );
   }
 
   useEffect(() => {
@@ -133,20 +225,23 @@ export default function App() {
 
   return (
     <PaperProvider>
-    <NavigationContainer>
-    {isSignedIn ? (
-        <>
-        <MyDrawer />
-        </>
-      ) : (
-         <Stack.Navigator>
-        <>
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Registration" component={RegistrationScreen} />
-        </>
-        </Stack.Navigator>
-      )}
-    </NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
+        {isSignedIn ? (
+          <>
+            <MyDrawer />
+          </>
+        ) : (
+          <Stack.Navigator>
+            <>
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen
+                name="Registration"
+                component={RegistrationScreen}
+              />
+            </>
+          </Stack.Navigator>
+        )}
+      </NavigationContainer>
     </PaperProvider>
   );
 }

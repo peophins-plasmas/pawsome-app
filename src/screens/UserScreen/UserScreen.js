@@ -11,15 +11,15 @@ import {
   ScrollView,
   SectionList,
   Modal,
-  Pressable
+  Pressable,
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
-import { Avatar } from 'react-native-elements';
-import PetForm from './petForm'
+import { Avatar } from "react-native-elements";
+import PetForm from "./petForm";
 import { Card, Title, Paragraph } from "react-native-paper";
-
+import { colors } from "../combinedStyles";
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -34,7 +34,6 @@ export default function UserScreen(props) {
   const usersRef = firebase.firestore().collection("users");
   const vetsRef = firebase.firestore().collection("vets");
   const petsRef = firebase.firestore().collection("pets");
-
 
   const userId = props.extraData.id;
   const vetId = props.extraData.vetId;
@@ -158,37 +157,37 @@ export default function UserScreen(props) {
     return (
       <View style={styles.container}>
         <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-          {console.log('ITEM', item)}
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>{item.vetName}</Text>
-            <Text style={styles.modalText}>{item.email}</Text>
-            <Text style={styles.modalText}>{item.phoneNum}</Text>
-            <Text style={styles.modalText}>{item.address}</Text>
-            <Text style={styles.modalText}>{item.hours}</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable>
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          {console.log("ITEM", item)}
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{item.vetName}</Text>
+              <Text style={styles.modalText}>{item.email}</Text>
+              <Text style={styles.modalText}>{item.phoneNum}</Text>
+              <Text style={styles.modalText}>{item.address}</Text>
+              <Text style={styles.modalText}>{item.hours}</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.textStyle}>Vet Info</Text>
-      </Pressable>
+        </Modal>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.textStyle}>Vet Info</Text>
+        </Pressable>
       </View>
     );
   };
@@ -199,13 +198,13 @@ export default function UserScreen(props) {
         <Text style={styles.entityText}>My Pets:</Text>
         <View style={styles.petImage}>
           <Avatar
-              activeOpacity={0.2}
-              containerStyle={{ backgroundColor: "#BDBDBD" }}
-              onPress={() => alert("onPress")}
-              rounded
-              size="large"
-              source={{ uri: item.image }}
-            />
+            activeOpacity={0.2}
+            containerStyle={{ backgroundColor: "#BDBDBD" }}
+            onPress={() => alert("onPress")}
+            rounded
+            size="large"
+            source={{ uri: item.image }}
+          />
           {/* <Avatar
             activeOpacity={0.2}
             containerStyle={{ backgroundColor: "#BDBDBD" }}
@@ -214,31 +213,33 @@ export default function UserScreen(props) {
             rounded
             size="large"
           /> */}
-          <Modal visible={modalOpen} animationType='slide'>
+          <Modal visible={modalOpen} animationType="slide">
             <SafeAreaView style={styles.modalContent}>
               <Avatar
                 activeOpacity={0.2}
-                containerStyle={{backgroundColor: colors.wheat, alignSelf: 'center', marginTop: 30}}
-                title='X'
+                containerStyle={{
+                  backgroundColor: colors.wheat,
+                  alignSelf: "center",
+                  marginTop: 30,
+                }}
+                title="X"
                 rounded
                 size="small"
                 onPress={() => setModalOpen(false)}
               />
-            <PetForm />
-          </SafeAreaView>
-      </Modal>
+              <PetForm />
+            </SafeAreaView>
+          </Modal>
 
-      <Avatar
-        activeOpacity={0.2}
-        containerStyle={{ backgroundColor: colors.wheat }}
-        onPress={() => setModalOpen(true)}
-        icon={{ name: "add" }}
-        rounded
-        size="large"
-      />
+          <Avatar
+            activeOpacity={0.2}
+            containerStyle={{ backgroundColor: colors.wheat }}
+            onPress={() => setModalOpen(true)}
+            icon={{ name: "add" }}
+            rounded
+            size="large"
+          />
         </View>
-
-
       </View>
     );
   };
@@ -265,7 +266,7 @@ export default function UserScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       {users && (
-          <ScrollView style={styles.listContainer}>
+        <ScrollView style={styles.listContainer}>
           <FlatList
             data={users}
             renderItem={renderUserEntity}
@@ -279,13 +280,16 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderOwnedPetEntity}
           />
-          <FlatList data={ownedPets} renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => navigation.navigate('PetDetails', item)}>
-
-                 <Text style={styles.titleTextForm}>{ item.title }</Text>
-
-            </TouchableOpacity>
-           )} />
+          <FlatList
+            data={ownedPets}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("PetDetails", item)}
+              >
+                <Text style={styles.titleTextForm}>{item.title}</Text>
+              </TouchableOpacity>
+            )}
+          />
           <FlatList
             horizontal
             data={caredPets}
@@ -299,8 +303,7 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderVetEntity}
           />
-          </ScrollView>
-
+        </ScrollView>
       )}
     </SafeAreaView>
   );

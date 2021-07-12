@@ -8,23 +8,21 @@ import {
   View,
   Alert,
   SafeAreaView,
-  Button
+  Button,
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
-import {UserScreen, PetScreen} from "../src/screens"
-import { createStackNavigator } from "@react-navigation/stack";
+import { UserScreen, PetScreen } from "../";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
 import * as RootNavigator from "../../Navigation/RootNavigator";
 
-const Stack = createStackNavigator();
-
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
   const [pets, setPets] = useState([]);
+  const [chosenPet, setChosenPet] = useState({});
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
@@ -53,8 +51,8 @@ export default function HomeScreen(props) {
         petName: entityText,
         ownerId: [userID],
         createdAt: timestamp,
-        image: "https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png",
-        
+        image:
+          "https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png",
       };
       petsRef
         .add(data)
@@ -68,15 +66,15 @@ export default function HomeScreen(props) {
     }
   };
 
-  const Header =({name, openDrawer})=> (
+  const Header = ({ name, openDrawer }) => (
     <View style={styles.header}>
-      <TouchableOpacity onPress={()=>openDrawer()}>
+      <TouchableOpacity onPress={() => openDrawer()}>
         <Ionicons name="ios-menu" size={32} />
       </TouchableOpacity>
       <Text>{name}</Text>
-      <Text style={{width:50}}></Text>
+      <Text style={{ width: 50 }}></Text>
     </View>
-  )
+  );
 
   const renderEntity = ({ item, index }) => {
     return (
@@ -92,6 +90,9 @@ export default function HomeScreen(props) {
       </View>
     );
   };
+
+  console.log("chosen pet>>>>", chosenPet);
+
   return (
     <SafeAreaView>
       <View>
@@ -104,12 +105,12 @@ export default function HomeScreen(props) {
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
-          placeholder='Add new pet'
-          placeholderTextColor='#aaaaaa'
+          placeholder="Add new pet"
+          placeholderTextColor="#aaaaaa"
           onChangeText={(text) => setEntityText(text)}
           value={entityText}
-          underlineColorAndroid='transparent'
-          autoCapitalize='none'
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
         />
         <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
           <Text style={styles.buttonText}>Add</Text>

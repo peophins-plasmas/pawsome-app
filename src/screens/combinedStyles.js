@@ -22,6 +22,10 @@ export default StyleSheet.create({
     alignSelf: "center",
     margin: 30,
   },
+
+  //Drawer styling
+  hiddenDrawer: {},
+
   //Homescreen formcontainer
   formContainer: {
     flexDirection: "column",
