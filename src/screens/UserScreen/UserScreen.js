@@ -274,6 +274,7 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderVetEntity}
           />
+          <View style={{ height: 100 }}></View>
         </ScrollView>
       )}
     </SafeAreaView>

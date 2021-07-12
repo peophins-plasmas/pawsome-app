@@ -9,6 +9,7 @@ import {
   Alert,
   SafeAreaView,
   Button,
+  ScrollView
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
@@ -93,9 +94,7 @@ export default function HomeScreen(props) {
 
   return (
     <SafeAreaView>
-      <View style={styles.container}>
-        <UploadImage user={props.extraData} />
-      </View>
+      <ScrollView>
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
@@ -121,6 +120,8 @@ export default function HomeScreen(props) {
           />
         </View>
       )}
+      <View style={{ height: 100 }}></View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

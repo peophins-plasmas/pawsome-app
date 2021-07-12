@@ -82,15 +82,18 @@ export default function App() {
       />
     );
   }
-  // function HomeStack() {
-  //   return (
-  //     <Stack.Navigator>
-  //       <Stack.Screen name="Pet">
-  //         {(props) => <PetScreen {...props} pet={chosenPet} navigation={props.navigation}/>}
-  //       </Stack.Screen>
-  //     </Stack.Navigator>
-  //   );
-  // }
+  function HomeStack() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="All Pets">
+          {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation}/>}
+        </Stack.Screen>
+        <Stack.Screen name="Pet">
+          {(props) => <PetScreen {...props} navigation={props.navigation}/>}
+        </Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
 
   function MyDrawer() {
     return (
@@ -105,7 +108,21 @@ export default function App() {
           width: 200,
         }}
       >
-        <Drawer.Screen
+        <Drawer.Screen name="Home" component={HomeStack} options={{
+            headerTitle: LogoTitle,
+            headerStyle: {
+              backgroundColor: colors.pawsomeblue,
+            },
+            headerShown: true,
+            drawerIcon: () => (
+              <Ionicons
+                name="ios-home-outline"
+                size={32}
+                color={colors.yellow}
+              />
+            ),
+          }}/>
+        {/* <Drawer.Screen
           name="Home"
           options={{
             headerTitle: LogoTitle,
@@ -129,7 +146,7 @@ export default function App() {
               navigation={props.navigation}
             />
           )}
-        </Drawer.Screen>
+        </Drawer.Screen> */}
         <Drawer.Screen
           name="Profile"
           options={{
@@ -182,7 +199,7 @@ export default function App() {
           )}
         </Drawer.Screen>
 
-        <Drawer.Screen
+        {/* <Drawer.Screen
           name="Pet"
           options={{
             styles: { color: "red" },
@@ -203,7 +220,7 @@ export default function App() {
               navigation={props.navigation}
             />
           )}
-        </Drawer.Screen>
+        </Drawer.Screen> */}
       </Drawer.Navigator>
     );
   }
