@@ -25,6 +25,7 @@ export default function CalendarScreen(props) {
   const [selDate, setSelDate] = useState(dateString);
   const [dueDate, setDueDate] = useState(currentDate);
   const [addingTask, setAddingTask] = useState(false);
+  const [timeStamp, setTimeStamp] = useState(null);
 
   let addTaskText = "Add a task";
   if (addingTask) {
@@ -78,6 +79,7 @@ export default function CalendarScreen(props) {
           onDateSelected={(d) => {
             //console.log(d, "Line 79");
             let d2 = new Date(d);
+            setTimeStamp(d2);
             d2 = d2.toDateString();
             console.log(d2, "line 81");
             setSelDate(d2);
@@ -132,7 +134,13 @@ export default function CalendarScreen(props) {
             <Text style={styles.buttonText}>{addTaskText}</Text>
           </TouchableOpacity>
 
-          {addingTask && <AddTask extraData={userId} calDate={dueDate} />}
+          {addingTask && (
+            <AddTask
+              extraData={userId}
+              calDate={dueDate}
+              startTimeStamp={timeStamp}
+            />
+          )}
         </View>
         <View style={styles.scrollPad}></View>
         <View style={styles.scrollPad}></View>

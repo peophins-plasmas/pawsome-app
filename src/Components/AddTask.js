@@ -20,10 +20,10 @@ export default function AddTask(props) {
   console.log("calDate", props.calDate);
   //console.log(date, "Date");
   // let string = props.calDate.toLocaleDateString();
-  // console.log(string, "STRING line 22");
+  console.log(props, "Props line 22");
   let dateCheck = props.calDate || date.toLocaleDateString();
 
-  const [selDate, setSelDate] = useState(dateCheck);
+  const [selDate, setSelDate] = useState(props.startTimeStamp || date);
   const [dueDate, setDueDate] = useState(dateCheck);
   const [ownedPetIds, setOwnedPetIds] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
@@ -116,6 +116,7 @@ export default function AddTask(props) {
     const time = value.toLocaleTimeString();
     //console.log(time, "time 117");
     setEntityDueTime(time);
+    setSelDate(value);
   };
   //console.log(ownedPets, "OwnedPets line 153");
   return (
@@ -178,7 +179,7 @@ export default function AddTask(props) {
           is24Hour={true}
           display='default'
           onChange={onChange}
-          value={date}
+          value={selDate}
           style={{
             color: "black",
             justifyContent: "center",
