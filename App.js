@@ -72,6 +72,14 @@ export default function App() {
       </DrawerContentScrollView>
     );
   }
+  function LogoTitle() {
+    return (
+      <Image
+        style={{ width: 300, height: 40, resizeMode: "contain"}}
+        source={require('./assets/pawsome_logo.png')}
+      />
+    );
+  }
 
   function MyDrawer() {
     return (
@@ -82,16 +90,31 @@ export default function App() {
         width: 200
       }}>
         <Drawer.Screen name="Home" options={{
+          headerTitle: LogoTitle,
+          headerStyle: {
+            backgroundColor: colors.pawsomeblue
+          },
+          headerShown: true,
           drawerIcon: () => <Ionicons name="ios-home-outline" size={32} color={colors.yellow} />
         }}>
           {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation} />}
         </Drawer.Screen>
         <Drawer.Screen name="Profile" options={{
+          headerStyle: {
+            backgroundColor: colors.pawsomeblue
+          },
+          headerTitle: LogoTitle,
+          headerShown: true,
           drawerIcon: () => <Ionicons name="ios-person-outline" size={32} color={colors.yellow} />
         }}>
           {(props) => <UserScreen {...props} extraData={user} navigation={props.navigation} />}
         </Drawer.Screen>
         <Drawer.Screen name="Calendar" options={{
+          headerTitle: LogoTitle,
+          headerStyle: {
+            backgroundColor: colors.pawsomeblue
+          },
+          headerShown: true,
           drawerIcon: () => <Ionicons name="ios-calendar-outline" size={32} color={colors.yellow} />
         }}>
           {(props) => <CalendarScreen {...props} extraData={user} navigation={props.navigation} />}

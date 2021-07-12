@@ -133,9 +133,6 @@ export default function CalendarScreen(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-      <View>
-        <Header name="Calendar" openDrawer={props.navigation.openDrawer} />
-      </View>
         <View style={styles.container}>
           <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
             <Text style={styles.buttonText}>Log out</Text>

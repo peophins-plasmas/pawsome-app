@@ -19,6 +19,7 @@ import UploadImage from "../../Components/UploadImage";
 import { Avatar } from 'react-native-elements';
 import PetForm from './petForm'
 import { Card, Title, Paragraph } from "react-native-paper";
+import { colors } from "../combinedStyles"
 
 
 export default function UserScreen(props) {

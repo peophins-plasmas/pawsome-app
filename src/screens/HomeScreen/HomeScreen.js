@@ -14,7 +14,7 @@ import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
-import {UserScreen, PetScreen} from "../src/screens"
+import {UserScreen, PetScreen} from "../"
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
@@ -94,10 +94,6 @@ export default function HomeScreen(props) {
   };
   return (
     <SafeAreaView>
-      <View>
-        <Header name="Home" openDrawer={props.navigation.openDrawer} />
-      </View>
-
       <View style={styles.container}>
         <UploadImage user={props.extraData} />
       </View>
