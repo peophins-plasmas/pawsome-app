@@ -15,11 +15,11 @@ import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
 import UserScreen from "../UserScreen/UserScreen";
 import { Image } from "react-native-elements";
+import * as RootNavigator from "../../Navigation/RootNavigator";
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
   const [pets, setPets] = useState([]);
-  //make single pet state to access specific pet to pass through as props to upload image component
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
@@ -78,7 +78,7 @@ export default function HomeScreen(props) {
           source={{ uri: item.image }}
           style={{ width: 200, height: 200 }}
           onPress={() => {
-            props.navigation.navigate("Pet", { pet: item });
+            RootNavigator.navigate("Pet", { pet: item });
           }}
         />
         <Text style={styles.entityText}>{item.petName}</Text>
@@ -99,12 +99,12 @@ export default function HomeScreen(props) {
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
-          placeholder='Add new pet'
-          placeholderTextColor='#aaaaaa'
+          placeholder="Add new pet"
+          placeholderTextColor="#aaaaaa"
           onChangeText={(text) => setEntityText(text)}
           value={entityText}
-          underlineColorAndroid='transparent'
-          autoCapitalize='none'
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
         />
         <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
           <Text style={styles.buttonText}>Add</Text>

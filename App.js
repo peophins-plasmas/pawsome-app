@@ -4,15 +4,20 @@ import { firebase } from "./src/firebase/config";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text, View } from "react-native";
-import { LoginScreen, HomeScreen, RegistrationScreen } from "./src/screens";
-import CalendarScreen from "./src/screens/CalendarScreen/CalendarScreen";
-import UserScreen from "./src/screens/UserScreen/UserScreen";
-import PetScreen from "./src/screens/PetScreen/PetScreen";
+import {
+  LoginScreen,
+  HomeScreen,
+  RegistrationScreen,
+  CalendarScreen,
+  UserScreen,
+  PetScreen,
+} from "./src/screens";
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BottomNav from "./src/Navigation/BottomNav";
+import { navigationRef } from "./src/Navigation/RootNavigator";
 import { Provider as PaperProvider } from "react-native-paper";
 
 if (!global.btoa) {
@@ -62,7 +67,7 @@ export default function App() {
 
   return (
     <PaperProvider>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         {isSignedIn ? (
           <>
             <Stack.Navigator>
