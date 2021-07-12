@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { firebase } from "../../firebase/config";
-import { StyleSheet, Button, TextInput, View, Text, Alert } from 'react-native';
+import { StyleSheet, Button, TextInput, View, Text, Alert, Keyboard } from 'react-native';
 import styles from './styles';
 import { Formik } from 'formik';
 import colors from '../combinedStyles'
@@ -16,12 +16,12 @@ export default function PetForm(props) {
   const [entitySpecies, setEntitySpecies] = useState("");
   const [entityWeight, setEntityWeight] = useState("");
 
-  const handleSubmit = () => {
+  const addPet = ({}) => {
     if (entityName && entityName.length > 0) {
       const data = {
         petName: entityName,
-        species: species,
-        weight: weight,
+        species: entitySpecies,
+        weight: entityWeight,
         ownerId: userId
       };
       petsRef
@@ -42,9 +42,9 @@ export default function PetForm(props) {
   return (
     <View style={styles.containerForm}>
       <Formik
-        initialValues={{ name: '', species: '', weight: '', ownerId: userId }}
+        initialValues={{ petName: '', species: '', weight: '', ownerId: userId }}
         onSubmit={(values) => {
-          console.log(values);
+          addPet();
         }}
       >
         {props => (
@@ -55,8 +55,8 @@ export default function PetForm(props) {
             <TextInput
               style={styles.inputForm}
               placeholder='What is my name?'
-              onChangeText={props.handleChange('name')}
-              value={props.values.name}
+              onChangeText={props.handleChange('petName')}
+              value={props.values.petName}
             />
             <TextInput
               style={styles.inputForm}
@@ -74,7 +74,7 @@ export default function PetForm(props) {
               keyboardType='numeric'
             />
 
-            <Button color={colors.dkblue} title="Submit" onPress={handleSubmit} />
+            <Button color={colors.dkblue} title="Submit" onPress={props.handleSubmit} />
           </View>
         )}
       </Formik>

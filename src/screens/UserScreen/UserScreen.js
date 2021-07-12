@@ -61,6 +61,10 @@ export default function UserScreen(props) {
       });
   };
 
+  const addPet = (pet) => {
+
+  }
+
   useEffect(() => {
     usersRef.where("id", "==", userId).onSnapshot(
       (querySnapshot) => {
