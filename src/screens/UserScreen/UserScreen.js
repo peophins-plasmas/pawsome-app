@@ -10,12 +10,19 @@ import {
   Alert,
   ScrollView,
   SectionList,
+
+  Modal,
+  Pressable
+
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
-import { Card, Title, Paragraph } from "react-native-paper";
-import { Avatar } from "react-native-elements";
+
+import { Avatar } from 'react-native-elements';
+import PetForm from './petForm'
+import { colors } from "../combinedStyles";
+
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -23,12 +30,14 @@ export default function UserScreen(props) {
   const [vets, setVets] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
   const [caredPets, setCaredPets] = useState([]);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   //make single pet state to access specific pet to pass through as props to upload image component
 
   const usersRef = firebase.firestore().collection("users");
   const vetsRef = firebase.firestore().collection("vets");
   const petsRef = firebase.firestore().collection("pets");
+
 
   const userId = props.extraData.id;
   const vetId = props.extraData.vetId;
@@ -151,16 +160,40 @@ export default function UserScreen(props) {
   const renderVetEntity = ({ item, index }) => {
     return (
       <View style={styles.container}>
-        <Card>
-          <Card.Content>
-            <Title>My Vet Info</Title>
-            <Paragraph>{item.vetName}</Paragraph>
-            <Paragraph>{item.email}</Paragraph>
-            <Paragraph>{item.phoneNum}</Paragraph>
-            <Paragraph>{item.address}</Paragraph>
-            <Paragraph>{item.hours}</Paragraph>
-          </Card.Content>
-        </Card>
+
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+          {console.log('ITEM', item)}
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>{item.vetName}</Text>
+            <Text style={styles.modalText}>{item.email}</Text>
+            <Text style={styles.modalText}>{item.phoneNum}</Text>
+            <Text style={styles.modalText}>{item.address}</Text>
+            <Text style={styles.modalText}>{item.hours}</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.textStyle}>Vet Info</Text>
+      </Pressable>
+
       </View>
     );
   };
@@ -168,25 +201,53 @@ export default function UserScreen(props) {
   const renderOwnedPetEntity = ({ item, index }) => {
     return (
       <View style={styles.container}>
-        <Text>My Pets:</Text>
+        <Text style={styles.entityText}>My Pets:</Text>
         <View style={styles.petImage}>
           <Avatar
-            activeOpacity={0.2}
-            containerStyle={{ backgroundColor: "#BDBDBD" }}
-            onPress={() => alert("onPress")}
-            rounded
-            size='large'
-            source={{ uri: item.image }}
-          />
-          <Avatar
+
+              activeOpacity={0.2}
+              containerStyle={{ backgroundColor: "#BDBDBD" }}
+              onPress={() => alert("onPress")}
+              rounded
+              size="large"
+              source={{ uri: item.image }}
+            />
+          {/* <Avatar
+
             activeOpacity={0.2}
             containerStyle={{ backgroundColor: "#BDBDBD" }}
             icon={{ name: "add" }}
             onPress={() => alert("onPress")}
             rounded
-            size='large'
-          />
+
+            size="large"
+          /> */}
+          <Modal visible={modalOpen} animationType='slide'>
+            <SafeAreaView style={styles.modalContent}>
+              <Avatar
+                activeOpacity={0.2}
+                containerStyle={{backgroundColor: colors.wheat, alignSelf: 'center', marginTop: 30}}
+                title='X'
+                rounded
+                size="small"
+                onPress={() => setModalOpen(false)}
+              />
+            <PetForm />
+          </SafeAreaView>
+      </Modal>
+
+      <Avatar
+        activeOpacity={0.2}
+        containerStyle={{ backgroundColor: colors.wheat }}
+        onPress={() => setModalOpen(true)}
+        icon={{ name: "add" }}
+        rounded
+        size="large"
+      />
+
         </View>
+
+
       </View>
     );
   };
@@ -194,7 +255,7 @@ export default function UserScreen(props) {
   const renderCaredPetEntity = ({ item, index }) => {
     return (
       <View style={styles.container}>
-        <Text>Friends:</Text>
+        <Text style={styles.entityText}>Friends:</Text>
         <View style={styles.petImage}>
           <Avatar
             avatarStyle={{ padding: 30 }}
@@ -213,7 +274,7 @@ export default function UserScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       {users && (
-        <View style={styles.listContainer}>
+          <ScrollView style={styles.listContainer}>
           <FlatList
             data={users}
             renderItem={renderUserEntity}
@@ -227,6 +288,13 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderOwnedPetEntity}
           />
+          <FlatList data={ownedPets} renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => navigation.navigate('PetDetails', item)}>
+
+                 <Text style={styles.titleTextForm}>{ item.title }</Text>
+
+            </TouchableOpacity>
+           )} />
           <FlatList
             horizontal
             data={caredPets}
@@ -240,7 +308,8 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderVetEntity}
           />
-        </View>
+          </ScrollView>
+
       )}
     </SafeAreaView>
   );
