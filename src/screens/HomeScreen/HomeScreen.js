@@ -13,7 +13,8 @@ import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import BottomNav from "../../Navigation/BottomNav";
-import UserScreen from "../UserScreen/UserScreen"
+import UserScreen from "../UserScreen/UserScreen";
+import { Image } from "react-native-elements";
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -84,6 +85,13 @@ export default function HomeScreen(props) {
   const renderEntity = ({ item, index }) => {
     return (
       <View style={styles.entityContainer}>
+        <Image
+          source={{ uri: item.image }}
+          style={{ width: 200, height: 200 }}
+          onPress={() => {
+            props.navigation.navigate("Pet", { pet: item });
+          }}
+        />
         <Text style={styles.entityText}>{item.petName}</Text>
       </View>
     );
@@ -129,7 +137,6 @@ export default function HomeScreen(props) {
       {pets && (
         <View style={styles.listContainer}>
           <FlatList
-            //or put upload image component in render entity so each pet entity will render name and photo
             data={pets}
             renderItem={renderEntity}
             keyExtractor={(item) => item.id}

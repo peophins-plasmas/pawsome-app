@@ -1,43 +1,31 @@
 import React, { useEffect, useState } from "react";
-import XDate from "xdate";
 import { firebase } from "../../firebase/config";
 import {
   Keyboard,
   Text,
-  TextInput,
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
   View,
   Alert,
-  Button,
 } from "react-native";
 import { Card } from "react-native-paper";
-import CalendarStrip, {
-  getSelectedDate,
-  setSelectedDate,
-} from "react-native-calendar-strip";
+import CalendarStrip from "react-native-calendar-strip";
 import styles, { colors } from "../../screens/combinedStyles";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { add } from "react-native-reanimated";
+import AddTask from "../../Components/AddTask";
 
 export default function CalendarScreen(props) {
   let date = new Date();
-  let currentDate = date.toDateString();
+  const dateString = date.toString();
+  let currentDate = date.toDateString().toString();
   let currentTime = date.toLocaleTimeString();
+  console.log("currentDate line22", currentDate);
 
-  const [entityText, setEntityText] = useState("");
-  const [entityDueDate, setEntityDueDate] = useState("");
-  const [entityDueTime, setEntityDueTime] = useState("");
-  const [entityPetId, setEntityPetId] = useState("");
-  const [entityStatus, setEntityStatus] = useState("");
-  const [entityFrequency, setEntityFrequency] = useState("");
-
-  const [showMarkedDates, setShowMarkedDates] = useState(false);
   const [tasks, setTasks] = useState([]);
-  const [selDate, setSelDate] = useState(date);
-  const [dueDate, setDueDate] = useState(date);
+  const [selDate, setSelDate] = useState(dateString);
+  const [dueDate, setDueDate] = useState(currentDate);
   const [addingTask, setAddingTask] = useState(false);
+  const [timeStamp, setTimeStamp] = useState(null);
 
   let addTaskText = "Add a task";
   if (addingTask) {
@@ -47,33 +35,18 @@ export default function CalendarScreen(props) {
   const tasksRef = firebase.firestore().collection("tasks");
   const userId = props.extraData.id;
 
-  const onLogoutPress = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => Alert.alert("Logged Out", "You are now logged out"))
-      .catch((error) => {
-        alert(error);
-      });
-  };
-
-  let selDateString = selDate.toString();
-  const dateArr = selDateString.split(" ");
-  const dayString = dateArr.slice(1, 4).join(" ");
-  const timeString = dateArr[4];
-  //console.log(dayString, "dayString");
-  //console.log(timeString, "TimeString");
-
   useEffect(() => {
+    console.log("dueDate, line 44", dueDate);
+    // console.log("running");
     tasksRef
       .where("userId", "==", userId)
-      .where("dueDate", "==", dayString)
+      .where("dueDate", "==", dueDate.toString())
       .onSnapshot(
         (querySnapshot) => {
           const newTasks = [];
           querySnapshot.forEach((doc) => {
             const task = doc.data();
-            console.log("TASK>>>>>>>>>>>>", task);
+            // console.log("TASK>>>>>>>>>>>>", task);
             task.id = doc.id;
             newTasks.push(task);
           });
@@ -83,59 +56,27 @@ export default function CalendarScreen(props) {
           console.log(error);
         }
       );
-  }, [selDate, dueDate, entityDueDate, entityDueTime]);
-
-  const onAddButtonPress = () => {
-    if (entityText && entityText.length > 0) {
-      const data = {
-        description: entityText,
-        dueDate: dueDate,
-        dueTime: entityDueTime,
-        petId: entityPetId,
-        status: "open",
-        frequency: entityFrequency,
-        userId: userId,
-      };
-      tasksRef
-        .add(data)
-        .then((_doc) => {
-          setEntityText("");
-          setEntityDueDate(dueDate);
-          setEntityDueTime("");
-          setEntityPetId("");
-          setEntityStatus("open");
-          setEntityFrequency("");
-          Keyboard.dismiss();
-        })
-        .catch((error) => {
-          alert(error);
-        });
-    }
-  };
-
-  const onChange = (event, value) => {
-    setDueDate(value);
-    const time = value.toLocaleTimeString();
-    setEntityDueTime(time);
-  };
+  }, [selDate, dueDate]);
 
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
-          <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
-            <Text style={styles.buttonText}>Log out</Text>
-          </TouchableOpacity>
           <Text>Today is {currentDate}.</Text>
           <Text>It is {currentTime}.</Text>
         </View>
         <CalendarStrip
           scrollable
           calendarAnimation={{ type: "sequence", duration: 30 }}
-          selectedDate={currentDate}
-          onDateSelected={(date) => {
-            setSelDate(date);
-            setDueDate(new Date(date));
+          selectedDate={date}
+          onDateSelected={(d) => {
+            //console.log(d, "Line 79");
+            let d2 = new Date(d);
+            setTimeStamp(d2);
+            d2 = d2.toDateString();
+            console.log(d2, "line 81");
+            setSelDate(d2);
+            setDueDate(d2);
           }}
           daySelectionAnimation={{
             type: "border",
@@ -157,7 +98,6 @@ export default function CalendarScreen(props) {
 
         <View style={[styles.container]}>
           <Text style={styles.sectionHeaderText}>Today&apos;s Chores</Text>
-          <Text style={styles.subHeaderText}>Pets: Ragnar, SomeOtherPet</Text>
         </View>
         <View style={styles.container}>
           {tasks.length > 0 ? (
@@ -176,68 +116,6 @@ export default function CalendarScreen(props) {
             </View>
           )}
 
-          {addingTask && (
-            <View style={styles.formContainer}>
-              <View style={styles.inputContainer}>
-                <Text style={styles.entityText}>Add a task</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder='Task name'
-                  placeholderTextColor='#aaaaaa'
-                  onChangeText={(text) => setEntityText(text)}
-                  value={entityText}
-                  underlineColorAndroid='transparent'
-                  autoCapitalize='none'
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  placeholder='Add pet'
-                  placeholderTextColor='#aaaaaa'
-                  onChangeText={(text) => setEntityPetId(text)}
-                  value={entityPetId}
-                  underlineColorAndroid='transparent'
-                  autoCapitalize='none'
-                />
-              </View>
-
-              <DateTimePicker
-                testID='dateTimePicker'
-                mode='datetime'
-                is24Hour={true}
-                display='default'
-                onChange={onChange}
-                value={dueDate}
-                style={{
-                  justifyContent: "center",
-                  alignContent: "center",
-                  display: "flex",
-                  width: 220,
-                }}
-              />
-
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  placeholder='Add frequency'
-                  placeholderTextColor='#aaaaaa'
-                  onChangeText={(text) => setEntityFrequency(text)}
-                  value={entityFrequency}
-                  underlineColorAndroid='transparent'
-                  autoCapitalize='none'
-                />
-              </View>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={onAddButtonPress}
-              >
-                <Text style={styles.buttonText}>Add</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-
           <TouchableOpacity
             style={[
               styles.button,
@@ -247,7 +125,17 @@ export default function CalendarScreen(props) {
           >
             <Text style={styles.buttonText}>{addTaskText}</Text>
           </TouchableOpacity>
+
+          {addingTask && (
+            <AddTask
+              extraData={userId}
+              calDate={dueDate}
+              startTimeStamp={timeStamp}
+            />
+          )}
         </View>
+        <View style={styles.scrollPad}></View>
+        <View style={styles.scrollPad}></View>
       </ScrollView>
     </SafeAreaView>
   );
