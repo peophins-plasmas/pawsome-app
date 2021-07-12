@@ -17,14 +17,9 @@ import { Alert } from "react-native";
 
 export default function AddTask(props) {
   let date = new Date();
-  //console.log("Props add task", props);
-  let calDate = props.calDate;
-  // if (calDate) {
-  //   calDate = calDate.toLocaleDateString();
-  // }
-  let dateCheck = calDate || date.toLocaleDateString();
-
-  console.log("dateCheck", dateCheck);
+  console.log("Props add task", props);
+  let dateCheck = props.calDate || date.toLocaleDateString();
+  //dateCheck = dateCheck.toLocaleDateString();
 
   const [selDate, setSelDate] = useState(dateCheck);
   const [dueDate, setDueDate] = useState(dateCheck);
