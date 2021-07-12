@@ -76,7 +76,14 @@ export default function App() {
       </DrawerContentScrollView>
     );
   }
-
+  function LogoTitle() {
+    return (
+      <Image
+        style={{ width: 300, height: 40, resizeMode: "contain" }}
+        source={require("./assets/pawsome_logo.png")}
+      />
+    );
+  }
   // function HomeStack() {
   //   return (
   //     <Stack.Navigator>
@@ -89,12 +96,6 @@ export default function App() {
   //     </Stack.Navigator>
   //   );
   // }
-
-  class Hidden extends React.Component {
-    render() {
-      return null;
-    }
-  }
 
   function MyDrawer() {
     return (
@@ -112,6 +113,11 @@ export default function App() {
         <Drawer.Screen
           name="Home"
           options={{
+            headerTitle: LogoTitle,
+            headerStyle: {
+              backgroundColor: colors.pawsomeblue,
+            },
+            headerShown: true,
             drawerIcon: () => (
               <Ionicons
                 name="ios-home-outline"
@@ -132,6 +138,11 @@ export default function App() {
         <Drawer.Screen
           name="Profile"
           options={{
+            headerStyle: {
+              backgroundColor: colors.pawsomeblue,
+            },
+            headerTitle: LogoTitle,
+            headerShown: true,
             drawerIcon: () => (
               <Ionicons
                 name="ios-person-outline"
@@ -153,6 +164,11 @@ export default function App() {
         <Drawer.Screen
           name="Calendar"
           options={{
+            headerStyle: {
+              backgroundColor: colors.pawsomeblue,
+            },
+            headerTitle: LogoTitle,
+            headerShown: true,
             drawerIcon: () => (
               <Ionicons
                 name="ios-calendar-outline"
@@ -174,10 +190,14 @@ export default function App() {
         <Drawer.Screen
           name="Pet"
           options={{
+            headerStyle: {
+              backgroundColor: colors.pawsomeblue,
+            },
+            headerTitle: LogoTitle,
+            headerShown: true,
             drawerLabel: () => null,
             title: "",
             drawerIcon: () => null,
-            headerShown: false,
           }}
         >
           {(props) => (

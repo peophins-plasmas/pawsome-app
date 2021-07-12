@@ -95,10 +95,6 @@ export default function HomeScreen(props) {
 
   return (
     <SafeAreaView>
-      <View>
-        <Header name="Home" openDrawer={props.navigation.openDrawer} />
-      </View>
-
       <View style={styles.container}>
         <UploadImage user={props.extraData} />
       </View>
