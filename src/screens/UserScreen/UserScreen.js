@@ -20,6 +20,7 @@ import { Avatar } from "react-native-elements";
 import PetForm from "./petForm";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { colors } from "../combinedStyles";
+import AddButton from "../../Components/AddButton"
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -172,70 +173,6 @@ export default function UserScreen(props) {
     );
   };
 
-  const renderOwnedPetEntity = ({ item }) => {
-    console.log('PET ITEM>>>>', item)
-    return (
-      <View style={styles.container}>
-        <Text style={styles.entityText}>My Pets:</Text>
-        <View style={styles.petImage}>
-          <Avatar
-            activeOpacity={0.2}
-            containerStyle={{ backgroundColor: "#BDBDBD" }}
-            onPress={() => alert("onPress")}
-            rounded
-            size='large'
-            source={{ uri: item.image }}
-          />
-          <Modal visible={modalOpen} animationType='slide'>
-            <SafeAreaView style={styles.modalContent}>
-              <Avatar
-                activeOpacity={0.2}
-                containerStyle={{
-                  backgroundColor: colors.wheat,
-                  alignSelf: "center",
-                  marginTop: 30,
-                }}
-                title='X'
-                rounded
-                size='small'
-                onPress={() => setModalOpen(false)}
-              />
-              <PetForm extraData={props.extraData} />
-            </SafeAreaView>
-          </Modal>
-
-          <Avatar
-            activeOpacity={0.2}
-            containerStyle={{ backgroundColor: colors.wheat }}
-            onPress={() => setModalOpen(true)}
-            icon={{ name: "add" }}
-            rounded
-            size='large'
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const renderCaredPetEntity = ({ item }) => {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.entityText}>Friends:</Text>
-        <View style={styles.petImage}>
-          <Avatar
-            avatarStyle={{ padding: 30 }}
-            activeOpacity={0.2}
-            containerStyle={{ backgroundColor: "#BDBDBD" }}
-            onPress={() => alert("onPress")}
-            rounded
-            size='large'
-            source={{ uri: item.image }}
-          />
-        </View>
-      </View>
-    );
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -249,20 +186,39 @@ export default function UserScreen(props) {
             keyExtractor={(item) => item.id}
             removeClippedSubviews={true}
           />
-          <FlatList
-            horizontal
-            data={ownedPets}
-            keyExtractor={(item) => item.id}
-            removeClippedSubviews={true}
-            renderItem={renderOwnedPetEntity}
-          />
-          <FlatList
-            horizontal
-            data={caredPets}
-            keyExtractor={(item) => item.id}
-            removeClippedSubviews={true}
-            renderItem={renderCaredPetEntity}
-          />
+          <Text style={styles.entityText}>My Pets:</Text>
+          <View style={styles.petImage}>
+          {ownedPets.map((pet) => {
+            return (
+            <View key={pet.id} style={styles.petImage}>
+              <Avatar
+              activeOpacity={0.2}
+              containerStyle={{ backgroundColor: "#BDBDBD" }}
+              onPress={() => alert("onPress")}
+              rounded
+              size='large'
+              source={{ uri: pet.image }}
+              />
+          </View>
+          )})}
+            <AddButton extraData={props.extraData}/>
+          </View>
+          <Text style={styles.entityText}>Pets I Sit For:</Text>
+          <View style={styles.petImage}>
+          {caredPets.map((pet) => {
+            return (
+            <View key={pet.id} style={styles.petImage}>
+              <Avatar
+              activeOpacity={0.2}
+              containerStyle={{ backgroundColor: "#BDBDBD" }}
+              onPress={() => alert("onPress")}
+              rounded
+              size='large'
+              source={{ uri: pet.image }}
+              />
+          </View>
+          )})}
+          </View>
           <FlatList
             data={vets}
             keyExtractor={(item) => item.id}
