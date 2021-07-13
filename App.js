@@ -88,7 +88,7 @@ export default function App() {
   function UserProfileStack() {
     return (
       <ProfileStack.Navigator>
-        <ProfileStack.Screen name="User" options={{
+        <ProfileStack.Screen name="My Profile" options={{
           safeAreaInsets: { top: 0 },
           headerTitleStyle: { alignSelf: 'center'},
           headerStyle:{ backgroundColor: 'transparent' }

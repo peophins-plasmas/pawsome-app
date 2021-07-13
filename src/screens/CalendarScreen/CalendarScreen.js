@@ -61,9 +61,6 @@ export default function CalendarScreen(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-      <View>
-          <Text style={{ fontSize: 20 }}>Tasks</Text>
-        </View>
         <View style={styles.container}>
           <Text>Today is {currentDate}.</Text>
           <Text>It is {currentTime}.</Text>
