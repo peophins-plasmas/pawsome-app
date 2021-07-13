@@ -136,7 +136,7 @@ export default function UserScreen(props) {
     return (
       <View style={styles.container}>
         <Modal
-          animationType="slide"
+          animationType='slide'
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
@@ -181,10 +181,10 @@ export default function UserScreen(props) {
             containerStyle={{ backgroundColor: "#BDBDBD" }}
             onPress={() => alert("onPress")}
             rounded
-            size="large"
+            size='large'
             source={{ uri: item.image }}
           />
-          <Modal visible={modalOpen} animationType="slide">
+          <Modal visible={modalOpen} animationType='slide'>
             <SafeAreaView style={styles.modalContent}>
               <Avatar
                 activeOpacity={0.2}
@@ -193,9 +193,9 @@ export default function UserScreen(props) {
                   alignSelf: "center",
                   marginTop: 30,
                 }}
-                title="X"
+                title='X'
                 rounded
-                size="small"
+                size='small'
                 onPress={() => setModalOpen(false)}
               />
               <PetForm extraData={props.extraData} />
@@ -208,7 +208,7 @@ export default function UserScreen(props) {
             onPress={() => setModalOpen(true)}
             icon={{ name: "add" }}
             rounded
-            size="large"
+            size='large'
           />
         </View>
       </View>
@@ -226,7 +226,7 @@ export default function UserScreen(props) {
             containerStyle={{ backgroundColor: "#BDBDBD" }}
             onPress={() => alert("onPress")}
             rounded
-            size="large"
+            size='large'
             source={{ uri: item.image }}
           />
         </View>
@@ -274,6 +274,7 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderVetEntity}
           />
+          <View style={{ height: 100 }}></View>
         </ScrollView>
       )}
     </SafeAreaView>

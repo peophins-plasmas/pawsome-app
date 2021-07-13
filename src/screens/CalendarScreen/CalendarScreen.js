@@ -21,7 +21,6 @@ export default function CalendarScreen(props) {
   const dateString = date.toString();
   let currentDate = date.toDateString().toString();
   let currentTime = date.toLocaleTimeString();
-  console.log("currentDate line22", currentDate);
 
   const [tasks, setTasks] = useState([]);
   const [selDate, setSelDate] = useState(dateString);
@@ -35,11 +34,11 @@ export default function CalendarScreen(props) {
   }
 
   const tasksRef = firebase.firestore().collection("tasks");
+  const usersRef = firebase.firestore().collection("users");
+  const petsRef = firebase.firestore().collection("pets");
   const userId = props.extraData.id;
 
   useEffect(() => {
-    console.log("dueDate, line 44", dueDate);
-    // console.log("running");
     tasksRef
       .where("userId", "==", userId)
       .where("dueDate", "==", dueDate.toString())
@@ -48,7 +47,6 @@ export default function CalendarScreen(props) {
           const newTasks = [];
           querySnapshot.forEach((doc) => {
             const task = doc.data();
-            // console.log("TASK>>>>>>>>>>>>", task);
             task.id = doc.id;
             newTasks.push(task);
           });
@@ -72,11 +70,9 @@ export default function CalendarScreen(props) {
           calendarAnimation={{ type: "sequence", duration: 30 }}
           selectedDate={date}
           onDateSelected={(d) => {
-            //console.log(d, "Line 79");
             let d2 = new Date(d);
             setTimeStamp(d2);
             d2 = d2.toDateString();
-            console.log(d2, "line 81");
             setSelDate(d2);
             setDueDate(d2);
           }}
@@ -105,9 +101,9 @@ export default function CalendarScreen(props) {
           {tasks.length > 0 ? (
             tasks.map((task) => {
               return (
-                <Card key={task.id} style={styles.entityContainer}>
+                <Card key={task.id} style={styles.cardContainer}>
                   <Text style={styles.entityText}>
-                    {task.petId}: {task.description} at {task.dueTime}
+                    {task.petName}: {task.description} at {task.dueTime}
                   </Text>
                 </Card>
               );

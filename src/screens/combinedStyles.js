@@ -57,6 +57,8 @@ export default StyleSheet.create({
     borderRadius: 5,
     overflow: "hidden",
     backgroundColor: "white",
+    width: 200,
+    margin: 5,
   },
   inputHome: {
     paddingLeft: 16,
@@ -210,6 +212,18 @@ export default StyleSheet.create({
     backgroundColor: "#efefef",
     position: "relative",
     overflow: "hidden",
+  },
+
+  //chore page & add task
+  cardContainer: {
+    display: "flex",
+    flex: 1,
+    flexGrow: 1,
+    alignItems: "center",
+    width: "80%",
+    backgroundColor: "white",
+    margin: 5,
+    padding: 5,
   },
 
   scrollPad: {

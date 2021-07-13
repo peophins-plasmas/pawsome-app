@@ -99,12 +99,12 @@ export default function HomeScreen(props) {
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Add new pet"
-          placeholderTextColor="#aaaaaa"
+          placeholder='Add new pet'
+          placeholderTextColor='#aaaaaa'
           onChangeText={(text) => setEntityText(text)}
           value={entityText}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
+          underlineColorAndroid='transparent'
+          autoCapitalize='none'
         />
         <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
           <Text style={styles.buttonText}>Add</Text>
@@ -121,6 +121,7 @@ export default function HomeScreen(props) {
           />
         </View>
       )}
+      <View style={{ height: 100 }}></View>
     </SafeAreaView>
   );
 }

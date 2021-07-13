@@ -14,12 +14,10 @@ import { RadioButton } from "react-native-paper";
 // import RNPickerSelect from "react-native-picker-select";
 import { add } from "react-native-reanimated";
 import { Alert } from "react-native";
+import { createIconSetFromFontello } from "@expo/vector-icons";
 
 export default function AddTask(props) {
   let date = new Date();
-  //console.log("calDate", props.calDate);
-  //console.log(date, "Date");
-  // let string = props.calDate.toLocaleDateString();
   //console.log(props, "Props line 22");
   let dateCheck = props.calDate || date.toLocaleDateString();
 
@@ -28,13 +26,13 @@ export default function AddTask(props) {
   const [ownedPetIds, setOwnedPetIds] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
   const [checked, setChecked] = useState();
+
+  const [entityPetName, setEntityPetName] = useState("");
   const [entityText, setEntityText] = useState("");
   const [entityDueDate, setEntityDueDate] = useState(
     dateCheck.toLocaleDateString
   );
-  const [entityDueTime, setEntityDueTime] = useState(
-    dateCheck.toLocaleTimeString
-  );
+  const [entityDueTime, setEntityDueTime] = useState("12:00:00 PM");
   const [entityPetId, setEntityPetId] = useState("");
   const [entityStatus, setEntityStatus] = useState("");
   const [entityFrequency, setEntityFrequency] = useState("");
@@ -58,34 +56,51 @@ export default function AddTask(props) {
       .catch((error) => {
         console.error("Pets not found");
       });
-    console.log("ownedPetsId line 61", ownedPetIds);
+    //console.log("ownedPetsId line 61", ownedPetIds);
   }, []);
 
   useEffect(() => {
-    ownedPetIds.forEach((petId) => {
-      petsRef
-        .doc(petId)
-        .get()
-        .then((document) => {
-          const { petName } = document.data();
-          const newEl = [petName, petId];
-          if (!ownedPets.some((el) => el.includes(petId))) {
-            setOwnedPets(ownedPets.concat(newEl));
-          }
+    async function getPets() {
+      let holderArray = [];
+      for (let i = 0; i < ownedPetIds.length; ++i) {
+        await petsRef
+          .doc(ownedPetIds[i])
+          .get()
+          .then((document) => {
+            const { petName } = document.data();
+            const newEl = [petName, ownedPetIds[i]];
+            // console.log(newEl, "new El line 70");
+            const containsPetId = ownedPets.some((el) =>
+              el.includes(ownedPetIds[i])
+            );
+            //console.log(containsPetId);
+            if (!containsPetId) {
+              // console.log(ownedPets, "ownedPets line73");
+              //console.log(ownedPetsCopy, "ownedPetsCopy line 74");
+              //console.log(newEl, "new El line 76");
+              holderArray.push(newEl);
+              // console.log(holderArray, "holder line 78");
+            }
+          })
+          .catch((error) => {
+            console.error("Pets not found line 87");
+          });
+      }
 
-          // console.log(ownedPets, "OwnedPets line 74");
-          // console.log("ownedPetsId line77", ownedPetIds);
-        })
-        .catch((error) => {
-          console.error("Pets not found line 79");
-        });
-    });
+      setOwnedPets(holderArray);
+    }
+    // console.log("Before getPets():");
+    // console.log(ownedPets);
+    getPets();
+    // console.log("whoooooooooooooooooooooofu");
+    // console.log(ownedPets);
+    // console.log(ownedPets, "ownedPets line 91");
   }, [ownedPetIds]);
 
-  useEffect(() => {
-    console.log(ownedPets, "OwnedPets line 86");
-    console.log("ownedPetsId line 87", ownedPetIds);
-  });
+  // useEffect(() => {
+  //   console.log(ownedPets, "OwnedPets line 95");
+  //   console.log("ownedPetsId line 96", ownedPetIds);
+  // });
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
@@ -97,14 +112,16 @@ export default function AddTask(props) {
         status: "open",
         frequency: entityFrequency,
         userId: userId,
+        petName: entityPetName,
       };
       tasksRef
         .add(data)
         .then((_doc) => {
           setEntityText("");
           setEntityDueDate(dueDate);
-          setEntityDueTime("");
+          setEntityDueTime("12:00:00");
           setEntityPetId("");
+          setEntityPetName("");
           setEntityStatus("open");
           setEntityFrequency("");
           Keyboard.dismiss();
@@ -118,13 +135,11 @@ export default function AddTask(props) {
 
   const onChange = (event, value) => {
     setDueDate(value.toDateString());
-    //console.log(value.toDateString(), "value 115");
     const time = value.toLocaleTimeString();
-    //console.log(time, "time 117");
     setEntityDueTime(time);
     setSelDate(value);
   };
-  //console.log(ownedPets, "OwnedPets line 153");
+  //console.log(ownedPets, "OwnedPets line 123");
   return (
     <SafeAreaView>
       <View style={styles.formContainer}>
@@ -147,6 +162,7 @@ export default function AddTask(props) {
         <View style={[styles.container, { width: 250, borderWidth: 2 }]}>
           {ownedPets.length > 0 ? (
             ownedPets.map((pet) => {
+              console.log(pet, "pet line 147");
               return (
                 <View
                   style={[styles.container, { flexDirection: "row" }]}
@@ -162,9 +178,10 @@ export default function AddTask(props) {
                       onPress={() => {
                         setChecked(pet[1]);
                         setEntityPetId(pet[1]);
+                        setEntityPetName(pet[0]);
                       }}
                       style={styles.container}
-                      color={colors.pawsomeblue}
+                      color={colors.dkblue}
                       uncheckedColor={colors.wheat}
                     />
                   </View>
