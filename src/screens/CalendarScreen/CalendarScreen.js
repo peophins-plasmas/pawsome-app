@@ -39,9 +39,12 @@ export default function CalendarScreen(props) {
   const userId = props.extraData.id;
 
   useEffect(() => {
+    let sortedTasks;
     tasksRef
+      .orderBy("dueTime", "asc")
       .where("userId", "==", userId)
       .where("dueDate", "==", dueDate.toString())
+
       .onSnapshot(
         (querySnapshot) => {
           const newTasks = [];
@@ -49,8 +52,32 @@ export default function CalendarScreen(props) {
             const task = doc.data();
             task.id = doc.id;
             newTasks.push(task);
+            sortedTasks = newTasks.sort((a, b) => {
+              console.log("a in HIIIIIII 56", a);
+              let aAPM = a["dueTime"].split(" ");
+              console.log(aAPM, "aAPM line 58");
+              let timeArrA = aAPM[0].split(":");
+              let aHour = parseInt(timeArrA[0]);
+              if (aAPM[1] == "PM" && aHour[0] !== 12) {
+                aHour = aHour + 12;
+              }
+
+              let bAPM = b.dueTime.split(" ");
+              let timeArrB = bAPM[0].split(":");
+              let bHour = parseInt(timeArrB[0]);
+              if (bAPM[1] == "PM" && bHour[0] < 12) {
+                bHour = bHour + 12;
+              }
+              if (aHour !== bHour) {
+                return aHour - bHour;
+              } else {
+                const minutesA = parseInt(timeArrA[1]);
+                const minutesB = parseInt(timeArrB[1]);
+                return minutesA - minutesB;
+              }
+            });
           });
-          setTasks(newTasks);
+          setTasks(sortedTasks);
         },
         (error) => {
           console.log(error);
@@ -61,7 +88,7 @@ export default function CalendarScreen(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-      <View>
+        <View>
           <Text style={{ fontSize: 20 }}>Tasks</Text>
         </View>
         <View style={styles.container}>
