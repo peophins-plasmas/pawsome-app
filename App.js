@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
-import { NavigationContainer } from "@react-navigation/native";
+import { DrawerActions, NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text, View, Button, Image, Alert } from "react-native";
 import {
@@ -16,7 +16,7 @@ import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
 import BottomNav from "./src/Navigation/BottomNav";
 import { navigationRef } from "./src/Navigation/RootNavigator";
-import { Provider as PaperProvider } from "react-native-paper";
+import { Provider as PaperProvider, Drawer as PaperDrawer } from "react-native-paper";
 import {
   createDrawerNavigator,
   DrawerItem,
@@ -25,6 +25,7 @@ import {
 } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import styles, { colors } from "./src/screens/combinedStyles";
+import { Avatar } from "react-native-elements";
 
 if (!global.btoa) {
   global.btoa = encode;
@@ -82,15 +83,25 @@ export default function App() {
       />
     );
   }
-  // function HomeStack() {
-  //   return (
-  //     <Stack.Navigator>
-  //       <Stack.Screen name="Pet">
-  //         {(props) => <PetScreen {...props} pet={chosenPet} navigation={props.navigation}/>}
-  //       </Stack.Screen>
-  //     </Stack.Navigator>
-  //   );
-  // }
+  function HomeStack() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="All Pets" options={{
+          safeAreaInsets: { top: 0 },
+          headerTitleStyle: { alignSelf: 'center'},
+          headerStyle:{ backgroundColor: 'transparent' } 
+        }}>
+          {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation}/>}
+        </Stack.Screen>
+        <Stack.Screen name="Pet" options={{
+          safeAreaInsets: { top: 0 },
+          headerStyle:{ backgroundColor: 'transparent' } 
+        }}>
+          {(props) => <PetScreen {...props} navigation={props.navigation}/>}
+        </Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
 
   function MyDrawer() {
     return (
@@ -106,44 +117,22 @@ export default function App() {
         }}
       >
         <Drawer.Screen
-          name="Home"
-          options={{
-            headerTitle: LogoTitle,
-            headerStyle: {
-              backgroundColor: colors.pawsomeblue,
-            },
-            headerShown: true,
-            drawerIcon: () => (
-              <Ionicons
-                name="ios-home-outline"
-                size={32}
-                color={colors.yellow}
-              />
-            ),
-          }}
-        >
-          {(props) => (
-            <HomeScreen
-              {...props}
-              extraData={user}
-              navigation={props.navigation}
-            />
-          )}
-        </Drawer.Screen>
-        <Drawer.Screen
           name="Profile"
           options={{
+            drawerLabel: () => <Text>Me</Text>,
             headerStyle: {
               backgroundColor: colors.pawsomeblue,
             },
             headerTitle: LogoTitle,
             headerShown: true,
             drawerIcon: () => (
-              <Ionicons
-                name="ios-person-outline"
-                size={32}
-                color={colors.yellow}
-              />
+              <Avatar  avatarStyle={{ padding: 30 }}
+              activeOpacity={0.2}
+              containerStyle={{ backgroundColor: "#BDBDBD" }}
+              onPress={() => alert("onPress")}
+              rounded
+              size="large"
+              source={{ uri: user.image }} />
             ),
           }}
         >
@@ -155,9 +144,23 @@ export default function App() {
             />
           )}
         </Drawer.Screen>
+        <Drawer.Screen name="All Pets" component={HomeStack} options={{
+            headerTitle: LogoTitle,
+            headerStyle: {
+              backgroundColor: colors.pawsomeblue,
+            },
+            headerShown: true,
+            drawerIcon: () => (
+              <Ionicons
+                name="ios-paw-outline"
+                size={32}
+                color={colors.yellow}
+              />
+            ),
+          }}/>
 
         <Drawer.Screen
-          name="Calendar"
+          name="Tasks"
           options={{
             headerStyle: {
               backgroundColor: colors.pawsomeblue,
@@ -175,29 +178,6 @@ export default function App() {
         >
           {(props) => (
             <CalendarScreen
-              {...props}
-              extraData={user}
-              navigation={props.navigation}
-            />
-          )}
-        </Drawer.Screen>
-
-        <Drawer.Screen
-          name="Pet"
-          options={{
-            styles: { color: "red" },
-            headerStyle: {
-              backgroundColor: colors.pawsomeblue,
-            },
-            headerTitle: LogoTitle,
-            headerShown: true,
-            drawerLabel: () => null,
-            title: "",
-            drawerIcon: () => null,
-          }}
-        >
-          {(props) => (
-            <PetScreen
               {...props}
               extraData={user}
               navigation={props.navigation}
