@@ -20,6 +20,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
 import * as RootNavigator from "../../Navigation/RootNavigator";
 import { createStackNavigator } from "@react-navigation/stack";
+import { styles as moreStyles } from "../combinedStyles"
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -95,6 +96,9 @@ export default function HomeScreen(props) {
   return (
     <SafeAreaView>
       <ScrollView>
+        <View>
+          <Text style={{ fontSize: 20 }}>All Pets</Text>
+        </View>
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}

@@ -35,7 +35,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
   
   const Tab = createMaterialBottomTabNavigator();
   
-  export default function BottomNav(props) {
+  export default function BottomNav(user) {
     return (
       <Tab.Navigator
         shifting={true}
@@ -47,7 +47,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
       >
         <Tab.Screen
           name="Home"
-          children={() => <HomeScreen {...props} extraData={props.extraData} />}
+          children={() => <HomeScreen extraData={user} />}
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ color }) => (
@@ -55,7 +55,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Calendar"
           children={() => <CalendarScreen extraData={props.extraData} />}
           options={{
@@ -74,7 +74,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
               <Ionicons name="ios-person-outline" color={color} size={26} />
             ),
           }}
-        />
+        /> */}
       </Tab.Navigator>
     );
   }
