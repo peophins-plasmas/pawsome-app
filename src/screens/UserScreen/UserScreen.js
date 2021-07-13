@@ -25,6 +25,7 @@ export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
   const [users, setUsers] = useState([]);
   const [vets, setVets] = useState([]);
+  const [pets, setPets] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
   const [caredPets, setCaredPets] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -108,7 +109,7 @@ export default function UserScreen(props) {
     );
   }, []);
 
-  const renderUserEntity = ({ item, index }) => {
+  const renderUserEntity = ({ item }) => {
     return (
       <View style={styles.container}>
         <View style={styles.userContainer}>
@@ -132,7 +133,7 @@ export default function UserScreen(props) {
     );
   };
 
-  const renderVetEntity = ({ item, index }) => {
+  const renderVetEntity = ({ item }) => {
     return (
       <View style={styles.container}>
         <Modal
@@ -171,7 +172,8 @@ export default function UserScreen(props) {
     );
   };
 
-  const renderOwnedPetEntity = ({ item, index }) => {
+  const renderOwnedPetEntity = ({ item }) => {
+    console.log('PET ITEM>>>>', item)
     return (
       <View style={styles.container}>
         <Text style={styles.entityText}>My Pets:</Text>
@@ -215,7 +217,7 @@ export default function UserScreen(props) {
     );
   };
 
-  const renderCaredPetEntity = ({ item, index }) => {
+  const renderCaredPetEntity = ({ item }) => {
     return (
       <View style={styles.container}>
         <Text style={styles.entityText}>Friends:</Text>
@@ -254,16 +256,6 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderOwnedPetEntity}
           />
-          {/* <FlatList
-            data={ownedPets}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => navigation.navigate("PetDetails", item)}
-              >
-                <Text style={styles.titleTextForm}>{item.title}</Text>
-              </TouchableOpacity>
-            )}
-          /> */}
           <FlatList
             horizontal
             data={caredPets}
@@ -279,6 +271,7 @@ export default function UserScreen(props) {
           />
           <View style={{ height: 100 }}></View>
         </ScrollView>
+
       )}
     </SafeAreaView>
   );

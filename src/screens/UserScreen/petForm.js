@@ -5,47 +5,28 @@ import styles from './styles';
 import { Formik } from 'formik';
 import colors from '../combinedStyles'
 
-export default function PetForm(props) {
 
-  console.log('PROPS ON PETFORM', props)
+export default function PetForm(props) {
 
   const petsRef = firebase.firestore().collection("pets");
   const userId = props.extraData.id
 
-  const [entityName, setEntityName] = useState("");
-  const [entitySpecies, setEntitySpecies] = useState("");
-  const [entityWeight, setEntityWeight] = useState("");
-
-  const addPet = ({}) => {
-    if (entityName && entityName.length > 0) {
-      const data = {
-        petName: entityName,
-        species: entitySpecies,
-        weight: entityWeight,
-        ownerId: userId
-      };
-      petsRef
-        .add(data)
-        .then((_doc) => {
-          setEntityName("");
-          setEntitySpecies("");
-          setEntityWeight("");
-          Keyboard.dismiss();
-        })
-        .catch((error) => {
-          alert(error);
-        });
-    }
-    Alert.alert("Submitted!", "Pet Added!");
-  }
-
   return (
     <View style={styles.containerForm}>
       <Formik
-        initialValues={{ petName: '', species: '', weight: '', ownerId: userId }}
-        onSubmit={(values) => {
-          addPet();
-        }}
+        initialValues={{ petName: '', species: '', weight: '', ownerId: userId, image: 'https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png' }}
+        onSubmit={(values, actions) => {
+                  actions.resetForm();
+                  petsRef.add({
+                    ownerId: userId,
+                    image: values.image,
+                    petName: values.petName,
+                    species: values.species,
+                    weight: values.weight,
+
+        })
+        Alert.alert('Pet Submitted!')
+      }}
       >
         {props => (
           <View style={styles.button}>
@@ -60,12 +41,10 @@ export default function PetForm(props) {
             />
             <TextInput
               style={styles.inputForm}
-              multiline
               placeholder='Dog? Cat? Bird?'
               onChangeText={props.handleChange('species')}
               value={props.values.species}
             />
-
             <TextInput
               style={styles.inputForm}
               placeholder='How much do I weigh?'
