@@ -1,12 +1,16 @@
 import { StyleSheet } from "react-native";
-import { colors } from "../combinedStyles"
+import { colors } from "../combinedStyles";
 
 export default StyleSheet.create({
-
+  modalContainer: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "space-between",
+  },
   userContainer: {
     flexDirection: "row",
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   formContainer: {
     flexDirection: "row",
@@ -23,10 +27,10 @@ export default StyleSheet.create({
   },
   header: {
     fontSize: 25,
-    alignSelf: 'center',
+    alignSelf: "center",
     padding: 10,
-    fontWeight: 'bold',
-    color: colors.dkblue
+    fontWeight: "bold",
+    color: colors.dkblue,
   },
   input: {
     height: 48,
@@ -40,7 +44,7 @@ export default StyleSheet.create({
   listContainer: {
     marginTop: 20,
     padding: 20,
-    borderColor: 'black'
+    borderColor: "black",
   },
   entityContainer: {
     flex: 1,
@@ -58,7 +62,7 @@ export default StyleSheet.create({
   },
   imageContainer: {
     height: 20,
-    width: 20
+    width: 20,
   },
   petImage: {
     flexDirection: "row",
@@ -68,7 +72,7 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 50,
   },
   modalView: {
     margin: 20,
@@ -79,20 +83,20 @@ export default StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   buttonOpen: {
     backgroundColor: colors.dkblue,
-    margin: 10
+    margin: 10,
   },
   buttonClose: {
     backgroundColor: "#2196F3",
@@ -100,15 +104,15 @@ export default StyleSheet.create({
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   titleTextForm: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.dkblue,
   },
   paragraphForm: {
@@ -121,24 +125,24 @@ export default StyleSheet.create({
   },
   inputForm: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     padding: 10,
     fontSize: 16,
     borderRadius: 6,
   },
   modalToggle: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 10,
     height: 65,
     width: 65,
     borderWidth: 1,
-    color: 'white',
+    color: "white",
     borderColor: colors.wheat,
     backgroundColor: colors.wheat,
     padding: 10,
     borderRadius: 10,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   modalClose: {
     marginTop: 20,
@@ -146,5 +150,5 @@ export default StyleSheet.create({
   },
   modalContent: {
     flex: 1,
-  }
+  },
 });

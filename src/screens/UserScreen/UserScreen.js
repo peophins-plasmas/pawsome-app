@@ -20,8 +20,8 @@ import { Avatar } from "react-native-elements";
 import PetForm from "./petForm";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { colors } from "../combinedStyles";
-import AddButton from "../../Components/AddButton"
-import * as RootNavigator from "../../Navigation/RootNavigator"
+import AddButton from "../../Components/AddButton";
+import * as RootNavigator from "../../Navigation/RootNavigator";
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -146,69 +146,79 @@ export default function UserScreen(props) {
           />
           <Text style={styles.entityText}>My Pets:</Text>
           <View style={styles.petImage}>
-          {ownedPets.map((pet) => {
-            return (
-            <View key={pet.id} style={styles.petImage}>
-              <Avatar
-              activeOpacity={0.2}
-              containerStyle={{ backgroundColor: "#BDBDBD" }}
-              onPress={() => {
-                RootNavigator.navigate("Pet", { pet: pet })
-              }}
-              rounded
-              size='large'
-              source={{ uri: pet.image }}
-              />
-          </View>
-          )})}
-            <AddButton extraData={props.extraData}/>
+            {ownedPets.map((pet) => {
+              return (
+                <View key={pet.id} style={styles.petImage}>
+                  <Avatar
+                    activeOpacity={0.2}
+                    containerStyle={{ backgroundColor: "#BDBDBD" }}
+                    onPress={() => {
+                      RootNavigator.navigate("Pet", { pet: pet });
+                    }}
+                    rounded
+                    size="large"
+                    source={{ uri: pet.image }}
+                  />
+                </View>
+              );
+            })}
+            <AddButton extraData={props.extraData} />
           </View>
           <Text style={styles.entityText}>Pets I Sit For:</Text>
           <View style={styles.petImage}>
-          {caredPets.map((pet) => {
-            return (
-            <View key={pet.id} style={styles.petImage}>
-              <Avatar
-              activeOpacity={0.2}
-              containerStyle={{ backgroundColor: "#BDBDBD" }}
-              onPress={() => alert("onPress")}
-              rounded
-              size='large'
-              source={{ uri: pet.image }}
-              />
+            {caredPets.map((pet) => {
+              return (
+                <View key={pet.id} style={styles.petImage}>
+                  <Avatar
+                    activeOpacity={0.2}
+                    containerStyle={{ backgroundColor: "#BDBDBD" }}
+                    onPress={() => alert("onPress")}
+                    rounded
+                    size="large"
+                    source={{ uri: pet.image }}
+                  />
+                </View>
+              );
+            })}
           </View>
-          )})}
-          </View>
-          {vets.map((vet) => {
-            return (
-            <View key={vet.id} style={styles.container}>
+          <View style={styles.modalContainer}>
             <Modal
-              animationType='slide'
+              animationType="slide"
               transparent={true}
               visible={modalVisible}
               onRequestClose={() => {
                 setModalVisible(!modalVisible);
               }}
             >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>{vet.vetName}</Text>
-              <Text style={styles.modalText}>{vet.email}</Text>
-              <Text style={styles.modalText}>{vet.phoneNum}</Text>
-              <Text style={styles.modalText}>{vet.address}</Text>
-              <Text style={styles.modalText}>{vet.hours}</Text>
+              {vets.map((vet) => {
+                return (
+                  <View key={vet.id} style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <Text style={styles.modalText}>{vet.vetName}</Text>
+                      <Text style={styles.modalText}>{vet.email}</Text>
+                      <Text style={styles.modalText}>{vet.phoneNum}</Text>
+                      <Text style={styles.modalText}>{vet.address}</Text>
+                      <Text style={styles.modalText}>{vet.hours}</Text>
+                      <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => {
+                          console.log("vet was clicked");
+                        }}
+                      >
+                        <Text style={styles.textStyle}>Edit</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                );
+              })}
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
                 <Text style={styles.textStyle}>Close</Text>
               </Pressable>
-            </View>
+            </Modal>
           </View>
-        </Modal>
-
-      </View>
-          )})}
           <Pressable
             style={[styles.button, styles.buttonOpen]}
             onPress={() => setModalVisible(true)}
@@ -217,7 +227,6 @@ export default function UserScreen(props) {
           </Pressable>
           <View style={{ height: 100 }}></View>
         </ScrollView>
-
       )}
     </SafeAreaView>
   );
