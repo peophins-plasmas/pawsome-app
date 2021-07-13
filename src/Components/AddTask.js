@@ -224,6 +224,8 @@ export default function AddTask(props) {
           />
         </View>
       </View>
+      <View style={styles.scrollPad}></View>
+      <View style={styles.scrollPad}></View>
     </SafeAreaView>
   );
 }
