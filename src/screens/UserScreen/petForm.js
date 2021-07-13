@@ -23,7 +23,24 @@ export default function PetForm(props) {
                     petName: values.petName,
                     species: values.species,
                     weight: values.weight,
-
+                    medications: ["none"],
+                    additionalInfo: "",
+                    allergies: "",
+                    amountDryFood: "",
+                    amountWetFood: "",
+                    behavior: "",
+                    birthday: "",
+                    caretakerId: ["none"],
+                    vetId: ["none"],
+                    dailyTreatLimit: null,
+                    dislikes: "",
+                    dryFoodBrand: "",
+                    features: "",
+                    wetFoodBrand: "",
+                    feedingScheduleDry: "",
+                    feedingScheduleWet: "",
+                    likes: "",
+                    tasks: ["none"]
         })
         Alert.alert('Pet Submitted!')
       }}

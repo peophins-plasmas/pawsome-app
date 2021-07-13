@@ -267,7 +267,9 @@ export default function App() {
         ) : (
           <Stack.Navigator>
             <>
-              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} 
+              options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
+               }}/>
               <Stack.Screen
                 name="Registration"
                 component={RegistrationScreen}
