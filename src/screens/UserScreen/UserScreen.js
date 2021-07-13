@@ -236,6 +236,9 @@ export default function UserScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View>
+          <Text style={{ fontSize: 20 }}>My Profile</Text>
+        </View>
       {users && (
         <ScrollView style={styles.listContainer}>
           <FlatList
@@ -274,6 +277,7 @@ export default function UserScreen(props) {
             removeClippedSubviews={true}
             renderItem={renderVetEntity}
           />
+          <View style={{ height: 100 }}></View>
         </ScrollView>
       )}
     </SafeAreaView>

@@ -9,6 +9,7 @@ import {
   Alert,
   SafeAreaView,
   Button,
+  ScrollView
 } from "react-native";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
@@ -19,6 +20,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
 import * as RootNavigator from "../../Navigation/RootNavigator";
 import { createStackNavigator } from "@react-navigation/stack";
+import { styles as moreStyles } from "../combinedStyles"
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -93,9 +95,7 @@ export default function HomeScreen(props) {
 
   return (
     <SafeAreaView>
-      <View style={styles.container}>
-        <UploadImage user={props.extraData} />
-      </View>
+      <ScrollView>
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
@@ -121,6 +121,8 @@ export default function HomeScreen(props) {
           />
         </View>
       )}
+      <View style={{ height: 100 }}></View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
