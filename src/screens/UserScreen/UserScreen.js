@@ -21,6 +21,7 @@ import PetForm from "./petForm";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { colors } from "../combinedStyles";
 import AddButton from "../../Components/AddButton"
+import * as RootNavigator from "../../Navigation/RootNavigator"
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -39,7 +40,6 @@ export default function UserScreen(props) {
 
   const userId = props.extraData.id;
   const vetId = props.extraData.vetId;
-  console.log("VETID", vetId);
 
   useEffect(() => {
     usersRef.where("id", "==", userId).onSnapshot(
@@ -134,45 +134,6 @@ export default function UserScreen(props) {
     );
   };
 
-  const renderVetEntity = ({ item }) => {
-    return (
-      <View style={styles.container}>
-        <Modal
-          animationType='slide'
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          {console.log("ITEM", item)}
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>{item.vetName}</Text>
-              <Text style={styles.modalText}>{item.email}</Text>
-              <Text style={styles.modalText}>{item.phoneNum}</Text>
-              <Text style={styles.modalText}>{item.address}</Text>
-              <Text style={styles.modalText}>{item.hours}</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Close</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Vet Info</Text>
-        </Pressable>
-      </View>
-    );
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -194,7 +155,9 @@ export default function UserScreen(props) {
               <Avatar
               activeOpacity={0.2}
               containerStyle={{ backgroundColor: "#BDBDBD" }}
-              onPress={() => alert("onPress")}
+              onPress={() => {
+                RootNavigator.navigate("Pet", { pet: pet })
+              }}
               rounded
               size='large'
               source={{ uri: pet.image }}
@@ -219,12 +182,42 @@ export default function UserScreen(props) {
           </View>
           )})}
           </View>
-          <FlatList
-            data={vets}
-            keyExtractor={(item) => item.id}
-            removeClippedSubviews={true}
-            renderItem={renderVetEntity}
-          />
+          {vets.map((vet) => {
+            return (
+            <View key={vet.id} style={styles.container}>
+            <Modal
+              animationType='slide'
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{vet.vetName}</Text>
+              <Text style={styles.modalText}>{vet.email}</Text>
+              <Text style={styles.modalText}>{vet.phoneNum}</Text>
+              <Text style={styles.modalText}>{vet.address}</Text>
+              <Text style={styles.modalText}>{vet.hours}</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+
+      </View>
+          )})}
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.textStyle}>My Vets</Text>
+          </Pressable>
           <View style={{ height: 100 }}></View>
         </ScrollView>
 
