@@ -52,30 +52,35 @@ export default function CalendarScreen(props) {
             const task = doc.data();
             task.id = doc.id;
             newTasks.push(task);
-            sortedTasks = newTasks.sort((a, b) => {
-              console.log("a in HIIIIIII 56", a);
-              let aAPM = a["dueTime"].split(" ");
-              console.log(aAPM, "aAPM line 58");
-              let timeArrA = aAPM[0].split(":");
-              let aHour = parseInt(timeArrA[0]);
-              if (aAPM[1] == "PM" && aHour[0] !== 12) {
-                aHour = aHour + 12;
-              }
 
-              let bAPM = b.dueTime.split(" ");
-              let timeArrB = bAPM[0].split(":");
-              let bHour = parseInt(timeArrB[0]);
-              if (bAPM[1] == "PM" && bHour[0] < 12) {
-                bHour = bHour + 12;
-              }
-              if (aHour !== bHour) {
-                return aHour - bHour;
-              } else {
-                const minutesA = parseInt(timeArrA[1]);
-                const minutesB = parseInt(timeArrB[1]);
-                return minutesA - minutesB;
-              }
-            });
+            if (newTasks.length > 1) {
+              sortedTasks = newTasks.sort((a, b) => {
+                console.log("a in HIIIIIII 56", a);
+                let aAPM = a["dueTime"].split(" ");
+                console.log(aAPM, "aAPM line 58");
+                let timeArrA = aAPM[0].split(":");
+                let aHour = parseInt(timeArrA[0]);
+                if (aAPM[1] == "PM" && aHour[0] !== 12) {
+                  aHour = aHour + 12;
+                }
+
+                let bAPM = b.dueTime.split(" ");
+                let timeArrB = bAPM[0].split(":");
+                let bHour = parseInt(timeArrB[0]);
+                if (bAPM[1] == "PM" && bHour[0] < 12) {
+                  bHour = bHour + 12;
+                }
+                if (aHour !== bHour) {
+                  return aHour - bHour;
+                } else {
+                  const minutesA = parseInt(timeArrA[1]);
+                  const minutesB = parseInt(timeArrB[1]);
+                  return minutesA - minutesB;
+                }
+              });
+            } else {
+              sortedTasks = newTasks;
+            }
           });
           setTasks(sortedTasks);
         },
@@ -88,7 +93,6 @@ export default function CalendarScreen(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-
         <View style={styles.container}>
           <Text>Today is {currentDate}.</Text>
           <Text>It is {currentTime}.</Text>
@@ -123,10 +127,12 @@ export default function CalendarScreen(props) {
         />
 
         <View style={[styles.container]}>
-          <Text style={styles.sectionHeaderText}>Today&apos;s Chores</Text>
+          <Text style={styles.sectionHeaderText}>
+            Selected Day&apos;s Chores
+          </Text>
         </View>
         <View style={styles.container}>
-          {tasks.length > 0 ? (
+          {tasks && tasks.length > 0 ? (
             tasks.map((task) => {
               return (
                 <Card key={task.id} style={styles.cardContainer}>
