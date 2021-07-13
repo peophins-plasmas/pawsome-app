@@ -36,6 +36,7 @@ if (!global.atob) {
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -83,19 +84,40 @@ export default function App() {
       />
     );
   }
+
+  function UserProfileStack() {
+    return (
+      <ProfileStack.Navigator>
+        <ProfileStack.Screen name="My Profile" options={{
+          safeAreaInsets: { top: 0 },
+          headerTitleStyle: { alignSelf: 'center'},
+          headerStyle:{ backgroundColor: 'transparent' }
+        }}>
+          {(props) => <UserScreen {...props} extraData={user} navigation={props.navigation}/>}
+        </ProfileStack.Screen>
+        <ProfileStack.Screen name="Pet" options={{
+          safeAreaInsets: { top: 0 },
+          headerStyle:{ backgroundColor: 'transparent' }
+        }}>
+          {(props) => <PetScreen {...props} navigation={props.navigation}/>}
+        </ProfileStack.Screen>
+      </ProfileStack.Navigator>
+    );
+  }
+
   function HomeStack() {
     return (
       <Stack.Navigator>
         <Stack.Screen name="All Pets" options={{
           safeAreaInsets: { top: 0 },
           headerTitleStyle: { alignSelf: 'center'},
-          headerStyle:{ backgroundColor: 'transparent' } 
+          headerStyle:{ backgroundColor: 'transparent' }
         }}>
           {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation}/>}
         </Stack.Screen>
         <Stack.Screen name="Pet" options={{
           safeAreaInsets: { top: 0 },
-          headerStyle:{ backgroundColor: 'transparent' } 
+          headerStyle:{ backgroundColor: 'transparent' }
         }}>
           {(props) => <PetScreen {...props} navigation={props.navigation}/>}
         </Stack.Screen>
@@ -116,7 +138,7 @@ export default function App() {
           width: 200,
         }}
       >
-        <Drawer.Screen
+        {/* <Drawer.Screen
           name="Profile"
           options={{
             drawerLabel: () => <Text>Me</Text>,
@@ -143,8 +165,25 @@ export default function App() {
               navigation={props.navigation}
             />
           )}
-        </Drawer.Screen>
-        <Drawer.Screen name="All Pets" component={HomeStack} options={{
+        </Drawer.Screen> */}
+
+        <Drawer.Screen name="Profile" component={UserProfileStack} options={{
+            headerTitle: LogoTitle,
+            headerStyle: {
+              backgroundColor: colors.pawsomeblue,
+            },
+            headerShown: true,
+            drawerIcon: () => (
+              <Avatar
+              activeOpacity={0.2}
+              containerStyle={{ backgroundColor: "#BDBDBD" }}
+              onPress={() => alert("onPress")}
+              rounded
+              size="medium"
+              source={{ uri: user.image }} />
+            ),
+          }}/>
+            <Drawer.Screen name="All Pets" component={HomeStack} options={{
             headerTitle: LogoTitle,
             headerStyle: {
               backgroundColor: colors.pawsomeblue,
@@ -158,7 +197,6 @@ export default function App() {
               />
             ),
           }}/>
-
         <Drawer.Screen
           name="Tasks"
           options={{

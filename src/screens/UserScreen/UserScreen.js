@@ -20,6 +20,8 @@ import { Avatar } from "react-native-elements";
 import PetForm from "./petForm";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { colors } from "../combinedStyles";
+import AddButton from "../../Components/AddButton"
+import * as RootNavigator from "../../Navigation/RootNavigator"
 
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -38,7 +40,6 @@ export default function UserScreen(props) {
 
   const userId = props.extraData.id;
   const vetId = props.extraData.vetId;
-  console.log("VETID", vetId);
 
   useEffect(() => {
     usersRef.where("id", "==", userId).onSnapshot(
@@ -133,26 +134,69 @@ export default function UserScreen(props) {
     );
   };
 
-  const renderVetEntity = ({ item }) => {
-    return (
-      <View style={styles.container}>
-        <Modal
-          animationType='slide'
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          {console.log("ITEM", item)}
+  return (
+    <SafeAreaView style={styles.container}>
+      {users && (
+        <ScrollView style={styles.listContainer}>
+          <FlatList
+            data={users}
+            renderItem={renderUserEntity}
+            keyExtractor={(item) => item.id}
+            removeClippedSubviews={true}
+          />
+          <Text style={styles.entityText}>My Pets:</Text>
+          <View style={styles.petImage}>
+          {ownedPets.map((pet) => {
+            return (
+            <View key={pet.id} style={styles.petImage}>
+              <Avatar
+              activeOpacity={0.2}
+              containerStyle={{ backgroundColor: "#BDBDBD" }}
+              onPress={() => {
+                RootNavigator.navigate("Pet", { pet: pet })
+              }}
+              rounded
+              size='large'
+              source={{ uri: pet.image }}
+              />
+          </View>
+          )})}
+            <AddButton extraData={props.extraData}/>
+          </View>
+          <Text style={styles.entityText}>Pets I Sit For:</Text>
+          <View style={styles.petImage}>
+          {caredPets.map((pet) => {
+            return (
+            <View key={pet.id} style={styles.petImage}>
+              <Avatar
+              activeOpacity={0.2}
+              containerStyle={{ backgroundColor: "#BDBDBD" }}
+              onPress={() => alert("onPress")}
+              rounded
+              size='large'
+              source={{ uri: pet.image }}
+              />
+          </View>
+          )})}
+          </View>
+          {vets.map((vet) => {
+            return (
+            <View key={vet.id} style={styles.container}>
+            <Modal
+              animationType='slide'
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>{item.vetName}</Text>
-              <Text style={styles.modalText}>{item.email}</Text>
-              <Text style={styles.modalText}>{item.phoneNum}</Text>
-              <Text style={styles.modalText}>{item.address}</Text>
-              <Text style={styles.modalText}>{item.hours}</Text>
+              <Text style={styles.modalText}>{vet.vetName}</Text>
+              <Text style={styles.modalText}>{vet.email}</Text>
+              <Text style={styles.modalText}>{vet.phoneNum}</Text>
+              <Text style={styles.modalText}>{vet.address}</Text>
+              <Text style={styles.modalText}>{vet.hours}</Text>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
@@ -162,113 +206,15 @@ export default function UserScreen(props) {
             </View>
           </View>
         </Modal>
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Vet Info</Text>
-        </Pressable>
+
       </View>
-    );
-  };
-
-  const renderOwnedPetEntity = ({ item }) => {
-    console.log('PET ITEM>>>>', item)
-    return (
-      <View style={styles.container}>
-        <Text style={styles.entityText}>My Pets:</Text>
-        <View style={styles.petImage}>
-          <Avatar
-            activeOpacity={0.2}
-            containerStyle={{ backgroundColor: "#BDBDBD" }}
-            onPress={() => alert("onPress")}
-            rounded
-            size='large'
-            source={{ uri: item.image }}
-          />
-          <Modal visible={modalOpen} animationType='slide'>
-            <SafeAreaView style={styles.modalContent}>
-              <Avatar
-                activeOpacity={0.2}
-                containerStyle={{
-                  backgroundColor: colors.wheat,
-                  alignSelf: "center",
-                  marginTop: 30,
-                }}
-                title='X'
-                rounded
-                size='small'
-                onPress={() => setModalOpen(false)}
-              />
-              <PetForm extraData={props.extraData} />
-            </SafeAreaView>
-          </Modal>
-
-          <Avatar
-            activeOpacity={0.2}
-            containerStyle={{ backgroundColor: colors.wheat }}
-            onPress={() => setModalOpen(true)}
-            icon={{ name: "add" }}
-            rounded
-            size='large'
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const renderCaredPetEntity = ({ item }) => {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.entityText}>Friends:</Text>
-        <View style={styles.petImage}>
-          <Avatar
-            avatarStyle={{ padding: 30 }}
-            activeOpacity={0.2}
-            containerStyle={{ backgroundColor: "#BDBDBD" }}
-            onPress={() => alert("onPress")}
-            rounded
-            size='large'
-            source={{ uri: item.image }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <View>
-          <Text style={{ fontSize: 20 }}>My Profile</Text>
-        </View>
-      {users && (
-        <ScrollView style={styles.listContainer}>
-          <FlatList
-            data={users}
-            renderItem={renderUserEntity}
-            keyExtractor={(item) => item.id}
-            removeClippedSubviews={true}
-          />
-          <FlatList
-            horizontal
-            data={ownedPets}
-            keyExtractor={(item) => item.id}
-            removeClippedSubviews={true}
-            renderItem={renderOwnedPetEntity}
-          />
-          <FlatList
-            horizontal
-            data={caredPets}
-            keyExtractor={(item) => item.id}
-            removeClippedSubviews={true}
-            renderItem={renderCaredPetEntity}
-          />
-          <FlatList
-            data={vets}
-            keyExtractor={(item) => item.id}
-            removeClippedSubviews={true}
-            renderItem={renderVetEntity}
-          />
+          )})}
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.textStyle}>My Vets</Text>
+          </Pressable>
           <View style={{ height: 100 }}></View>
         </ScrollView>
 
