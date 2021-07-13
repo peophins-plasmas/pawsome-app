@@ -87,14 +87,16 @@ export default function App() {
     return (
       <Stack.Navigator>
         <Stack.Screen name="All Pets" options={{
-        headerShown: false,
-        headerTitle: "All Pets",
-        headerStyle: {
-        height: 50
-      }}}>
+          safeAreaInsets: { top: 0 },
+          headerTitleStyle: { alignSelf: 'center'},
+          headerStyle:{ backgroundColor: 'transparent' } 
+        }}>
           {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation}/>}
         </Stack.Screen>
-        <Stack.Screen name="Pet">
+        <Stack.Screen name="Pet" options={{
+          safeAreaInsets: { top: 0 },
+          headerStyle:{ backgroundColor: 'transparent' } 
+        }}>
           {(props) => <PetScreen {...props} navigation={props.navigation}/>}
         </Stack.Screen>
       </Stack.Navigator>

@@ -96,9 +96,6 @@ export default function HomeScreen(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View>
-          <Text style={{ fontSize: 20 }}>All Pets</Text>
-        </View>
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
