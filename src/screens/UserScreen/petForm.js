@@ -14,11 +14,11 @@ export default function PetForm(props) {
   return (
     <View style={styles.containerForm}>
       <Formik
-        initialValues={{ petName: '', species: '', weight: '', ownerId: userId, image: 'https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png' }}
+        initialValues={{ petName: '', species: '', weight: '', ownerId: [userId], image: 'https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png' }}
         onSubmit={(values, actions) => {
                   actions.resetForm();
                   petsRef.add({
-                    ownerId: userId,
+                    ownerId: [userId],
                     image: values.image,
                     petName: values.petName,
                     species: values.species,
