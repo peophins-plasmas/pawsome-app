@@ -14,7 +14,7 @@ export default function PetForm(props) {
   return (
     <View style={styles.containerForm}>
       <Formik
-        initialValues={{ petName: '', species: '', weight: '', ownerId: [userId], image: 'https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png' }}
+        initialValues={{ petName: '', species: '', weight: '', ownerId: [userId], image: 'https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png', birthday: '', sex: '', likes: '', dislikes: '', allergies: '', medications: '', features: '', behavior: '', dryFoodBrand: '', wetFoodBrand: '', additionalInfo: ''}}
         onSubmit={(values, actions) => {
                   actions.resetForm();
                   petsRef.add({
@@ -23,23 +23,24 @@ export default function PetForm(props) {
                     petName: values.petName,
                     species: values.species,
                     weight: values.weight,
-                    medications: ["none"],
-                    additionalInfo: "",
-                    allergies: "",
+                    sex: values.sex,
+                    medications: [values.medications],
+                    additionalInfo: values.additionalInfo,
+                    allergies: values.allergies,
                     amountDryFood: "",
                     amountWetFood: "",
-                    behavior: "",
-                    birthday: "",
+                    behavior: values.behavior,
+                    birthday: values.birthday,
                     caretakerId: ["none"],
                     vetId: ["none"],
                     dailyTreatLimit: null,
-                    dislikes: "",
-                    dryFoodBrand: "",
-                    features: "",
-                    wetFoodBrand: "",
+                    dislikes: values.dislikes,
+                    dryFoodBrand: values.dryFoodBrand,
+                    features: values.features,
+                    wetFoodBrand: values.wetFoodBrand,
                     feedingScheduleDry: "",
                     feedingScheduleWet: "",
-                    likes: "",
+                    likes: values.likes,
                     tasks: ["none"]
         })
         Alert.alert('Pet Submitted!')
@@ -69,7 +70,72 @@ export default function PetForm(props) {
               value={props.values.weight}
               keyboardType='numeric'
             />
-
+            <TextInput
+              style={styles.inputForm}
+              placeholder='When was I born?'
+              onChangeText={props.handleChange('birthday')}
+              value={props.values.birthday}
+            />
+            <TextInput
+              style={styles.inputForm}
+              placeholder='What sex am I?'
+              onChangeText={props.handleChange('sex')}
+              value={props.values.sex}
+            />
+            <TextInput
+              style={styles.inputForm}
+              placeholder='What do I like?'
+              onChangeText={props.handleChange('likes')}
+              value={props.values.likes}
+            />
+            <TextInput
+              style={styles.inputForm}
+              placeholder='What do I dislike?'
+              onChangeText={props.handleChange('dislikes')}
+              value={props.values.dislikes}
+            />
+            <TextInput
+              style={styles.inputForm}
+              placeholder='What am I allergic to?'
+              onChangeText={props.handleChange('allergies')}
+              value={props.values.allergies}
+            />
+            <TextInput
+              style={styles.inputForm}
+              placeholder='What meds do I need?'
+              onChangeText={props.handleChange('medications')}
+              value={props.values.medications}
+            />
+            <TextInput
+              style={styles.inputForm}
+              placeholder='What are my unique features?'
+              onChangeText={props.handleChange('features')}
+              value={props.values.features}
+            />
+            <TextInput
+              style={styles.inputForm}
+              placeholder='How do I act? Playful? Shy?'
+              onChangeText={props.handleChange('behavior')}
+              value={props.values.behavior}
+            />
+            <TextInput
+              style={styles.inputForm}
+              placeholder='Do I eat dry food? What brand?'
+              onChangeText={props.handleChange('dryFoodBrand')}
+              value={props.values.dryFoodBrand}
+            />
+            <TextInput
+              style={styles.inputForm}
+              placeholder='Do I eat wet food? What brand?'
+              onChangeText={props.handleChange('wetFoodBrand')}
+              value={props.values.wetFoodBrand}
+            />
+            <TextInput
+              style={styles.inputForm}
+              placeholder='Any other notes?'
+              onChangeText={props.handleChange('additionalInfo')}
+              value={props.values.additionalInfo}
+            />
             <Button color={colors.dkblue} title="Submit" onPress={props.handleSubmit} />
           </View>
         )}

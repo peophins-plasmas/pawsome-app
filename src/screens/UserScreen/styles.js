@@ -66,7 +66,9 @@ export default StyleSheet.create({
   },
   petImage: {
     flexDirection: "row",
-    padding: 10,
+    padding: 5,
+    flexWrap: "wrap",
+
   },
   centeredView: {
     flex: 1,
