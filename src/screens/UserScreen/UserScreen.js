@@ -21,6 +21,7 @@ import PetForm from "./petForm";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { colors } from "../combinedStyles";
 import AddButton from "../../Components/AddButton";
+import AddCaretaker from "../../Components/AddCaretaker";
 import * as RootNavigator from "../../Navigation/RootNavigator";
 
 export default function UserScreen(props) {
@@ -30,6 +31,8 @@ export default function UserScreen(props) {
   const [pets, setPets] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
   const [caredPets, setCaredPets] = useState([]);
+  const [caretakersIds, setCaretakersIds] = useState([]);
+  const [caretakersArr, setCaretakersArr] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   //make single pet state to access specific pet to pass through as props to upload image component
@@ -110,6 +113,58 @@ export default function UserScreen(props) {
     );
   }, []);
 
+  //find caretakerIds for user
+  useEffect(() => {
+    async function getCaretakersIds() {
+      await usersRef
+        .doc(userId)
+        .get()
+        .then((document) => {
+          const { caretakers } = document.data();
+          setCaretakersIds(caretakers);
+        })
+        .catch((error) => {
+          console.error("Caretaker id not found");
+        });
+    }
+    getCaretakersIds();
+  }, []);
+
+  //using the caretaker ids from user, find the caretaker's name, image
+  useEffect(() => {
+    async function getCaretakers() {
+      let holderArr = [];
+      for (let i = 0; i < caretakersIds.length; i++) {
+        await usersRef
+          .doc(caretakersIds[i])
+          .get()
+          .then((document) => {
+            const { firstName, image } = document.data();
+            const newEl = {
+              firstName: firstName,
+              image: image,
+              caretakerId: caretakersIds[i],
+            };
+            console.log("new el >>>>>", newEl);
+            const containsCaretakerId = caretakersArr.some((el) =>
+              el.includes(caretakersIds[i])
+            );
+            if (!containsCaretakerId) {
+              holderArr.push(newEl);
+            }
+          })
+          .catch((error) => {
+            console.error("Caretakers not found :(");
+          });
+      }
+      setCaretakersArr(holderArr);
+    }
+    getCaretakers();
+    console.log("caretakers in useeffect>>>>", caretakersArr);
+  }, [caretakersIds]);
+
+  console.log("caretakers outside>>>>", caretakersArr);
+
   const renderUserEntity = ({ item }) => {
     return (
       <View style={styles.container}>
@@ -162,7 +217,7 @@ export default function UserScreen(props) {
                 </View>
               );
             })}
-            <AddButton extraData={props.extraData} />
+            <AddButton extraData={props.extraData} addTo={"addPet"} />
           </View>
           <Text style={styles.entityText}>Pets I Sit For:</Text>
           <View style={styles.petImage}>
@@ -181,6 +236,36 @@ export default function UserScreen(props) {
               );
             })}
           </View>
+          {ownedPets.length > 0 && ownedPets[0] !== "none" && (
+            <View>
+              <View>
+                <Text style={styles.entityText}>My Pets&apos; Caretakers</Text>
+              </View>
+              <View style={styles.petImage}>
+                {caretakersArr.map((caretaker) => {
+                  return (
+                    <View key={caretaker.caretakerId} style={styles.petImage}>
+                      <Text>{caretaker.firstName}</Text>
+                      <Avatar
+                        activeOpacity={0.2}
+                        containerStyle={{ backgroundColor: "#BDBDBD" }}
+                        onPress={() => alert("onPress")}
+                        rounded
+                        size="large"
+                        source={{ uri: caretaker.image }}
+                      />
+                    </View>
+                  );
+                })}
+              </View>
+              <AddButton
+                user={props.extraData}
+                caretakers={caretakersArr}
+                pets={ownedPets}
+                addTo={"addCaretaker"}
+              />
+            </View>
+          )}
           <View style={styles.modalContainer}>
             <Modal
               animationType="slide"

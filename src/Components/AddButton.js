@@ -7,23 +7,21 @@ import {
   TouchableOpacity,
   SafeAreaView,
   View,
-  Modal
+  Modal,
 } from "react-native";
 import { Avatar } from "react-native-elements";
-import styles from "../screens/UserScreen/styles"
-import { colors } from "../screens/combinedStyles"
-import PetForm from "../screens/UserScreen/petForm"
+import styles from "../screens/UserScreen/styles";
+import { colors } from "../screens/combinedStyles";
+import PetForm from "../screens/UserScreen/petForm";
+import AddCaretaker from "./AddCaretaker";
 
-
-export default function AddButton (props) {
-
+export default function AddButton(props) {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <View style={styles.container}>
-
       <View style={styles.petImage}>
-        <Modal visible={modalOpen} animationType='slide'>
+        <Modal visible={modalOpen} animationType="slide">
           <SafeAreaView style={styles.modalContent}>
             <Avatar
               activeOpacity={0.2}
@@ -32,12 +30,21 @@ export default function AddButton (props) {
                 alignSelf: "center",
                 marginTop: 30,
               }}
-              title='X'
+              title="X"
               rounded
-              size='small'
+              size="small"
               onPress={() => setModalOpen(false)}
             />
-            <PetForm extraData={props.extraData} />
+            {props.addTo === "addPet" && (
+              <PetForm extraData={props.extraData} />
+            )}
+            {props.addTo === "addCaretaker" && (
+              <AddCaretaker
+                user={props.user}
+                caretakers={props.caretakers}
+                pets={props.pets}
+              />
+            )}
           </SafeAreaView>
         </Modal>
         <Avatar
@@ -46,9 +53,9 @@ export default function AddButton (props) {
           onPress={() => setModalOpen(true)}
           icon={{ name: "add" }}
           rounded
-          size='large'
+          size="large"
         />
       </View>
     </View>
   );
-};
+}
