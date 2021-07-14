@@ -21,6 +21,7 @@ import PetForm from "./petForm";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { colors } from "../combinedStyles";
 import AddButton from "../../Components/AddButton";
+import AddCaretaker from "../../Components/AddCaretaker";
 import * as RootNavigator from "../../Navigation/RootNavigator";
 
 export default function UserScreen(props) {
@@ -30,6 +31,8 @@ export default function UserScreen(props) {
   const [pets, setPets] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
   const [caredPets, setCaredPets] = useState([]);
+  const [caretakersIds, setCaretakersIds] = useState([]);
+  const [caretakersArr, setCaretakersArr] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   //make single pet state to access specific pet to pass through as props to upload image component
@@ -110,6 +113,44 @@ export default function UserScreen(props) {
     );
   }, []);
 
+  //find caretaker for user
+  useEffect(() => {
+    async function getCaretakers() {
+      await usersRef
+        .doc(userId)
+        .get()
+        .then((document) => {
+          const { caretakers } = document.data();
+          setCaretakersIds(caretakers);
+          let holderArr = [];
+          caretakersIds.map((caretakerId) => {
+            usersRef
+              .doc(caretakerId)
+              .get()
+              .then((document) => {
+                const { firstName, image } = document.data();
+                const newEl = { firstName, image, caretakerId };
+                console.log("new el >>>>>", newEl);
+                const containsCaretakerId = caretakers.some((el) =>
+                  el.includes(caretakerId)
+                );
+                if (!containsCaretakerId) {
+                  holderArr.push(newEl);
+                }
+              });
+            setCaretakersArr(holderArr);
+          });
+        })
+        .catch((error) => {
+          console.error("Caretakers not found");
+        });
+    }
+    getCaretakers();
+    console.log("caretakers in useeffect>>>>", caretakersArr);
+  }, []);
+
+  console.log("caretakers outside>>>>", caretakersArr);
+
   const renderUserEntity = ({ item }) => {
     return (
       <View style={styles.container}>
@@ -176,6 +217,24 @@ export default function UserScreen(props) {
                     rounded
                     size="large"
                     source={{ uri: pet.image }}
+                  />
+                </View>
+              );
+            })}
+          </View>
+          <Text style={styles.entityText}>My Pets&apos; Caretakers</Text>
+          <View style={styles.petImage}>
+            {caretakersArr.map((caretaker) => {
+              return (
+                <View key={caretaker.caretakerId} style={styles.petImage}>
+                  <Text>{caretaker.firstName}</Text>
+                  <Avatar
+                    activeOpacity={0.2}
+                    containerStyle={{ backgroundColor: "#BDBDBD" }}
+                    onPress={() => alert("onPress")}
+                    rounded
+                    size="large"
+                    source={{ uri: caretaker.image }}
                   />
                 </View>
               );

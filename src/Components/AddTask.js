@@ -83,7 +83,7 @@ export default function AddTask(props) {
             }
           })
           .catch((error) => {
-            console.error("Pets not found line 87");
+            console.error("Pets not found");
           });
       }
 
@@ -150,12 +150,12 @@ export default function AddTask(props) {
           </TouchableOpacity>
           <TextInput
             style={styles.input}
-            placeholder='Task name'
-            placeholderTextColor='#aaaaaa'
+            placeholder="Task name"
+            placeholderTextColor="#aaaaaa"
             onChangeText={(text) => setEntityText(text)}
             value={entityText}
-            underlineColorAndroid='transparent'
-            autoCapitalize='none'
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
           />
         </View>
 
@@ -197,10 +197,10 @@ export default function AddTask(props) {
         </View>
 
         <DateTimePicker
-          testID='dateTimePicker'
-          mode='datetime'
+          testID="dateTimePicker"
+          mode="datetime"
           is24Hour={true}
-          display='default'
+          display="default"
           onChange={onChange}
           value={selDate}
           style={{
@@ -215,12 +215,12 @@ export default function AddTask(props) {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholder='Add frequency'
-            placeholderTextColor='#aaaaaa'
+            placeholder="Add frequency"
+            placeholderTextColor="#aaaaaa"
             onChangeText={(text) => setEntityFrequency(text)}
             value={entityFrequency}
-            underlineColorAndroid='transparent'
-            autoCapitalize='none'
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
           />
         </View>
       </View>

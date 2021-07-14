@@ -31,14 +31,16 @@ export default function RegistrationScreen({ navigation }) {
           email,
           firstName,
           lastName,
-          image: "https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png",
-          ownedPetId: [],
-          relatedUsers: [],
-          tasks: [],
+          image:
+            "https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png",
+          ownedPetId: ["none"],
+          caretakers: ["none"],
+          sitterFor: ["none"],
+          tasks: ["none"],
           vetId: ["none"],
           zip: null,
-          caredPetId: [],
-          address: ""
+          caredPetId: ["none"],
+          address: "",
         };
         const usersRef = firebase.firestore().collection("users");
         usersRef
@@ -60,7 +62,7 @@ export default function RegistrationScreen({ navigation }) {
     <View style={styles.container}>
       <KeyboardAwareScrollView
         style={{ flex: 1, width: "100%" }}
-        keyboardShouldPersistTaps='always'
+        keyboardShouldPersistTaps="always"
       >
         <Image
           style={styles.logo}
@@ -68,50 +70,50 @@ export default function RegistrationScreen({ navigation }) {
         />
         <TextInput
           style={styles.input}
-          placeholder='First Name'
-          placeholderTextColor='#aaaaaa'
+          placeholder="First Name"
+          placeholderTextColor="#aaaaaa"
           onChangeText={(text) => setFirstName(text)}
           value={firstName}
-          underlineColorAndroid='transparent'
-          autoCapitalize='none'
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
         />
         <TextInput
           style={styles.input}
-          placeholder='Last Name'
-          placeholderTextColor='#aaaaaa'
+          placeholder="Last Name"
+          placeholderTextColor="#aaaaaa"
           onChangeText={(text) => setLastName(text)}
           value={lastName}
-          underlineColorAndroid='transparent'
-          autoCapitalize='none'
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
         />
         <TextInput
           style={styles.input}
-          placeholder='E-mail'
-          placeholderTextColor='#aaaaaa'
+          placeholder="E-mail"
+          placeholderTextColor="#aaaaaa"
           onChangeText={(text) => setEmail(text)}
           value={email}
-          underlineColorAndroid='transparent'
-          autoCapitalize='none'
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
         />
         <TextInput
           style={styles.input}
-          placeholderTextColor='#aaaaaa'
+          placeholderTextColor="#aaaaaa"
           secureTextEntry
-          placeholder='Password'
+          placeholder="Password"
           onChangeText={(text) => setPassword(text)}
           value={password}
-          underlineColorAndroid='transparent'
-          autoCapitalize='none'
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
         />
         <TextInput
           style={styles.input}
-          placeholderTextColor='#aaaaaa'
+          placeholderTextColor="#aaaaaa"
           secureTextEntry
-          placeholder='Confirm Password'
+          placeholder="Confirm Password"
           onChangeText={(text) => setConfirmPassword(text)}
           value={confirmPassword}
-          underlineColorAndroid='transparent'
-          autoCapitalize='none'
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
         />
         <TouchableOpacity
           style={styles.button}
