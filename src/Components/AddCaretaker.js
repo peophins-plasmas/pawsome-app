@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { firebase } from "../firebase/config";
 import {
   StyleSheet,
@@ -32,6 +32,7 @@ export default function AddCaretaker(props) {
   const [foundCaretaker, setFoundCaretaker] = useState({});
   const [selectedPet, setSelectedPet] = useState({});
   const [selectedPetCaretakers, setSelectedPetCaretakers] = useState([]);
+  const [didFindCaretaker, setDidFindCaretaker] = useState(true);
   const usersRef = firebase.firestore().collection("users");
   const petsRef = firebase.firestore().collection("pets");
   const userId = props.user.id;
@@ -53,6 +54,13 @@ export default function AddCaretaker(props) {
   //   );
   // }, [selectedPet]);
 
+  //in onpress, setState rerender, when rerender is triggered, useEffect which will call findCaretaker
+  //after findCaretaker, run alert based on what caretaker is
+
+  //   useLayoutEffect(() => {
+  //     Alert.alert("Could Not Find Caretaker");
+  //   }, [didFindCaretaker]);
+
   async function findCaretakerByEmail(emailSearch) {
     await usersRef
       .where("email", "==", emailSearch)
@@ -60,6 +68,9 @@ export default function AddCaretaker(props) {
         querySnapshot.forEach((doc) => {
           const caretaker = doc.data();
           setFoundCaretaker(caretaker);
+          if (!caretaker.id) {
+            setDidFindCaretaker(false);
+          }
         });
       })
       .catch((error) => {
@@ -67,35 +78,74 @@ export default function AddCaretaker(props) {
       });
   }
 
-  return (
-    <View style={styles.containerForm}>
-      <Formik
-        initialValues={{}}
-        onSubmit={(values, actions) => {
-          actions.resetForm();
-          petsRef.update({
-            caretakerId: ["none"],
-          });
-          Alert.alert("Pet Submitted!");
-        }}
-      >
-        {(props) => (
-          <View style={styles.button}>
-            <Text style={styles.header}>Add a caretaker for your pet</Text>
-            <TextInput
-              style={styles.inputForm}
-              placeholder="Search for caretaker"
-              //   onChangeText={props.handleChange("additionalInfo")}
-              //   value={props.values.additionalInfo}
-            />
-            <Button
-              color={colors.dkblue}
-              title="Submit"
-              onPress={props.handleSubmit}
-            />
-          </View>
-        )}
-      </Formik>
-    </View>
-  );
+  //   console.log("found caretaker>>>>", foundCaretaker);
+
+  if (!foundCaretaker.id) {
+    return (
+      <View style={styles.containerForm}>
+        <Formik
+          initialValues={{}}
+          onSubmit={(values, actions) => {
+            async function waitForAlert() {
+              await findCaretakerByEmail(values.emailSearch);
+            }
+            waitForAlert();
+            console.log("after email search>>>>", foundCaretaker.firstName);
+            let caretakerName = foundCaretaker.firstName || "none";
+            console.log("caretaker name", caretakerName);
+            // if (caretakerName === "none") {
+            //   Alert.alert("Could Not Find Caretaker");
+            // }
+          }}
+        >
+          {(props) => (
+            <View style={styles.addButton}>
+              <Text style={styles.header}>Add a caretaker for your pet</Text>
+              <TextInput
+                style={styles.inputForm}
+                autoCapitalize="none"
+                placeholder="Search for caretaker by email"
+                onChangeText={props.handleChange("emailSearch")}
+                value={props.values.emailSearch}
+              />
+              <Button
+                color={colors.dkblue}
+                title="Submit"
+                onPress={props.handleSubmit}
+              />
+            </View>
+          )}
+        </Formik>
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.containerForm}>
+        <Formik
+          initialValues={{}}
+          onSubmit={(values, actions) => {
+            // findCaretakerByEmail(values.emailSearch)
+            Alert.alert("Caretaker selected");
+          }}
+        >
+          {(props) => (
+            <View style={styles.addButton}>
+              <Text style={styles.header}>Select Pet</Text>
+              <TextInput
+                style={styles.inputForm}
+                placeholder="Choose a pet"
+                //   onChangeText={props.handleChange("additionalInfo")}
+                //   value={props.values.emailSearch}
+              />
+              <Button
+                color={colors.dkblue}
+                title="Submit"
+                onPress={props.handleSubmit}
+              />
+            </View>
+          )}
+        </Formik>
+      </View>
+    );
+  }
 }

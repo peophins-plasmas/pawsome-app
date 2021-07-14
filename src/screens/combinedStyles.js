@@ -229,4 +229,29 @@ export default StyleSheet.create({
   scrollPad: {
     height: 100,
   },
+
+  //addCaretaker & addPet forms
+  containerForm: {
+    flex: 1,
+    padding: 20,
+  },
+  addButton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  header: {
+    fontSize: 25,
+    alignSelf: "center",
+    padding: 10,
+    fontWeight: "bold",
+    color: colors.dkblue,
+  },
+  inputForm: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    padding: 10,
+    fontSize: 16,
+    borderRadius: 6,
+  },
 });

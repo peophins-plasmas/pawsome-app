@@ -25,13 +25,6 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  header: {
-    fontSize: 25,
-    alignSelf: "center",
-    padding: 10,
-    fontWeight: "bold",
-    color: colors.dkblue,
-  },
   input: {
     height: 48,
     borderRadius: 5,
@@ -68,7 +61,6 @@ export default StyleSheet.create({
     flexDirection: "row",
     padding: 5,
     flexWrap: "wrap",
-
   },
   centeredView: {
     flex: 1,
