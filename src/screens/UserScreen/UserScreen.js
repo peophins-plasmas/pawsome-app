@@ -53,7 +53,7 @@ export default function UserScreen(props) {
         });
         setUsers(userInfo);
         setSingleUser(userInfo[0])
-        console.log('USERS>>>>', userInfo)
+        console.log('USERS INFO>>>>', userInfo[0])
       },
       (error) => {
         console.log(error);
@@ -62,12 +62,21 @@ export default function UserScreen(props) {
   }, []);
 
   useEffect(() => {
+    console.log('SINGLE USER>>', singleUser)
     const petIdArray = [];
+    let user;
+    if  (Object.keys(singleUser).length === 0) {
+      console.log("HELLLLO")
+      user = {ownedPetId: ["none"]}
+    } else {
+      user = singleUser
+    }
+    console.log('USER', user)
     ownedPets.map((pet) => petIdArray.push(pet.id))
-    if (singleUser.ownedPetId.length !== petIdArray.length) {
+    if (user.ownedPetId.length !== petIdArray.length) {
       const currentUser = firebase.firestore().collection("users").doc(userId)
       petIdArray.forEach((id) => {
-        if (!singleUser.ownedPetId.includes(id)) {
+        if (!user.ownedPetId.includes(id)) {
           currentUser.update({
             ownedPetId: firebase.firestore.FieldValue.arrayUnion(id)
           })

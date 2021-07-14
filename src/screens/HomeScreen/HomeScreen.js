@@ -9,18 +9,14 @@ import {
   Alert,
   SafeAreaView,
   Button,
-  ScrollView
+  ScrollView,
+  Image,
 } from "react-native";
+import { Card } from "react-native-elements";
+import AddButton from "../../Components/AddButton"
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
-import UploadImage from "../../Components/UploadImage";
-import BottomNav from "../../Navigation/BottomNav";
-import { UserScreen, PetScreen } from "../";
-import { Ionicons } from "@expo/vector-icons";
-import { Image } from "react-native-elements";
 import * as RootNavigator from "../../Navigation/RootNavigator";
-import { createStackNavigator } from "@react-navigation/stack";
-import { styles as moreStyles } from "../combinedStyles"
 
 export default function HomeScreen(props) {
   const [entityText, setEntityText] = useState("");
@@ -78,13 +74,6 @@ export default function HomeScreen(props) {
           source={{ uri: item.image }}
           style={{ width: 200, height: 200 }}
           onPress={() => {
-            // return
-            // (<petStack.Navigator>
-            //       <petStack.Screen name="Pet">
-            //        {() => <PetScreen pet={item}/>}
-            //      </petStack.Screen>
-            //      </petStack.Navigator>);
-
             RootNavigator.navigate("Pet", { pet: item });
           }}
         />
@@ -96,8 +85,40 @@ export default function HomeScreen(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-      <View style={styles.formContainer}>
-        <TextInput
+        <View>
+          {console.log("ALL PETS", pets)}
+          {pets.map((pet) => {
+            return (
+            <Card>
+              <Card.Title>{pet.petName}</Card.Title>
+                <Card.Divider />
+                  <View
+                    style={{
+                      position: "relative",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Image
+                      style={{ width: "100%", height: 100 }}
+                      resizeMode="contain"
+                      source={{
+                        uri: pet.image
+                      }}
+                    />
+                    <Text>Birthday: {pet.birthday || "unknown"}</Text>
+                    <Button title="See More" onPress={() => {
+                        RootNavigator.navigate("Pet", { pet: pet });
+                      }}>
+                    </Button>
+                  </View>
+            </Card>
+            )
+          })}
+        </View>
+
+        <View style={styles.formContainer}>
+        <AddButton extraData={props.extraData} />
+        {/* <TextInput
           style={styles.input}
           placeholder='Add new pet'
           placeholderTextColor='#aaaaaa'
@@ -108,19 +129,9 @@ export default function HomeScreen(props) {
         />
         <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
           <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
-      {pets && (
-        <View style={styles.listContainer}>
-          <FlatList
-            data={pets}
-            renderItem={renderEntity}
-            keyExtractor={(item) => item.id}
-            removeClippedSubviews={true}
-          />
-        </View>
-      )}
       <View style={{ height: 100 }}></View>
       </ScrollView>
     </SafeAreaView>
