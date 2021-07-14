@@ -113,7 +113,7 @@ export default function UserScreen(props) {
     );
   }, []);
 
-  //find caretaker for user
+  //find caretakerIds for user
   useEffect(() => {
     async function getCaretakersIds() {
       await usersRef
@@ -124,15 +124,13 @@ export default function UserScreen(props) {
           setCaretakersIds(caretakers);
         })
         .catch((error) => {
-          console.error("Caretakers not found");
+          console.error("Caretaker id not found");
         });
     }
     getCaretakersIds();
-    console.log("caretakers IDs inside>>>>>", caretakersIds);
   }, []);
 
-  console.log("caretakers IDs outside>>>>>", caretakersIds);
-
+  //using the caretaker ids from user, find the caretaker's name, image
   useEffect(() => {
     async function getCaretakers() {
       let holderArr = [];
@@ -142,7 +140,11 @@ export default function UserScreen(props) {
           .get()
           .then((document) => {
             const { firstName, image } = document.data();
-            const newEl = [firstName, image, caretakersIds[i]];
+            const newEl = {
+              firstName: firstName,
+              image: image,
+              caretakerId: caretakersIds[i],
+            };
             console.log("new el >>>>>", newEl);
             const containsCaretakerId = caretakersArr.some((el) =>
               el.includes(caretakersIds[i])
@@ -152,7 +154,7 @@ export default function UserScreen(props) {
             }
           })
           .catch((error) => {
-            console.error("Caretakers not found");
+            console.error("Caretakers not found :(");
           });
       }
       setCaretakersArr(holderArr);

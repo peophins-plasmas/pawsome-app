@@ -35,7 +35,7 @@ export default function RegistrationScreen({ navigation }) {
             "https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png",
           ownedPetId: ["none"],
           caretakers: ["none"],
-          sitterFor: ["none"],
+          sitterForUsers: ["none"],
           tasks: ["none"],
           vetId: ["none"],
           zip: null,
