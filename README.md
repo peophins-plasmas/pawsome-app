@@ -24,3 +24,14 @@ https://github.com/instamobile/react-native-firebase
 
 Firebase:
 https://firebase.google.com/docs/firestore/query-data/get-data
+
+# Descriptive fields:
+Users:
+* ownedPetId : pets user owns
+* caredPetId : pets user is caretaker for
+* caretakers : caretakers who take care of user's pets
+* sitterForUser : other users for whose pets this user acts as caretaker for
+
+Pets:
+* caretakerId : ids of users who act as caretakers for this pet
+* ownerId : ids of users who own this pet
