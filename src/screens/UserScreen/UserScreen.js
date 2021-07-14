@@ -115,35 +115,43 @@ export default function UserScreen(props) {
 
   //find caretaker for user
   useEffect(() => {
-    async function getCaretakers() {
+    async function getCaretakersIds() {
       await usersRef
         .doc(userId)
         .get()
         .then((document) => {
           const { caretakers } = document.data();
           setCaretakersIds(caretakers);
-          let holderArr = [];
-          caretakersIds.map((caretakerId) => {
-            usersRef
-              .doc(caretakerId)
-              .get()
-              .then((document) => {
-                const { firstName, image } = document.data();
-                const newEl = { firstName, image, caretakerId };
-                console.log("new el >>>>>", newEl);
-                const containsCaretakerId = caretakers.some((el) =>
-                  el.includes(caretakerId)
-                );
-                if (!containsCaretakerId) {
-                  holderArr.push(newEl);
-                }
-              });
-            setCaretakersArr(holderArr);
-          });
         })
         .catch((error) => {
           console.error("Caretakers not found");
         });
+    }
+    getCaretakersIds();
+    console.log("caretakers IDs>>>>>", caretakersIds);
+
+    async function getCaretakers() {
+      let holderArr = [];
+      for (let i = 0; i < caretakersIds.length; i++) {
+        await usersRef
+          .doc(caretakersIds[i])
+          .get()
+          .then((document) => {
+            const { firstName, image } = document.data();
+            const newEl = [firstName, image, caretakersIds[i]];
+            console.log("new el >>>>>", newEl);
+            const containsCaretakerId = caretakersArr.some((el) =>
+              el.includes(caretakersIds[i])
+            );
+            if (!containsCaretakerId) {
+              holderArr.push(newEl);
+            }
+          })
+          .catch((error) => {
+            console.error("Caretakers not found");
+          });
+      }
+      setCaretakersArr(holderArr);
     }
     getCaretakers();
     console.log("caretakers in useeffect>>>>", caretakersArr);
