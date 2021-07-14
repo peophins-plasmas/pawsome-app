@@ -136,98 +136,99 @@ export default function UserScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {users && (
-        <ScrollView style={styles.listContainer}>
-          <FlatList
-            data={users}
-            renderItem={renderUserEntity}
-            keyExtractor={(item) => item.id}
-            removeClippedSubviews={true}
-          />
-          <Text style={styles.entityText}>My Pets:</Text>
-          <View style={styles.petImage}>
-            {ownedPets.map((pet) => {
-              return (
-                <View key={pet.id} style={styles.petImage}>
-                  <Avatar
-                    activeOpacity={0.2}
-                    containerStyle={{ backgroundColor: "#BDBDBD" }}
-                    onPress={() => {
-                      RootNavigator.navigate("Pet", { pet: pet });
-                    }}
-                    rounded
-                    size="large"
-                    source={{ uri: pet.image }}
-                  />
-                </View>
-              );
-            })}
-            <AddButton extraData={props.extraData} />
-          </View>
-          <Text style={styles.entityText}>Pets I Sit For:</Text>
-          <View style={styles.petImage}>
-            {caredPets.map((pet) => {
-              return (
-                <View key={pet.id} style={styles.petImage}>
-                  <Avatar
-                    activeOpacity={0.2}
-                    containerStyle={{ backgroundColor: "#BDBDBD" }}
-                    onPress={() => alert("onPress")}
-                    rounded
-                    size="large"
-                    source={{ uri: pet.image }}
-                  />
-                </View>
-              );
-            })}
-          </View>
-          <View style={styles.modalContainer}>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              {vets.map((vet) => {
-                return (
-                  <View key={vet.id} style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <Text style={styles.modalText}>{vet.vetName}</Text>
-                      <Text style={styles.modalText}>{vet.email}</Text>
-                      <Text style={styles.modalText}>{vet.phoneNum}</Text>
-                      <Text style={styles.modalText}>{vet.address}</Text>
-                      <Text style={styles.modalText}>{vet.hours}</Text>
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => {
-                          console.log("vet was clicked");
-                        }}
-                      >
-                        <Text style={styles.textStyle}>Edit</Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                );
-              })}
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Close</Text>
-              </Pressable>
-            </Modal>
-          </View>
-          <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={styles.textStyle}>My Vets</Text>
-          </Pressable>
-          <View style={{ height: 100 }}></View>
-        </ScrollView>
-      )}
+      <Text>Hi</Text>
     </SafeAreaView>
+    //   {users && (
+    //     <ScrollView style={styles.listContainer}>
+    //       <FlatList
+    //         data={users}
+    //         renderItem={renderUserEntity}
+    //         keyExtractor={(item) => item.id}
+    //         removeClippedSubviews={true}
+    //       />
+    //       <Text style={styles.entityText}>My Pets:</Text>
+    //       <View style={styles.petImage}>
+    //         {ownedPets.map((pet) => {
+    //           return (
+    //             <View key={pet.id} style={styles.petImage}>
+    //               <Avatar
+    //                 activeOpacity={0.2}
+    //                 containerStyle={{ backgroundColor: "#BDBDBD" }}
+    //                 onPress={() => {
+    //                   RootNavigator.navigate("Pet", { pet: pet });
+    //                 }}
+    //                 rounded
+    //                 size="large"
+    //                 source={{ uri: pet.image }}
+    //               />
+    //             </View>
+    //           );
+    //         })}
+    //         <AddButton extraData={props.extraData} />
+    //       </View>
+    //       <Text style={styles.entityText}>Pets I Sit For:</Text>
+    //       <View style={styles.petImage}>
+    //         {caredPets.map((pet) => {
+    //           return (
+    //             <View key={pet.id} style={styles.petImage}>
+    //               <Avatar
+    //                 activeOpacity={0.2}
+    //                 containerStyle={{ backgroundColor: "#BDBDBD" }}
+    //                 onPress={() => alert("onPress")}
+    //                 rounded
+    //                 size="large"
+    //                 source={{ uri: pet.image }}
+    //               />
+    //             </View>
+    //           );
+    //         })}
+    //       </View>
+    //       <View style={styles.modalContainer}>
+    //         <Modal
+    //           animationType="slide"
+    //           transparent={true}
+    //           visible={modalVisible}
+    //           onRequestClose={() => {
+    //             setModalVisible(!modalVisible);
+    //           }}
+    //         >
+    //           {vets.map((vet) => {
+    //             return (
+    //               <View key={vet.id} style={styles.centeredView}>
+    //                 <View style={styles.modalView}>
+    //                   <Text style={styles.modalText}>{vet.vetName}</Text>
+    //                   <Text style={styles.modalText}>{vet.email}</Text>
+    //                   <Text style={styles.modalText}>{vet.phoneNum}</Text>
+    //                   <Text style={styles.modalText}>{vet.address}</Text>
+    //                   <Text style={styles.modalText}>{vet.hours}</Text>
+    //                   <Pressable
+    //                     style={[styles.button, styles.buttonClose]}
+    //                     onPress={() => {
+    //                       console.log("vet was clicked");
+    //                     }}
+    //                   >
+    //                     <Text style={styles.textStyle}>Edit</Text>
+    //                   </Pressable>
+    //                 </View>
+    //               </View>
+    //             );
+    //           })}
+    //           <Pressable
+    //             style={[styles.button, styles.buttonClose]}
+    //             onPress={() => setModalVisible(!modalVisible)}
+    //           >
+    //             <Text style={styles.textStyle}>Close</Text>
+    //           </Pressable>
+    //         </Modal>
+    //       </View>
+    //       <Pressable
+    //         style={[styles.button, styles.buttonOpen]}
+    //         onPress={() => setModalVisible(true)}
+    //       >
+    //         <Text style={styles.textStyle}>My Vets</Text>
+    //       </Pressable>
+    //       <View style={{ height: 100 }}></View>
+    //     </ScrollView>
+    //   )}
   );
 }

@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
 import { DrawerActions, NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -16,7 +16,10 @@ import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
 import BottomNav from "./src/Navigation/BottomNav";
 import { navigationRef } from "./src/Navigation/RootNavigator";
-import { Provider as PaperProvider, Drawer as PaperDrawer } from "react-native-paper";
+import {
+  Provider as PaperProvider,
+  Drawer as PaperDrawer,
+} from "react-native-paper";
 import {
   createDrawerNavigator,
   DrawerItem,
@@ -26,6 +29,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import styles, { colors } from "./src/screens/combinedStyles";
 import { Avatar } from "react-native-elements";
+import Splash from "./src/Splash";
+import * as SplashScreen from "expo-splash-screen";
 
 if (!global.btoa) {
   global.btoa = encode;
@@ -88,18 +93,30 @@ export default function App() {
   function UserProfileStack() {
     return (
       <ProfileStack.Navigator>
-        <ProfileStack.Screen name="My Profile" options={{
-          safeAreaInsets: { top: 0 },
-          headerTitleStyle: { alignSelf: 'center'},
-          headerStyle:{ backgroundColor: 'transparent' }
-        }}>
-          {(props) => <UserScreen {...props} extraData={user} navigation={props.navigation}/>}
+        <ProfileStack.Screen
+          name="My Profile"
+          options={{
+            safeAreaInsets: { top: 0 },
+            headerTitleStyle: { alignSelf: "center" },
+            headerStyle: { backgroundColor: "transparent" },
+          }}
+        >
+          {(props) => (
+            <UserScreen
+              {...props}
+              extraData={user}
+              navigation={props.navigation}
+            />
+          )}
         </ProfileStack.Screen>
-        <ProfileStack.Screen name="Pet" options={{
-          safeAreaInsets: { top: 0 },
-          headerStyle:{ backgroundColor: 'transparent' }
-        }}>
-          {(props) => <PetScreen {...props} navigation={props.navigation}/>}
+        <ProfileStack.Screen
+          name="Pet"
+          options={{
+            safeAreaInsets: { top: 0 },
+            headerStyle: { backgroundColor: "transparent" },
+          }}
+        >
+          {(props) => <PetScreen {...props} navigation={props.navigation} />}
         </ProfileStack.Screen>
       </ProfileStack.Navigator>
     );
@@ -108,18 +125,30 @@ export default function App() {
   function HomeStack() {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="All Pets" options={{
-          safeAreaInsets: { top: 0 },
-          headerTitleStyle: { alignSelf: 'center'},
-          headerStyle:{ backgroundColor: 'transparent' }
-        }}>
-          {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation}/>}
+        <Stack.Screen
+          name="All Pets"
+          options={{
+            safeAreaInsets: { top: 0 },
+            headerTitleStyle: { alignSelf: "center" },
+            headerStyle: { backgroundColor: "transparent" },
+          }}
+        >
+          {(props) => (
+            <HomeScreen
+              {...props}
+              extraData={user}
+              navigation={props.navigation}
+            />
+          )}
         </Stack.Screen>
-        <Stack.Screen name="Pet" options={{
-          safeAreaInsets: { top: 0 },
-          headerStyle:{ backgroundColor: 'transparent' }
-        }}>
-          {(props) => <PetScreen {...props} navigation={props.navigation}/>}
+        <Stack.Screen
+          name="Pet"
+          options={{
+            safeAreaInsets: { top: 0 },
+            headerStyle: { backgroundColor: "transparent" },
+          }}
+        >
+          {(props) => <PetScreen {...props} navigation={props.navigation} />}
         </Stack.Screen>
       </Stack.Navigator>
     );
@@ -167,7 +196,10 @@ export default function App() {
           )}
         </Drawer.Screen> */}
 
-        <Drawer.Screen name="Profile" component={UserProfileStack} options={{
+        <Drawer.Screen
+          name="Profile"
+          component={Splash}
+          options={{
             headerTitle: LogoTitle,
             headerStyle: {
               backgroundColor: colors.pawsomeblue,
@@ -175,15 +207,20 @@ export default function App() {
             headerShown: true,
             drawerIcon: () => (
               <Avatar
-              activeOpacity={0.2}
-              containerStyle={{ backgroundColor: "#BDBDBD" }}
-              onPress={() => alert("onPress")}
-              rounded
-              size="medium"
-              source={{ uri: user.image }} />
+                activeOpacity={0.2}
+                containerStyle={{ backgroundColor: "#BDBDBD" }}
+                onPress={() => alert("onPress")}
+                rounded
+                size="medium"
+                source={{ uri: user.image }}
+              />
             ),
-          }}/>
-            <Drawer.Screen name="All Pets" component={HomeStack} options={{
+          }}
+        />
+        <Drawer.Screen
+          name="All Pets"
+          component={HomeStack}
+          options={{
             headerTitle: LogoTitle,
             headerStyle: {
               backgroundColor: colors.pawsomeblue,
@@ -196,7 +233,8 @@ export default function App() {
                 color={colors.yellow}
               />
             ),
-          }}/>
+          }}
+        />
         <Drawer.Screen
           name="Tasks"
           options={{
@@ -260,6 +298,7 @@ export default function App() {
   return (
     <PaperProvider>
       <NavigationContainer ref={navigationRef}>
+        {/* <Splash /> */}
         {isSignedIn ? (
           <>
             <MyDrawer />
@@ -267,9 +306,13 @@ export default function App() {
         ) : (
           <Stack.Navigator>
             <>
-              <Stack.Screen name="Login" component={LoginScreen} 
-              options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
-               }}/>
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{
+                  headerStyle: { backgroundColor: colors.pawsomeblue },
+                }}
+              />
               <Stack.Screen
                 name="Registration"
                 component={RegistrationScreen}
