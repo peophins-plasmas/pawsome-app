@@ -53,7 +53,6 @@ export default function UserScreen(props) {
         });
         setUsers(userInfo);
         setSingleUser(userInfo[0])
-        console.log('USERS INFO>>>>', userInfo[0])
       },
       (error) => {
         console.log(error);
@@ -62,16 +61,13 @@ export default function UserScreen(props) {
   }, []);
 
   useEffect(() => {
-    console.log('SINGLE USER>>', singleUser)
     const petIdArray = [];
     let user;
     if  (Object.keys(singleUser).length === 0) {
-      console.log("HELLLLO")
       user = {ownedPetId: ["none"]}
     } else {
       user = singleUser
     }
-    console.log('USER', user)
     ownedPets.map((pet) => petIdArray.push(pet.id))
     if (user.ownedPetId.length !== petIdArray.length) {
       const currentUser = firebase.firestore().collection("users").doc(userId)
@@ -91,7 +87,6 @@ export default function UserScreen(props) {
         const vets = [];
         querySnapshot.forEach((doc) => {
           const vet = doc.data();
-          console.log("VET IN OPERATOR>>>>>>>>>>>>>>", vet);
           vet.id = doc.id;
           vets.push(vet);
         });

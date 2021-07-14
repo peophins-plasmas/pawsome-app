@@ -12,7 +12,7 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import { Card } from "react-native-elements";
+import { Card, Avatar } from "react-native-elements";
 import AddButton from "../../Components/AddButton"
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
@@ -98,14 +98,18 @@ export default function HomeScreen(props) {
                       alignItems: "center"
                     }}
                   >
-                    <Image
-                      style={{ width: "100%", height: 100 }}
-                      resizeMode="contain"
-                      source={{
-                        uri: pet.image
-                      }}
+                    <Avatar
+                    activeOpacity={0.2}
+                    containerStyle={{ backgroundColor: "#BDBDBD" }}
+                    onPress={() => {
+                      RootNavigator.navigate("Pet", { pet: pet });
+                    }}
+                    rounded
+                    size="xlarge"
+                    source={{ uri: pet.image }}
                     />
                     <Text>Birthday: {pet.birthday || "unknown"}</Text>
+                    <Text>Features: {pet.features || "not sure yet!"}</Text>
                     <Button title="See More" onPress={() => {
                         RootNavigator.navigate("Pet", { pet: pet });
                       }}>
@@ -117,20 +121,8 @@ export default function HomeScreen(props) {
         </View>
 
         <View style={styles.formContainer}>
-        <AddButton extraData={props.extraData} />
-        {/* <TextInput
-          style={styles.input}
-          placeholder='Add new pet'
-          placeholderTextColor='#aaaaaa'
-          onChangeText={(text) => setEntityText(text)}
-          value={entityText}
-          underlineColorAndroid='transparent'
-          autoCapitalize='none'
-        />
-        <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity> */}
-      </View>
+          <AddButton extraData={props.extraData} />
+        </View>
 
       <View style={{ height: 100 }}></View>
       </ScrollView>
