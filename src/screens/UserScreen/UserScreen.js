@@ -128,8 +128,12 @@ export default function UserScreen(props) {
         });
     }
     getCaretakersIds();
-    console.log("caretakers IDs>>>>>", caretakersIds);
+    console.log("caretakers IDs inside>>>>>", caretakersIds);
+  }, []);
 
+  console.log("caretakers IDs outside>>>>>", caretakersIds);
+
+  useEffect(() => {
     async function getCaretakers() {
       let holderArr = [];
       for (let i = 0; i < caretakersIds.length; i++) {
@@ -155,7 +159,7 @@ export default function UserScreen(props) {
     }
     getCaretakers();
     console.log("caretakers in useeffect>>>>", caretakersArr);
-  }, []);
+  }, [caretakersIds]);
 
   console.log("caretakers outside>>>>", caretakersArr);
 
