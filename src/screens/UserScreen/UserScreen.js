@@ -27,6 +27,7 @@ import * as RootNavigator from "../../Navigation/RootNavigator";
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
   const [users, setUsers] = useState([]);
+  const [singleUser, setSingleUser] = useState({})
   const [vets, setVets] = useState([]);
   const [pets, setPets] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
@@ -54,6 +55,7 @@ export default function UserScreen(props) {
           userInfo.push(user);
         });
         setUsers(userInfo);
+        setSingleUser(userInfo[0])
       },
       (error) => {
         console.log(error);
@@ -62,12 +64,32 @@ export default function UserScreen(props) {
   }, []);
 
   useEffect(() => {
+    const petIdArray = [];
+    let user;
+    if  (Object.keys(singleUser).length === 0) {
+      user = {ownedPetId: ["none"]}
+    } else {
+      user = singleUser
+    }
+    ownedPets.map((pet) => petIdArray.push(pet.id))
+    if (user.ownedPetId.length !== petIdArray.length) {
+      const currentUser = firebase.firestore().collection("users").doc(userId)
+      petIdArray.forEach((id) => {
+        if (!user.ownedPetId.includes(id)) {
+          currentUser.update({
+            ownedPetId: firebase.firestore.FieldValue.arrayUnion(id)
+          })
+        }
+      })
+    }
+  })
+
+  useEffect(() => {
     vetsRef.where("id", "in", vetId).onSnapshot(
       (querySnapshot) => {
         const vets = [];
         querySnapshot.forEach((doc) => {
           const vet = doc.data();
-          console.log("VET IN OPERATOR>>>>>>>>>>>>>>", vet);
           vet.id = doc.id;
           vets.push(vet);
         });

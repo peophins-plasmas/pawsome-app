@@ -57,9 +57,11 @@ export default StyleSheet.create({
     borderBottomColor: "#cccccc",
     borderBottomWidth: 1,
     paddingBottom: 16,
+    alignItems: "center"
   },
   entityText: {
     fontSize: 20,
     color: "#333333",
+    alignItems: "center"
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { firebase } from "../../firebase/config";
 import { StyleSheet, Button, TextInput, View, Text, Alert, Keyboard } from 'react-native';
 import styles from './styles';
@@ -8,8 +8,24 @@ import colors from '../combinedStyles'
 
 export default function PetForm(props) {
 
-  const petsRef = firebase.firestore().collection("pets");
+  const [pet, setPet] = useState("");
+
+  const petsRef = firebase.firestore().collection("pets")
+  const usersRef = firebase.firestore().collection("users")
+
   const userId = props.extraData.id
+  const ownedPetArray = props.extraData.ownedPetId
+
+  console.log("VALUES>>>", props)
+
+  function addToUser () {
+    console.log("VALUES>>>", ref.current.values)
+    // const pet = firebase.firestore().collection("pets").where('ownerId', 'array-contains', userId)
+    // console.log("PET>>>>", pet)
+    // usersRef.doc(userId).update({
+    // ownedPetId: firebase.firestore.FieldValue.arrayUnion(pet.id)
+    // })
+  }
 
   return (
     <View style={styles.containerForm}>
@@ -42,7 +58,8 @@ export default function PetForm(props) {
                     feedingScheduleWet: "",
                     likes: values.likes,
                     tasks: ["none"]
-        })
+                    })
+
         Alert.alert('Pet Submitted!')
       }}
       >
