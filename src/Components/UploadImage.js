@@ -130,27 +130,39 @@ export default function UploadImage(props) {
   };
 
   return (
-    <View style={styles.photoContainer}>
-      {image && (
-        <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />
-      )}
-      <View style={styles.cameraBtnContainer}>
-        <TouchableOpacity
-          onPress={captureImageFromCamera}
-          style={styles.uploadBtn}
-        >
-          <Text>{image ? "Take new photo from" : "Upload from"} Camera</Text>
-          <AntDesign name="camerao" size={20} color="black" />
-        </TouchableOpacity>
+    <View>
+      <View style={styles.photoContainer}>
+        {image && (
+          <Image source={{ uri: image }} style={{ width: 325, height: 325 }} />
+        )}
       </View>
-      <View style={styles.uploadBtnContainer}>
-        <TouchableOpacity
-          onPress={addImageFromLibrary}
-          style={styles.uploadBtn}
-        >
-          <Text>{image ? "Edit" : "Upload"} Image</Text>
-          <AntDesign name="clouduploado" size={20} color="black" />
-        </TouchableOpacity>
+      <View style={styles.allUploadBtnContainer}>
+        <View style={styles.cameraBtnContainer}>
+          <TouchableOpacity
+            onPress={captureImageFromCamera}
+            style={styles.uploadBtn}
+          >
+            <Text style={styles.uploadTextStyle}>Upload from Camera</Text>
+            <AntDesign
+              name="camerao"
+              size={20}
+              style={styles.uploadTextStyle}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.galleryBtnContainer}>
+          <TouchableOpacity
+            onPress={addImageFromLibrary}
+            style={styles.uploadBtn}
+          >
+            <Text style={styles.uploadTextStyle}>Choose from Gallery</Text>
+            <AntDesign
+              name="clouduploado"
+              size={20}
+              style={styles.uploadTextStyle}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
