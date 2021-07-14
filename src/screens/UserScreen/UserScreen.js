@@ -217,7 +217,7 @@ export default function UserScreen(props) {
                 </View>
               );
             })}
-            <AddButton extraData={props.extraData} />
+            <AddButton extraData={props.extraData} addTo={"addPet"} />
           </View>
           <Text style={styles.entityText}>Pets I Sit For:</Text>
           <View style={styles.petImage}>
@@ -236,24 +236,36 @@ export default function UserScreen(props) {
               );
             })}
           </View>
-          <Text style={styles.entityText}>My Pets&apos; Caretakers</Text>
-          <View style={styles.petImage}>
-            {caretakersArr.map((caretaker) => {
-              return (
-                <View key={caretaker.caretakerId} style={styles.petImage}>
-                  <Text>{caretaker.firstName}</Text>
-                  <Avatar
-                    activeOpacity={0.2}
-                    containerStyle={{ backgroundColor: "#BDBDBD" }}
-                    onPress={() => alert("onPress")}
-                    rounded
-                    size="large"
-                    source={{ uri: caretaker.image }}
-                  />
-                </View>
-              );
-            })}
-          </View>
+          {ownedPets.length > 0 && ownedPets[0] !== "none" && (
+            <View>
+              <View>
+                <Text style={styles.entityText}>My Pets&apos; Caretakers</Text>
+              </View>
+              <View style={styles.petImage}>
+                {caretakersArr.map((caretaker) => {
+                  return (
+                    <View key={caretaker.caretakerId} style={styles.petImage}>
+                      <Text>{caretaker.firstName}</Text>
+                      <Avatar
+                        activeOpacity={0.2}
+                        containerStyle={{ backgroundColor: "#BDBDBD" }}
+                        onPress={() => alert("onPress")}
+                        rounded
+                        size="large"
+                        source={{ uri: caretaker.image }}
+                      />
+                    </View>
+                  );
+                })}
+              </View>
+              <AddButton
+                user={props.extraData}
+                caretakers={caretakersArr}
+                pets={ownedPets}
+                addTo={"addCaretaker"}
+              />
+            </View>
+          )}
           <View style={styles.modalContainer}>
             <Modal
               animationType="slide"
