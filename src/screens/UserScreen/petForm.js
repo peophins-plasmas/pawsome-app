@@ -71,7 +71,8 @@ export default function PetForm(props) {
           });
           props.closeForm();
           Alert.alert("Pet Submitted!");
-        }}/>
+        }}
+      >
         {(props) => (
           <View style={styles.button}>
             <Text style={styles.titleTextForm}>Congrats to your new pet!</Text>
