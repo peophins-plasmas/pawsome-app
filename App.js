@@ -108,7 +108,7 @@ export default function App() {
   function HomeStack() {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="All Pets" options={{
+        <Stack.Screen name="My Pets" options={{
           safeAreaInsets: { top: 0 },
           headerTitleStyle: { alignSelf: 'center'},
           headerStyle:{ backgroundColor: 'transparent' }
@@ -128,6 +128,7 @@ export default function App() {
   function MyDrawer() {
     return (
       <Drawer.Navigator
+        initialRouteName="My Pets"
         drawerContentOptions={{
           activeTintColor: colors.yellow,
         }}
@@ -183,7 +184,7 @@ export default function App() {
               source={{ uri: user.image }} />
             ),
           }}/>
-            <Drawer.Screen name="All Pets" component={HomeStack} options={{
+            <Drawer.Screen name="My Pets" component={HomeStack} options={{
             headerTitle: LogoTitle,
             headerStyle: {
               backgroundColor: colors.pawsomeblue,
@@ -267,12 +268,15 @@ export default function App() {
         ) : (
           <Stack.Navigator>
             <>
-              <Stack.Screen name="Login" component={LoginScreen} 
+              <Stack.Screen name="Login" 
+              component={LoginScreen} 
               options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
                }}/>
               <Stack.Screen
                 name="Registration"
                 component={RegistrationScreen}
+                options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
+               }}
               />
             </>
           </Stack.Navigator>
