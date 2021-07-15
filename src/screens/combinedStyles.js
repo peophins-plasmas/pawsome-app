@@ -201,6 +201,10 @@ export default StyleSheet.create({
   uploadBtn: {
     display: "flex",
     alignItems: "center",
+    shadowColor: "rgba(0,0,0, .4)",
+    shadowOffset: { height: 1, width: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
   },
   cameraBtnContainer: {
     padding: 5,
@@ -212,8 +216,8 @@ export default StyleSheet.create({
     backgroundColor: colors.pawsomeblue,
   },
   uploadTextStyle: {
-    color: "black",
-    fontWeight: "bold",
+    color: "white",
+    fontWeight: "500",
   },
   photoContainer: {
     height: 325,

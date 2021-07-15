@@ -11,6 +11,7 @@ import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { firebase } from "../firebase/config";
 import styles from "../screens/combinedStyles";
+// import * as ImageManipulator from "expo-image-manipulator";
 
 if (process.env.NODE_ENV !== "production") require("../../secrets");
 
@@ -37,6 +38,8 @@ const checkForCameraPermission = async () => {
 };
 
 export default function UploadImage(props) {
+  // const [ready, setReady] = useState(false);
+  // const [editImage, setEditImage] = useState(null);
   let CLOUDINARY_URL = process.env.CLOUDINARY_URL;
 
   const user = props.user;
@@ -68,6 +71,9 @@ export default function UploadImage(props) {
     if (_image.cancelled === true) {
       return;
     }
+    // await _image.downloadAsync();
+    //   setImage(_image);
+    //   setReady(true);
     uploadToCloud(_image);
   };
 
