@@ -146,7 +146,7 @@ export default function UserScreen(props) {
           setCaretakersIds(caretakers);
         })
         .catch((error) => {
-          console.error("Caretaker id not found");
+          console.log("Caretaker id not found");
         });
     }
     getCaretakersIds();
@@ -176,7 +176,7 @@ export default function UserScreen(props) {
             }
           })
           .catch((error) => {
-            console.error("Caretakers not found :(");
+            console.log("Caretakers not found :(");
           });
       }
       setCaretakersArr(holderArr);

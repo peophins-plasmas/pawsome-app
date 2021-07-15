@@ -52,7 +52,7 @@ export default function AddTask(props) {
         // console.log("USERDATA", userData);
       })
       .catch((error) => {
-        console.error("Pets not found");
+        console.log("Pets not found");
       });
     //console.log("ownedPetsId line 61", ownedPetIds);
   }, []);
@@ -77,7 +77,7 @@ export default function AddTask(props) {
             }
           })
           .catch((error) => {
-            console.error("Pets not found");
+            console.log("Pets not found");
           });
       }
       setOwnedPets(holderArray);
@@ -137,12 +137,12 @@ export default function AddTask(props) {
 
           <TextInput
             style={styles.input}
-            placeholder='Task name'
-            placeholderTextColor='#aaaaaa'
+            placeholder="Task name"
+            placeholderTextColor="#aaaaaa"
             onChangeText={(text) => setEntityText(text)}
             value={entityText}
-            underlineColorAndroid='transparent'
-            autoCapitalize='none'
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
           />
         </View>
 
@@ -199,10 +199,10 @@ export default function AddTask(props) {
         </View>
 
         <DateTimePicker
-          testID='dateTimePicker'
-          mode='datetime'
+          testID="dateTimePicker"
+          mode="datetime"
           is24Hour={true}
-          display='default'
+          display="default"
           onChange={onChange}
           value={selDate}
           style={{

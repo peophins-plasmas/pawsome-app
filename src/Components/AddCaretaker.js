@@ -74,7 +74,7 @@ export default function AddCaretaker(props) {
         });
       })
       .catch((error) => {
-        console.error("Caretaker id not found");
+        console.log("Caretaker id not found");
       });
   }
 
@@ -105,7 +105,7 @@ export default function AddCaretaker(props) {
                 style={styles.inputForm}
                 autoCapitalize="none"
                 placeholder="Search for caretaker by email"
-                placeholderTextColor='#909090'
+                placeholderTextColor="#909090"
                 onChangeText={props.handleChange("emailSearch")}
                 value={props.values.emailSearch}
               />
@@ -135,7 +135,7 @@ export default function AddCaretaker(props) {
               <TextInput
                 style={styles.inputForm}
                 placeholder="Choose a pet"
-                placeholderTextColor='#909090'
+                placeholderTextColor="#909090"
                 //   onChangeText={props.handleChange("additionalInfo")}
                 //   value={props.values.emailSearch}
               />
