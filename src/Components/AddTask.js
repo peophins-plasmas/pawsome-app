@@ -23,7 +23,11 @@ export default function AddTask(props) {
   const [dueDate, setDueDate] = useState(dateCheck);
   const [ownedPetIds, setOwnedPetIds] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
+  const [caretakersIds, setCaretakersIds] = useState([]);
+  const [coOwnersIds, setCoOwnersIds] = useState([]);
+  const [allAssociatedUsers, setAllAssociatedUsers] = useState([]);
   const [checked, setChecked] = useState();
+  const [checkedUser, setCheckedUser] = useState();
 
   const [entityPetName, setEntityPetName] = useState("");
   const [entityText, setEntityText] = useState("");
@@ -40,23 +44,25 @@ export default function AddTask(props) {
   const petsRef = firebase.firestore().collection("pets");
 
   const userId = props.extraData;
+  const allIds = [...coOwnersIds, ...caretakersIds, userId];
+  console.log(allIds, "ALLIDS>>>>> 48");
+  console.log("caretakersIds line 49", caretakersIds);
+  console.log(userId, "userId");
 
   useEffect(() => {
-    //console.log(userId);
     usersRef
       .doc(userId)
       .get()
       .then((document) => {
         const userData = document.data();
         setOwnedPetIds(userData.ownedPetId);
-        // console.log("USERDATA", userData);
       })
       .catch((error) => {
         console.error("Pets not found");
       });
-    //console.log("ownedPetsId line 61", ownedPetIds);
   }, []);
 
+  //get all pet names and Ids in array of arrays
   useEffect(() => {
     async function getPets() {
       let holderArray = [];
@@ -89,6 +95,71 @@ export default function AddTask(props) {
   //   console.log(ownedPets, "OwnedPets line 95");
   //   console.log("ownedPetsId line 96", ownedPetIds);
   // });
+
+  //find coOwnersIds for user
+  useEffect(() => {
+    async function getCoOwnersIds() {
+      await usersRef
+        .doc(userId)
+        .get()
+        .then((document) => {
+          const { coOwners } = document.data();
+          setCoOwnersIds(coOwners);
+        })
+        .catch((error) => {
+          console.error("No coOwners");
+        });
+    }
+    getCoOwnersIds();
+  }, []);
+
+  useEffect(() => {
+    async function getCaretakersIds() {
+      await usersRef
+        .doc(userId)
+        .get()
+        .then((document) => {
+          const { caretakers } = document.data();
+          setCaretakersIds(caretakers);
+        })
+        .catch((error) => {
+          console.error("Caretaker id not found");
+        });
+    }
+    getCaretakersIds();
+  }, []);
+
+  //get all caretaker and owner names by IDs for selecting who to assign the chore
+  // useEffect(() => {
+  //   async function getUserNames() {
+  //     let holderArray = [];
+  //     for (let j = 0; j < allIds.length; ++j) {
+  //  if(allIds[j]!=="none"){
+  //       await usersRef
+  //         .doc(allIds[j])
+  //         .get()
+  //         .then((document) => {
+  //           const { firstName, lastName } = document.data();
+  //           const newEl = { firstName, lastName, id: allIds[j] };
+  //           const containsUserId = allAssociatedUsers.some((el) => el.id);
+  //           if (!containsUserId) {
+  //             holderArray.push(newEl);
+  //             // console.log(holderArray, "holder line 78");
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           console.error("No users found");
+  //         });
+  //     }
+  //   }
+  //     setAllAssociatedUsers(holderArray);
+  //   }
+  //   getUserNames();
+  // }, [allIds]);
+
+  //console.log(caretakersIds, "caretakersIds outside useEffect");
+
+  console.log(allAssociatedUsers, "allAssociatedUsers line 161");
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
@@ -128,7 +199,6 @@ export default function AddTask(props) {
     setSelDate(value);
   };
 
-  //console.log(ownedPets, "OwnedPets line 123");
   return (
     <SafeAreaView>
       <View style={styles.formContainer}>
@@ -147,27 +217,17 @@ export default function AddTask(props) {
         </View>
 
         <View style={[styles.container, { width: 250 }]}>
+          <Text style={styles.stackHeaderText}>Choose a Pet</Text>
+          <Text>(selected pet highlights in blue)</Text>
           {ownedPets.length > 0 ? (
             ownedPets.map((pet) => {
-              console.log(pet, "pet line 147");
               return (
                 <View
                   style={[styles.container, { flexDirection: "row" }]}
                   key={pet[1]}
                 >
-                  {/* <View
-                    style={[styles.container ]}
-                    onPress={() => {
-                      //setChecked(pet[1]);
-                      setEntityPetId(pet[1]);
-                      setEntityPetName(pet[0]);
-                    }}
-                  >
-                    <Text>{pet[0]}</Text>
-                  </View> */}
                   <View style={styles.radioPress}>
                     <Pressable
-                      // status={checked === pet[1] ? "checked" : "unchecked"}
                       style={() => [
                         styles.radioPress,
                         {
@@ -181,8 +241,6 @@ export default function AddTask(props) {
                         setEntityPetId(pet[1]);
                         setEntityPetName(pet[0]);
                       }}
-                      // color={colors.dkblue}
-                      // uncheckedColor={colors.wheat}
                     >
                       <Text style={styles.radioText}>{pet[0]}</Text>
                     </Pressable>
