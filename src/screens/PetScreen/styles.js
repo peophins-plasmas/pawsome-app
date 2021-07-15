@@ -59,4 +59,10 @@ export default StyleSheet.create({
     flexDirection: "row",
     padding: 10,
   },
+  userContainer: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
 });

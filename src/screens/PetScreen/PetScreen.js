@@ -79,7 +79,10 @@ export default function PetScreen(props) {
       <ScrollView>
         {pet ? (
           <View style={styles.container}>
+          <View style={styles.userContainer}>
+
             <UploadImage pet={pet} functionType={"petImg"} />
+          </View>
             <View style={styles.introContainer}>
               <Text style={styles.nameText}>{pet.petName}</Text>
               <View style={[styles.stack]}>
