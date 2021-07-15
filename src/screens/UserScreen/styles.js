@@ -107,6 +107,7 @@ export default StyleSheet.create({
   titleTextForm: {
     fontSize: 18,
     fontWeight: "bold",
+    alignSelf: "center",
     color: colors.dkblue,
   },
   paragraphForm: {
@@ -145,4 +146,8 @@ export default StyleSheet.create({
   modalContent: {
     flex: 1,
   },
+  avatarContainer: {
+    flexDirection: "column",
+    alignItems: "center"
+  }
 });

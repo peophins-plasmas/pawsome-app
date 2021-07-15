@@ -88,7 +88,7 @@ export default function PetScreen(props) {
               </View>
             </View>
 
-            <Card style={styles.stackContainer}>
+            <Card borderRadius={50} style={styles.stackContainer}>
               <View style={styles.stack}>
                 <Text style={styles.stackHeaderText}>BIRTHDAY</Text>
                 <Text>{pet.birthday ? pet.birthday : "I was born!"}</Text>
@@ -178,6 +178,7 @@ export default function PetScreen(props) {
                   return (
                     <View key={owner.id} style={styles.stack}>
                       <View style={styles.smallAvatarImage}>
+                        <View style={{alignItems: "center"}}>
                         <Avatar
                           avatarStyle={{ padding: 30 }}
                           activeOpacity={0.2}
@@ -190,6 +191,7 @@ export default function PetScreen(props) {
                           source={{ uri: owner.image }}
                         />
                         <Text>{owner.firstName}</Text>
+                        </View>
                       </View>
                     </View>
                   );
@@ -202,6 +204,7 @@ export default function PetScreen(props) {
                   return (
                     <View key={caretaker.id} style={styles.stack}>
                       <View style={styles.smallAvatarImage}>
+                      <View style={{alignItems: "center"}}>
                         <Avatar
                           avatarStyle={{ padding: 30 }}
                           activeOpacity={0.2}
@@ -214,6 +217,7 @@ export default function PetScreen(props) {
                           source={{ uri: caretaker.image }}
                         />
                         <Text>{caretaker.firstName}</Text>
+                        </View>
                       </View>
                     </View>
                   );
