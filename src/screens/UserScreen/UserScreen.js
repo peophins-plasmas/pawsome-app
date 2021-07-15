@@ -226,6 +226,7 @@ export default function UserScreen(props) {
             {ownedPets.map((pet) => {
               return (
                 <View key={pet.id} style={styles.petImage}>
+                  <View style={styles.avatarContainer}>
                   <Avatar
                     activeOpacity={0.2}
                     containerStyle={{ backgroundColor: "#BDBDBD" }}
@@ -236,6 +237,8 @@ export default function UserScreen(props) {
                     size="large"
                     source={{ uri: pet.image }}
                   />
+                  <Text>{pet.petName}</Text>
+                  </View>
                 </View>
               );
             })}
@@ -246,6 +249,7 @@ export default function UserScreen(props) {
             {caredPets.map((pet) => {
               return (
                 <View key={pet.id} style={styles.petImage}>
+                  <View style={styles.avatarContainer}>
                   <Avatar
                     activeOpacity={0.2}
                     containerStyle={{ backgroundColor: "#BDBDBD" }}
@@ -254,6 +258,8 @@ export default function UserScreen(props) {
                     size="large"
                     source={{ uri: pet.image }}
                   />
+                  <Text>{pet.petName}</Text>
+                  </View>
                 </View>
               );
             })}
@@ -267,7 +273,7 @@ export default function UserScreen(props) {
                 {caretakersArr.map((caretaker) => {
                   return (
                     <View key={caretaker.caretakerId} style={styles.petImage}>
-                      <Text>{caretaker.firstName}</Text>
+                      <View style={styles.avatarContainer}>
                       <Avatar
                         activeOpacity={0.2}
                         containerStyle={{ backgroundColor: "#BDBDBD" }}
@@ -276,16 +282,18 @@ export default function UserScreen(props) {
                         size="large"
                         source={{ uri: caretaker.image }}
                       />
+                      <Text>{caretaker.firstName}</Text>
+                    </View>
                     </View>
                   );
                 })}
-              </View>
-              <AddButton
+                <AddButton
                 user={props.extraData}
                 caretakers={caretakersArr}
                 pets={ownedPets}
                 addTo={"addCaretaker"}
               />
+              </View>
             </View>
           )}
           <View style={styles.modalContainer}>

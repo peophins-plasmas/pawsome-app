@@ -88,7 +88,7 @@ export default function PetScreen(props) {
               </View>
             </View>
 
-            <Card style={styles.stackContainer}>
+            <Card borderRadius={50} style={styles.stackContainer}>
               <View style={styles.stack}>
                 <Text style={styles.stackHeaderText}>BIRTHDAY</Text>
                 <Text>{pet.birthday ? pet.birthday : "I was born!"}</Text>

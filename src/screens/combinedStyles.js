@@ -132,8 +132,10 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    alignSelf: "flex-start",
-    borderWidth: 1,
+    alignSelf: "center",
+    borderWidth: 2,
+    borderRadius: 30,
+    borderColor: colors.dkblue
   },
   stackContainer: {
     display: "flex",
