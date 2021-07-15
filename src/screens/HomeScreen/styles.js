@@ -11,7 +11,6 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-
     justifyContent: "center",
   },
   formContainer: {
@@ -73,6 +72,7 @@ export default StyleSheet.create({
     alignItems: "center",
   },
   titleText: {
+    marginBottom: 10,
     color: colors.pawsomeblue,
     fontSize: 25,
     fontWeight: "bold",
