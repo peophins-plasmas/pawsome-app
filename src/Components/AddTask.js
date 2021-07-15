@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { firebase } from "../firebase/config";
 import {
   Keyboard,
+  Pressable,
   Text,
   TextInput,
   TouchableOpacity,
@@ -10,11 +11,8 @@ import {
 } from "react-native";
 import styles, { colors } from "../screens/combinedStyles";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { RadioButton } from "react-native-paper";
-// import RNPickerSelect from "react-native-picker-select";
 import { add } from "react-native-reanimated";
 import { Alert } from "react-native";
-import { createIconSetFromFontello } from "@expo/vector-icons";
 
 export default function AddTask(props) {
   let date = new Date();
@@ -73,11 +71,7 @@ export default function AddTask(props) {
             const containsPetId = ownedPets.some((el) =>
               el.includes(ownedPetIds[i])
             );
-            //console.log(containsPetId);
             if (!containsPetId) {
-              // console.log(ownedPets, "ownedPets line73");
-              //console.log(ownedPetsCopy, "ownedPetsCopy line 74");
-              //console.log(newEl, "new El line 76");
               holderArray.push(newEl);
               // console.log(holderArray, "holder line 78");
             }
@@ -86,15 +80,9 @@ export default function AddTask(props) {
             console.error("Pets not found");
           });
       }
-
       setOwnedPets(holderArray);
     }
-    // console.log("Before getPets():");
-    // console.log(ownedPets);
     getPets();
-    // console.log("whoooooooooooooooooooooofu");
-    // console.log(ownedPets);
-    // console.log(ownedPets, "ownedPets line 91");
   }, [ownedPetIds]);
 
   // useEffect(() => {
@@ -139,27 +127,26 @@ export default function AddTask(props) {
     setEntityDueTime(time);
     setSelDate(value);
   };
+
   //console.log(ownedPets, "OwnedPets line 123");
   return (
     <SafeAreaView>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
           <Text style={styles.entityText}>Add a task</Text>
-          <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
-            <Text style={styles.buttonText}>Add</Text>
-          </TouchableOpacity>
+
           <TextInput
             style={styles.input}
-            placeholder="Task name"
-            placeholderTextColor="#aaaaaa"
+            placeholder='Task name'
+            placeholderTextColor='#aaaaaa'
             onChangeText={(text) => setEntityText(text)}
             value={entityText}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
+            underlineColorAndroid='transparent'
+            autoCapitalize='none'
           />
         </View>
 
-        <View style={[styles.container, { width: 250, borderWidth: 2 }]}>
+        <View style={[styles.container, { width: 250 }]}>
           {ownedPets.length > 0 ? (
             ownedPets.map((pet) => {
               console.log(pet, "pet line 147");
@@ -168,22 +155,37 @@ export default function AddTask(props) {
                   style={[styles.container, { flexDirection: "row" }]}
                   key={pet[1]}
                 >
-                  <View style={styles.container}>
+                  {/* <View
+                    style={[styles.container ]}
+                    onPress={() => {
+                      //setChecked(pet[1]);
+                      setEntityPetId(pet[1]);
+                      setEntityPetName(pet[0]);
+                    }}
+                  >
                     <Text>{pet[0]}</Text>
-                  </View>
-                  <View style={styles.container}>
-                    <RadioButton.IOS
-                      value={pet[1]}
-                      status={checked === pet[1] ? "checked" : "unchecked"}
+                  </View> */}
+                  <View style={styles.radioPress}>
+                    <Pressable
+                      // status={checked === pet[1] ? "checked" : "unchecked"}
+                      style={() => [
+                        styles.radioPress,
+                        {
+                          backgroundColor:
+                            pet[1] === checked ? colors.pawsomeblue : "white",
+                          borderWidth: 0,
+                        },
+                      ]}
                       onPress={() => {
                         setChecked(pet[1]);
                         setEntityPetId(pet[1]);
                         setEntityPetName(pet[0]);
                       }}
-                      style={styles.container}
-                      color={colors.dkblue}
-                      uncheckedColor={colors.wheat}
-                    />
+                      // color={colors.dkblue}
+                      // uncheckedColor={colors.wheat}
+                    >
+                      <Text style={styles.radioText}>{pet[0]}</Text>
+                    </Pressable>
                   </View>
                 </View>
               );
@@ -197,10 +199,10 @@ export default function AddTask(props) {
         </View>
 
         <DateTimePicker
-          testID="dateTimePicker"
-          mode="datetime"
+          testID='dateTimePicker'
+          mode='datetime'
           is24Hour={true}
-          display="default"
+          display='default'
           onChange={onChange}
           value={selDate}
           style={{
@@ -211,21 +213,11 @@ export default function AddTask(props) {
             width: 220,
           }}
         />
-
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Add frequency"
-            placeholderTextColor="#aaaaaa"
-            onChangeText={(text) => setEntityFrequency(text)}
-            value={entityFrequency}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-          />
-        </View>
+        <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
+          <Text style={styles.buttonText}>Add</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.scrollPad}></View>
-      <View style={styles.scrollPad}></View>
+      <View style={{ height: 300 }}></View>
     </SafeAreaView>
   );
 }

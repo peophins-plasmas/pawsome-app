@@ -163,6 +163,23 @@ export default StyleSheet.create({
     margin: 5,
   },
 
+  //Add task component and calendarScreen
+  radioPress: {
+    display: "flex",
+    alignItems: "stretch",
+    alignContent: "center",
+    justifyContent: "space-around",
+    flex: 1,
+    backgroundColor: "white",
+    borderColor: colors.dkblue,
+    borderWidth: 2,
+  },
+  radioText: {
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
   //Registration screen and Login screen: footerview, footertext, footerlink
   footerView: {
     flex: 1,

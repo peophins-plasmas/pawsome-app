@@ -34,9 +34,26 @@ export default function CalendarScreen(props) {
   }
 
   const tasksRef = firebase.firestore().collection("tasks");
-  const usersRef = firebase.firestore().collection("users");
   const petsRef = firebase.firestore().collection("pets");
+  const usersRef = firebase.firestore().collection("users");
   const userId = props.extraData.id;
+
+  //find caretakerIds for user
+  // useEffect(() => {
+  //   async function getCaretakersIds() {
+  //     await usersRef
+  //       .doc(userId)
+  //       .get()
+  //       .then((document) => {
+  //         const { caretakers } = document.data();
+  //         setCaretakersIds(caretakers);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Caretaker id not found");
+  //       });
+  //   }
+  //   getCaretakersIds();
+  // }, []);
 
   useEffect(() => {
     let sortedTasks;
