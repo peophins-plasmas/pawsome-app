@@ -112,7 +112,7 @@ export default function CalendarScreen(props) {
       <ScrollView>
         <View style={styles.container}>
           <Text>Today is {currentDate}.</Text>
-          <Text>It is {currentTime}.</Text>
+          {/* <Text>It is {currentTime}.</Text> */}
         </View>
         <CalendarStrip
           scrollable
