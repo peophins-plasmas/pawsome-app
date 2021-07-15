@@ -30,7 +30,7 @@ export default function PetForm(props) {
             weight: "",
             ownerId: [userId],
             image:
-              "https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png",
+              "https://res.cloudinary.com/dx5gk8aso/image/upload/v1626380751/pawpring_b2j5oa.png",
             birthday: "",
             sex: "",
             likes: "",
