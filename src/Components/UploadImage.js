@@ -118,7 +118,7 @@ export default function UploadImage(props) {
             console.log("Image successfully updated!");
           })
           .catch((error) => {
-            console.error("error updating document: ", error);
+            console.log("error updating document: ", error);
           });
       } else if (functionType === "petImg") {
         return petImageRef
@@ -129,7 +129,7 @@ export default function UploadImage(props) {
             console.log("Image successfully updated!");
           })
           .catch((error) => {
-            console.error("error updating document: ", error);
+            console.log("error updating document: ", error);
           });
       }
     });

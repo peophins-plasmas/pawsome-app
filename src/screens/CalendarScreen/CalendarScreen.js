@@ -49,7 +49,7 @@ export default function CalendarScreen(props) {
   //         setCaretakersIds(caretakers);
   //       })
   //       .catch((error) => {
-  //         console.error("Caretaker id not found");
+  //         console.log("Caretaker id not found");
   //       });
   //   }
   //   getCaretakersIds();

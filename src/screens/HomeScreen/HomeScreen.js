@@ -62,7 +62,7 @@ export default function HomeScreen(props) {
           <View>
             {pets.map((pet) => {
               return (
-                <Card borderRadius={70}>
+                <Card key={pet.id} borderRadius={70}>
                   <Card.Title
                     style={{ color: colors.pawsomeblue, fontSize: 20 }}
                   >
