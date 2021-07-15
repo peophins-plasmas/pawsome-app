@@ -18,6 +18,10 @@ import AddCaretaker from "./AddCaretaker";
 export default function AddButton(props) {
   const [modalOpen, setModalOpen] = useState(false);
 
+  const closeForm = () => {
+    setModalOpen(false);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.petImage}>
@@ -36,7 +40,7 @@ export default function AddButton(props) {
               onPress={() => setModalOpen(false)}
             />
             {props.addTo === "addPet" && (
-              <PetForm extraData={props.extraData} />
+              <PetForm extraData={props.extraData} closeForm={closeForm} />
             )}
             {props.addTo === "addCaretaker" && (
               <AddCaretaker
