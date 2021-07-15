@@ -8,6 +8,8 @@ import colors from '../combinedStyles'
 
 export default function PetForm(props) {
 
+  const [modalOpen, setModalOpen] = useState(false);
+
   const petsRef = firebase.firestore().collection("pets")
   const userId = props.extraData.id
 
@@ -43,7 +45,6 @@ export default function PetForm(props) {
                     likes: values.likes,
                     tasks: ["none"]
                     })
-
         Alert.alert('Pet Submitted!')
       }}
       >
@@ -55,18 +56,21 @@ export default function PetForm(props) {
             <TextInput
               style={styles.inputForm}
               placeholder='What is my name?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('petName')}
               value={props.values.petName}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='Dog? Cat? Bird?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('species')}
               value={props.values.species}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='How much do I weigh?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('weight')}
               value={props.values.weight}
               keyboardType='numeric'
@@ -74,66 +78,77 @@ export default function PetForm(props) {
             <TextInput
               style={styles.inputForm}
               placeholder='When was I born?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('birthday')}
               value={props.values.birthday}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='What sex am I?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('sex')}
               value={props.values.sex}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='What do I like?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('likes')}
               value={props.values.likes}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='What do I dislike?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('dislikes')}
               value={props.values.dislikes}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='What am I allergic to?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('allergies')}
               value={props.values.allergies}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='What meds do I need?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('medications')}
               value={props.values.medications}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='What are my unique features?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('features')}
               value={props.values.features}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='How do I act? Playful? Shy?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('behavior')}
               value={props.values.behavior}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='Do I eat dry food? What brand?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('dryFoodBrand')}
               value={props.values.dryFoodBrand}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='Do I eat wet food? What brand?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('wetFoodBrand')}
               value={props.values.wetFoodBrand}
             />
             <TextInput
               style={styles.inputForm}
               placeholder='Any other notes?'
+              placeholderTextColor='#909090'
               onChangeText={props.handleChange('additionalInfo')}
               value={props.values.additionalInfo}
             />

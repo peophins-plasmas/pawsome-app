@@ -120,7 +120,7 @@ export default StyleSheet.create({
   },
   inputForm: {
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "gray",
     padding: 10,
     fontSize: 16,
     borderRadius: 6,
