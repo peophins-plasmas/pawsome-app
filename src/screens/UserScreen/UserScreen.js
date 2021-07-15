@@ -72,7 +72,7 @@ export default function UserScreen(props) {
       user = singleUser;
     }
     ownedPets.map((pet) => petIdArray.push(pet.id));
-    if (user.ownedPetId.length !== petIdArray.length) {
+    if (user.ownedPetId.length !== petIdArray.length || user.ownedPetId[user.ownedPetId.length - 1] === "none" ) {
       const currentUser = firebase.firestore().collection("users").doc(userId);
       petIdArray.forEach((id) => {
         if (!user.ownedPetId.includes(id)) {
