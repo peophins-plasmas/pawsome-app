@@ -119,13 +119,11 @@ export default function HomeScreen(props) {
             )
           })}
         </View>
-
-        <View style={styles.formContainer}>
-          <AddButton extraData={props.extraData} />
-        </View>
-
       <View style={{ height: 100 }}></View>
       </ScrollView>
+      <View style={{position: 'absolute', right: 0, bottom: 0}}>
+          <AddButton extraData={props.extraData} addTo={"addPet"} />
+        </View>
     </SafeAreaView>
   );
 }
