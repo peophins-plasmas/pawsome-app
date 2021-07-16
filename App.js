@@ -26,6 +26,9 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import styles, { colors } from "./src/screens/combinedStyles";
 import { Avatar } from "react-native-elements";
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
 
 if (!global.btoa) {
   global.btoa = encode;
@@ -43,6 +46,29 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(null);
 
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => console.log(token)).catch(err => console.log(err))
+  }, [])
+
+  registerForPushNotificationsAsync = async () => {
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      const token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+      this.setState({ expoPushToken: token });
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  }
  
 
   function CustomDrawerContent(props) {
@@ -176,12 +202,12 @@ export default function App() {
               backgroundColor: colors.pawsomeblue,
             },
             headerShown: true,
-            // headerLeft: ({navigation}) => (
-            //   <Ionicons name="ios-menu" size={32}
-            //   color={colors.yellow}
-            //   onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-            // />
-            // ),
+            headerLeft: ({navigation}) => (
+              <Ionicons name="ios-menu" size={32}
+              color={colors.yellow}
+              onPress={() => ref.dispatch(DrawerActions.toggleDrawer())}
+            />
+            ),
             drawerIcon: () => (
               <Avatar
               activeOpacity={0.2}
