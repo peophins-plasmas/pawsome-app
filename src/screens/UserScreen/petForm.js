@@ -11,8 +11,10 @@ import {
   Keyboard,
 } from "react-native";
 import styles from "./styles";
-import { Formik } from "formik";
+import { Formik, Form, Field } from "formik";
+import * as Yup from 'yup';
 import colors from "../combinedStyles";
+import { FormValidation } from "../formValidation"
 
 export default function PetForm(props) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -28,6 +30,7 @@ export default function PetForm(props) {
             petName: "",
             species: "",
             weight: "",
+            units: "",
             ownerId: [userId],
             image:
               "https://res.cloudinary.com/dx5gk8aso/image/upload/v1626380751/pawpring_b2j5oa.png",
@@ -43,6 +46,7 @@ export default function PetForm(props) {
             wetFoodBrand: "",
             additionalInfo: "",
           }}
+          validationSchema={FormValidation}
           onSubmit={(values, actions) => {
             actions.resetForm();
             petsRef.add({
@@ -51,6 +55,7 @@ export default function PetForm(props) {
               petName: values.petName,
               species: values.species,
               weight: values.weight,
+              units: values.units,
               sex: values.sex,
               medications: [values.medications],
               additionalInfo: values.additionalInfo,
@@ -78,29 +83,21 @@ export default function PetForm(props) {
           {(props) => (
             <View style={styles.button}>
               <Text style={styles.titleTextForm}>
-                Congrats to your new pet!
+                Congrats on your new pet!
               </Text>
               <TextInput
                 style={styles.inputForm}
-                placeholder="What is my name?"
+                placeholder="What is my name?**"
                 placeholderTextColor="#909090"
                 onChangeText={props.handleChange("petName")}
                 value={props.values.petName}
               />
               <TextInput
                 style={styles.inputForm}
-                placeholder="Dog? Cat? Bird?"
+                placeholder="What species am I?**"
                 placeholderTextColor="#909090"
                 onChangeText={props.handleChange("species")}
                 value={props.values.species}
-              />
-              <TextInput
-                style={styles.inputForm}
-                placeholder="How much do I weigh?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("weight")}
-                value={props.values.weight}
-                keyboardType="numeric"
               />
               <TextInput
                 style={styles.inputForm}
@@ -109,14 +106,38 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("birthday")}
                 value={props.values.birthday}
               />
-              <TextInput
+              {/* <TextInput
                 style={styles.inputForm}
                 placeholder="What sex am I?"
                 placeholderTextColor="#909090"
                 onChangeText={props.handleChange("sex")}
                 value={props.values.sex}
+              /> */}
+              <View style={{flexDirection: "row"}}>
+              <TextInput
+                style={[styles.inputForm, {flex: 3}]}
+                placeholder="How much do I weigh?"
+                placeholderTextColor="#909090"
+                onChangeText={props.handleChange("weight")}
+                value={props.values.weight}
+                keyboardType="numeric"
               />
               <TextInput
+                style={[styles.inputForm, {flex: 1}]}
+                placeholder="Units?"
+                placeholderTextColor="#909090"
+                onChangeText={props.handleChange("units")}
+                value={props.values.units}
+              />
+              </View>
+              <TextInput
+                style={styles.inputForm}
+                placeholder="What are my unique features?"
+                placeholderTextColor="#909090"
+                onChangeText={props.handleChange("features")}
+                value={props.values.features}
+              />
+              {/* <TextInput
                 style={styles.inputForm}
                 placeholder="What do I like?"
                 placeholderTextColor="#909090"
@@ -129,7 +150,7 @@ export default function PetForm(props) {
                 placeholderTextColor="#909090"
                 onChangeText={props.handleChange("dislikes")}
                 value={props.values.dislikes}
-              />
+              /> */}
               <TextInput
                 style={styles.inputForm}
                 placeholder="What am I allergic to?"
@@ -137,19 +158,12 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("allergies")}
                 value={props.values.allergies}
               />
-              <TextInput
+              {/* <TextInput
                 style={styles.inputForm}
                 placeholder="What meds do I need?"
                 placeholderTextColor="#909090"
                 onChangeText={props.handleChange("medications")}
                 value={props.values.medications}
-              />
-              <TextInput
-                style={styles.inputForm}
-                placeholder="What are my unique features?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("features")}
-                value={props.values.features}
               />
               <TextInput
                 style={styles.inputForm}
@@ -171,7 +185,7 @@ export default function PetForm(props) {
                 placeholderTextColor="#909090"
                 onChangeText={props.handleChange("wetFoodBrand")}
                 value={props.values.wetFoodBrand}
-              />
+              /> */}
               <TextInput
                 style={styles.inputForm}
                 placeholder="Any other notes?"
@@ -179,6 +193,9 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("additionalInfo")}
                 value={props.values.additionalInfo}
               />
+              <View style={{alignSelf: "flex-end"}}>
+                <Text>** (required)</Text>
+              </View>
               <Button
                 color={colors.dkblue}
                 title="Submit"
@@ -186,6 +203,22 @@ export default function PetForm(props) {
               />
             </View>
           )}
+          {/* {({errors, touched}) => {
+                <Form>
+                  <Field name="name" />
+                  {errors.name && touched.name ? (
+                    <Text>{errors.name}</Text>
+                  ) : null}
+                  <Field name="species" />
+                  {errors.species && touched.species ? (
+                    <Text>{errors.species}</Text>
+                  ) : null}
+                  <Field name="weight" />
+                  {errors.weight && touched.weight ? (
+                    <Text>{errors.weight}</Text>
+                  ) : null}
+                </Form>
+              }} */}
         </Formik>
       </View>
     </ScrollView>

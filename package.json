@@ -35,7 +35,8 @@
     "react-native-screens": "~3.4.0",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
-    "xdate": "^0.8.2"
+    "xdate": "^0.8.2",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "~7.13.0",
