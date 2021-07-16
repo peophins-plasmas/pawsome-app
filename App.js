@@ -134,7 +134,7 @@ export default function App() {
             /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
           {(props) => <UserScreen {...props} extraData={user} navigation={props.navigation}/>}
         </ProfileStack.Screen>
-        <ProfileStack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: LogoTitle, headerLeft: () => <Ionicons name="ios-menu" size={32}
+        <ProfileStack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
               color={colors.yellow}
               onPress={() => navigation.toggleDrawer()}
             /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
@@ -150,13 +150,13 @@ export default function App() {
   function HomeStack() {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="My Pets" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: LogoTitle, headerLeft: () => <Ionicons name="ios-menu" size={32}
+        <Stack.Screen name="My Pets" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
               color={colors.yellow}
               onPress={() => navigation.toggleDrawer()}
             /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
           {(props) => <BottomNav {...props} extraData={user}/>}
         </Stack.Screen>
-        <Stack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: LogoTitle, headerLeft: () => <Ionicons name="ios-menu" size={32}
+        <Stack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
               color={colors.yellow}
               onPress={() => navigation.toggleDrawer()}
             /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
@@ -169,7 +169,7 @@ export default function App() {
   function CalendarStack() {
     return (
       <CalStack.Navigator>
-        <CalStack.Screen name="Tasks" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: LogoTitle, headerLeft: () => <Ionicons name="ios-menu" size={32}
+        <CalStack.Screen name="Tasks" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
               color={colors.yellow}
               onPress={() => navigation.toggleDrawer()}
             /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
