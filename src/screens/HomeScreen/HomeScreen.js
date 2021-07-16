@@ -42,7 +42,7 @@ export default function HomeScreen(props) {
         console.log(error);
       }
     );
-  }, []);
+    return () => console.log('unmounting...')}, []);
 
   if (pets.length === 0 || pets[0] === "none") {
     return (

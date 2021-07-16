@@ -85,7 +85,7 @@ export default function CalendarScreen(props) {
           console.error(error);
         }
       );
-  }, [selDate, dueDate]);
+      return () => console.log('unmounting...')}, [selDate, dueDate]);
 
   // useEffect(() => {
   //   const unsubscribe = props.navigation.addListener('focus', () => {

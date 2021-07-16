@@ -64,7 +64,7 @@ export default function AddTask(props) {
       .catch((error) => {
         console.log("Pets not found");
       });
-  }, []);
+      return () => console.log('unmounting...')}, []);
 
   //get all pet names and Ids in array of arrays
   useEffect(() => {
@@ -93,7 +93,7 @@ export default function AddTask(props) {
       setOwnedPets(holderArray);
     }
     getPets();
-  }, [ownedPetIds]);
+    return () => console.log('unmounting...')}, [ownedPetIds]);
 
   //update pet array if recently added pets
    useEffect(() => {
@@ -129,7 +129,7 @@ export default function AddTask(props) {
         }
       });
     }
-  });
+    return () => console.log('unmounting...')}, []);
 
   //find coOwnersIds for user
   useEffect(() => {
@@ -146,7 +146,7 @@ export default function AddTask(props) {
         });
     }
     getCoOwnersIds();
-  }, []);
+    return () => console.log('unmounting...')}, []);
 
   useEffect(() => {
     async function getCaretakersIds() {
@@ -162,7 +162,7 @@ export default function AddTask(props) {
         });
     }
     getCaretakersIds();
-  }, []);
+    return () => console.log('unmounting...')}, []);
 
   // get all caretaker and owner names by IDs for selecting who to assign the chore
   useEffect(() => {
@@ -192,7 +192,7 @@ export default function AddTask(props) {
       }
     }
     getUserNames();
-  }, [allIds]);
+    return () => console.log('unmounting...')}, [allIds]);
 
  
 
