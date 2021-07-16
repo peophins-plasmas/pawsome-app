@@ -45,9 +45,10 @@ export default function AddTask(props) {
 
   const userId = props.extraData;
   const allIds = [...coOwnersIds, ...caretakersIds, userId];
-  console.log(allIds, "ALLIDS>>>>> 48");
-  console.log("caretakersIds line 49", caretakersIds);
-  console.log(userId, "userId");
+  console.log("checkedUserIds", checkedUserIds);
+  // console.log(allIds, "ALLIDS>>>>> 48");
+  // console.log("caretakersIds line 49", caretakersIds);
+  // console.log(userId, "userId");
 
   useEffect(() => {
     usersRef
@@ -204,37 +205,49 @@ export default function AddTask(props) {
     <SafeAreaView>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
-          <Text style={styles.entityText}>Add a task</Text>
-
-          <TextInput
-            style={styles.input}
-            placeholder='Task description'
-            placeholderTextColor='#aaaaaa'
-            onChangeText={(text) => setEntityText(text)}
-            value={entityText}
-            underlineColorAndroid='transparent'
-            autoCapitalize='none'
-          />
+          <Text
+            style={{
+              fontWeight: "bold",
+              color: colors.pawsomeblue,
+              fontSize: 30,
+            }}
+          >
+            Add a task
+          </Text>
         </View>
 
         <View style={[styles.container, styles.addTopMargin, { width: 250 }]}>
-          <Text style={styles.stackHeaderText}>Choose a Pet</Text>
+          <Text style={styles.blueHeaderText}>Choose a Pet</Text>
           <Text>(selected pet highlights in blue)</Text>
+          <Text>(select one)</Text>
           {ownedPets.length > 0 ? (
             ownedPets.map((pet) => {
               return (
                 <View
-                  style={[styles.container, { flexDirection: "row" }]}
+                  style={[
+                    styles.container,
+                    { flexDirection: "row", marginBottom: 3 },
+                  ]}
                   key={pet[1]}
                 >
-                  <View style={styles.radioPress}>
+                  <View
+                    style={[
+                      styles.radioPress,
+                      {
+                        borderColor:
+                          pet[1] === checked ? colors.yellow : colors.ltblue,
+                      },
+                    ]}
+                  >
                     <Pressable
                       style={() => [
                         styles.radioPress,
                         {
                           backgroundColor:
                             pet[1] === checked ? colors.pawsomeblue : "white",
-                          borderWidth: 0,
+                          borderWidth: pet[1] === checked ? 3 : 0,
+                          borderColor:
+                            pet[1] === checked ? colors.yellow : "black",
                         },
                       ]}
                       onPress={() => {
@@ -243,7 +256,16 @@ export default function AddTask(props) {
                         setEntityPetName(pet[0]);
                       }}
                     >
-                      <Text style={styles.radioText}>{pet[0]}</Text>
+                      <Text
+                        style={[
+                          styles.radioText,
+                          {
+                            fontWeight: pet[1] === checked ? "bold" : "300",
+                          },
+                        ]}
+                      >
+                        {pet[0]}
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
@@ -257,7 +279,7 @@ export default function AddTask(props) {
           )}
         </View>
         <View style={[styles.container, styles.addTopMargin]}>
-          <Text style={styles.stackHeaderText}>Choose a date and time</Text>
+          <Text style={styles.blueHeaderText}>Choose a date and time</Text>
 
           <DateTimePicker
             testID='dateTimePicker'
@@ -269,9 +291,22 @@ export default function AddTask(props) {
             style={styles.datePicker}
           />
         </View>
+        <View style={styles.container}>
+          <Text style={styles.blueHeaderText}>Describe the task</Text>
+          <TextInput
+            style={styles.input}
+            placeholder='Task description'
+            placeholderTextColor='#aaaaaa'
+            onChangeText={(text) => setEntityText(text)}
+            value={entityText}
+            underlineColorAndroid='transparent'
+            autoCapitalize='none'
+          />
+        </View>
         <View style={[styles.container, styles.addTopMargin, { width: 250 }]}>
-          <Text style={styles.stackHeaderText}>Assign to users</Text>
+          <Text style={styles.blueHeaderText}>Assign to users</Text>
           <Text>(selected users highlight in blue)</Text>
+          <Text>(select as many as desired)</Text>
           {allAssociatedUsers.length > 0 ? (
             allAssociatedUsers.map((user) => {
               return (
@@ -287,7 +322,7 @@ export default function AddTask(props) {
                           backgroundColor:
                             checkedUserIds.length > 0 &&
                             checkedUserIds.includes(user.id)
-                              ? colors.pawsomeblue
+                              ? colors.dkblue
                               : "white",
                           borderWidth: 1,
                         },
@@ -305,7 +340,19 @@ export default function AddTask(props) {
                         setCheckedUserIds(addUserIds);
                       }}
                     >
-                      <Text style={styles.radioText}>
+                      <Text
+                        style={[
+                          styles.radioText,
+                          {
+                            color: checkedUserIds.includes(user.id)
+                              ? colors.yellow
+                              : "black",
+                            fontWeight: checkedUserIds.includes(user.id)
+                              ? "bold"
+                              : "300",
+                          },
+                        ]}
+                      >
                         {user.firstName} {user.lastName}
                       </Text>
                     </Pressable>
@@ -319,6 +366,19 @@ export default function AddTask(props) {
             </View>
           )}
           <TouchableOpacity
+            style={[styles.addSomeButton, styles.addTopMargin]}
+            onPress={() => setCheckedUserIds([...coOwnersIds, userId])}
+          >
+            <Text style={styles.clearButtonText}>Add owners only</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.addSomeButton, styles.addTopMargin]}
+            onPress={() => setCheckedUserIds(allIds)}
+          >
+            <Text style={styles.clearButtonText}>Add all users</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             style={[styles.clearButton, styles.addTopMargin]}
             onPress={() => setCheckedUserIds([])}
           >
@@ -326,10 +386,10 @@ export default function AddTask(props) {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
-          style={[styles.button, styles.addTopMargin]}
+          style={[styles.button, { marginTop: 50, width: 250 }]}
           onPress={onAddButtonPress}
         >
-          <Text style={styles.buttonText}>Add</Text>
+          <Text style={styles.buttonText}>Submit Chore to Calendar</Text>
         </TouchableOpacity>
       </View>
       <View style={{ height: 300 }}></View>

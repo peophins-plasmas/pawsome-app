@@ -83,6 +83,14 @@ export default StyleSheet.create({
   clearButton: {
     height: 30,
     borderRadius: 10,
+    backgroundColor: colors.yellow,
+    width: 180,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  addSomeButton: {
+    height: 30,
+    borderRadius: 10,
     backgroundColor: colors.ltblue,
     width: 180,
     alignItems: "center",
@@ -161,7 +169,11 @@ export default StyleSheet.create({
     fontWeight: "bold",
     color: colors.pawsomeblue,
   },
-
+  blueHeaderText: {
+    fontWeight: "bold",
+    color: colors.pawsomeblue,
+    fontSize: 18,
+  },
   cautionHeaderText: {
     fontWeight: "bold",
     color: "red",
@@ -183,14 +195,11 @@ export default StyleSheet.create({
     flex: 1,
     borderRadius: 10,
     backgroundColor: "white",
-    borderColor: colors.ltblue,
     borderWidth: 2,
-    margin: 2,
   },
   radioText: {
     textAlign: "center",
     fontSize: 18,
-    fontWeight: "bold",
   },
   selectPress: {
     display: "flex",
@@ -199,7 +208,7 @@ export default StyleSheet.create({
     justifyContent: "space-around",
     flex: 1,
     backgroundColor: "white",
-    borderColor: colors.dkblue,
+    borderColor: colors.pawsomeblue,
     borderWidth: 2,
   },
   addTopMargin: {
