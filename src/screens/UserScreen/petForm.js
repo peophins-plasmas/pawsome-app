@@ -17,11 +17,10 @@ import colors from "../combinedStyles";
 import { FormValidation } from "../formValidation"
 
 export default function PetForm(props) {
-  const [modalOpen, setModalOpen] = useState(false);
 
   const petsRef = firebase.firestore().collection("pets");
   const userId = props.extraData.id;
-
+  console.log("PROPS>>>>", props)
   return (
     <ScrollView>
       <View style={styles.containerForm}>
@@ -76,8 +75,8 @@ export default function PetForm(props) {
               likes: values.likes,
               tasks: ["none"],
             });
-            props.closeForm();
             Alert.alert("Pet Submitted!");
+            props.closeForm();
           }}
         >
           {(props) => (
@@ -92,6 +91,9 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("petName")}
                 value={props.values.petName}
               />
+              {props.errors.petName && props.touched.petName &&
+                <Text>{props.errors.petName}</Text>
+              }
               <TextInput
                 style={styles.inputForm}
                 placeholder="What species am I?**"
@@ -99,6 +101,9 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("species")}
                 value={props.values.species}
               />
+              {props.errors.species && props.touched.species &&
+                <Text>{props.errors.species}</Text>
+              }
               <TextInput
                 style={styles.inputForm}
                 placeholder="When was I born?"
@@ -106,13 +111,6 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("birthday")}
                 value={props.values.birthday}
               />
-              {/* <TextInput
-                style={styles.inputForm}
-                placeholder="What sex am I?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("sex")}
-                value={props.values.sex}
-              /> */}
               <View style={{flexDirection: "row"}}>
               <TextInput
                 style={[styles.inputForm, {flex: 3}]}
@@ -122,6 +120,9 @@ export default function PetForm(props) {
                 value={props.values.weight}
                 keyboardType="numeric"
               />
+              {props.errors.weight && props.touched.weight &&
+                    <Text>{props.errors.weight}</Text>
+              }
               <TextInput
                 style={[styles.inputForm, {flex: 1}]}
                 placeholder="Units?"
@@ -137,20 +138,6 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("features")}
                 value={props.values.features}
               />
-              {/* <TextInput
-                style={styles.inputForm}
-                placeholder="What do I like?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("likes")}
-                value={props.values.likes}
-              />
-              <TextInput
-                style={styles.inputForm}
-                placeholder="What do I dislike?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("dislikes")}
-                value={props.values.dislikes}
-              /> */}
               <TextInput
                 style={styles.inputForm}
                 placeholder="What am I allergic to?"
@@ -158,34 +145,6 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("allergies")}
                 value={props.values.allergies}
               />
-              {/* <TextInput
-                style={styles.inputForm}
-                placeholder="What meds do I need?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("medications")}
-                value={props.values.medications}
-              />
-              <TextInput
-                style={styles.inputForm}
-                placeholder="How do I act? Playful? Shy?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("behavior")}
-                value={props.values.behavior}
-              />
-              <TextInput
-                style={styles.inputForm}
-                placeholder="Do I eat dry food? What brand?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("dryFoodBrand")}
-                value={props.values.dryFoodBrand}
-              />
-              <TextInput
-                style={styles.inputForm}
-                placeholder="Do I eat wet food? What brand?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("wetFoodBrand")}
-                value={props.values.wetFoodBrand}
-              /> */}
               <TextInput
                 style={styles.inputForm}
                 placeholder="Any other notes?"
@@ -203,22 +162,6 @@ export default function PetForm(props) {
               />
             </View>
           )}
-          {/* {({errors, touched}) => {
-                <Form>
-                  <Field name="name" />
-                  {errors.name && touched.name ? (
-                    <Text>{errors.name}</Text>
-                  ) : null}
-                  <Field name="species" />
-                  {errors.species && touched.species ? (
-                    <Text>{errors.species}</Text>
-                  ) : null}
-                  <Field name="weight" />
-                  {errors.weight && touched.weight ? (
-                    <Text>{errors.weight}</Text>
-                  ) : null}
-                </Form>
-              }} */}
         </Formik>
       </View>
     </ScrollView>
