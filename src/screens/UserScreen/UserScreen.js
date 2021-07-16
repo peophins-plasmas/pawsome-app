@@ -297,24 +297,26 @@ export default function UserScreen(props) {
                           <Text style={styles.modalText}>{vet.phoneNum}</Text>
                           <Text style={styles.modalText}>{vet.address}</Text>
                           <Text style={styles.modalText}>{vet.hours}</Text>
-                          <Pressable
+                          {/* <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => {
                               console.log("vet was clicked");
                             }}
                           >
                             <Text style={styles.textStyle}>Edit</Text>
-                          </Pressable>
+                          </Pressable> */}
                         </View>
                       </View>
                     );
                   })}
+                  <SafeAreaView>
                   <Pressable
                     style={[styles.button, styles.buttonClose]}
                     onPress={() => setModalVisible(!modalVisible)}
                   >
                     <Text style={styles.textStyle}>Close</Text>
                   </Pressable>
+                  </SafeAreaView>
                 </Modal>
               </View>
               <Pressable

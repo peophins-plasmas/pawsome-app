@@ -65,7 +65,7 @@ export default StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    alignSelf: "center",
     marginTop: 50,
   },
   modalView: {
@@ -105,10 +105,11 @@ export default StyleSheet.create({
     textAlign: "center",
   },
   titleTextForm: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "bold",
     alignSelf: "center",
     color: colors.dkblue,
+    marginBottom: 10
   },
   paragraphForm: {
     marginVertical: 8,
@@ -116,7 +117,7 @@ export default StyleSheet.create({
   },
   containerForm: {
     flex: 1,
-    padding: 20,
+    padding: 30,
   },
   inputForm: {
     borderWidth: 1,
@@ -124,6 +125,7 @@ export default StyleSheet.create({
     padding: 10,
     fontSize: 16,
     borderRadius: 6,
+    margin: 7,
   },
   modalToggle: {
     justifyContent: "center",

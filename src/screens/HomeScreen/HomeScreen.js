@@ -44,8 +44,6 @@ export default function HomeScreen(props) {
     );
   }, []);
 
-  console.log("pets>>>>>", pets);
-
   if (pets.length === 0 || pets[0] === "none") {
     return (
       <SafeAreaView style={styles.addPetContainer}>
@@ -61,7 +59,9 @@ export default function HomeScreen(props) {
     return (
       <SafeAreaView>
         <ScrollView>
-          <View>
+          <View style={{shadowColor: 'gray',
+                shadowOpacity: 0.2,
+                elevation: 1}}>
             {pets.map((pet) => {
               return (
                 <Card key={pet.id} borderRadius={70}>
