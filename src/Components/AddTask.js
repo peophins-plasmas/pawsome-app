@@ -45,7 +45,7 @@ export default function AddTask(props) {
   const petsRef = firebase.firestore().collection("pets");
 
 
-  const userId = props.extraData;
+  const userId = props.extraData.id;
   const allIds = [...coOwnersIds, ...caretakersIds, userId];
   console.log("checkedUserIds", checkedUserIds);
   // console.log(allIds, "ALLIDS>>>>> 48");
