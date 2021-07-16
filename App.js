@@ -146,7 +146,7 @@ export default function App() {
               color={colors.yellow}
               onPress={() => navigation.toggleDrawer()}
             /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
-          {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation}/>}
+          {(props) => <BottomNav {...props} extraData={user}/>}
         </Stack.Screen>
         <Stack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: LogoTitle, headerLeft: () => <Ionicons name="ios-menu" size={32}
               color={colors.yellow}

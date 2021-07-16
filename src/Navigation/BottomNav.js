@@ -25,17 +25,17 @@ import UserScreen from "../screens/UserScreen/UserScreen"
   //   );
   // }
   
-  function Notifications() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Notifications!</Text>
-      </View>
-    );
-  }
+  // function Notifications() {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <Text>Notifications!</Text>
+  //     </View>
+  //   );
+  // }
   
   const Tab = createMaterialBottomTabNavigator();
   
-  export default function BottomNav(user) {
+  export default function BottomNav(props) {
     return (
       <Tab.Navigator
         shifting={true}
@@ -47,21 +47,11 @@ import UserScreen from "../screens/UserScreen/UserScreen"
       >
         <Tab.Screen
           name="Home"
-          children={() => <HomeScreen extraData={user} />}
+          children={() => <HomeScreen extraData={props.extraData} />}
           options={{
-            tabBarLabel: 'Home',
+            tabBarLabel: 'My Pets',
             tabBarIcon: ({ color }) => (
               <Ionicons name="ios-paw-outline" color={color} size={26} />
-            ),
-          }}
-        />
-        {/* <Tab.Screen
-          name="Calendar"
-          children={() => <CalendarScreen extraData={props.extraData} />}
-          options={{
-            tabBarLabel: 'Calendar',
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="ios-calendar-outline" color={color} size={26} />
             ),
           }}
         />
@@ -69,12 +59,12 @@ import UserScreen from "../screens/UserScreen/UserScreen"
           name="Profile"
           children={() => <UserScreen extraData={props.extraData} />}
           options={{
-            tabBarLabel: 'Profile',
+            tabBarLabel: 'Pets I Sit',
             tabBarIcon: ({ color }) => (
-              <Ionicons name="ios-person-outline" color={color} size={26} />
+              <Ionicons name="ios-heart-outline" color={color} size={26} />
             ),
           }}
-        /> */}
+        /> 
       </Tab.Navigator>
     );
   }
