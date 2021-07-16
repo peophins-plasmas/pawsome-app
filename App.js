@@ -120,7 +120,7 @@ export default function App() {
       <Image
         style={{ width: 200, height: 40, resizeMode: "contain" }}
         source={require("./assets/pawsome_logo.png")}
-        onPress={() => props.navigation.jumpTo('My Pets')}
+        // onPress={() => props.navigation.jumpTo('My Pets')}
       />
     );
   }
@@ -151,6 +151,7 @@ export default function App() {
     return (
       <Stack.Navigator>
         <Stack.Screen name="My Pets" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
+
               color={colors.yellow}
               onPress={() => navigation.toggleDrawer()}
             /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
