@@ -120,7 +120,7 @@ export default function App() {
       <Image
         style={{ width: 200, height: 40, resizeMode: "contain" }}
         source={require("./assets/pawsome_logo.png")}
-        // onPress={() => props.navigation.jumpTo('My Pets')}
+        onPress={() => props.navigation.jumpTo('My Pets')}
       />
     );
   }

@@ -37,7 +37,7 @@
 
     "react-native-web": "~0.13.12",
     "xdate": "^0.8.2",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
     "expo-constants": "~11.0.1"
 
   },
