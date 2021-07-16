@@ -40,7 +40,7 @@ export default function HomeScreen(props) {
         console.log(error);
       }
     );
-  }, []);
+    return () => console.log('unmounting...')}, []);
 
   console.log("pets>>>>>", pets);
 
