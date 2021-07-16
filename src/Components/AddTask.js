@@ -21,6 +21,7 @@ export default function AddTask(props) {
 
   const [selDate, setSelDate] = useState(props.startTimeStamp || date);
   const [dueDate, setDueDate] = useState(dateCheck);
+  const [pets, setPets] = useState([]);
   const [ownedPetIds, setOwnedPetIds] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
   const [caretakersIds, setCaretakersIds] = useState([]);
@@ -43,12 +44,14 @@ export default function AddTask(props) {
   const usersRef = firebase.firestore().collection("users");
   const petsRef = firebase.firestore().collection("pets");
 
+
   const userId = props.extraData;
   const allIds = [...coOwnersIds, ...caretakersIds, userId];
   console.log("checkedUserIds", checkedUserIds);
   // console.log(allIds, "ALLIDS>>>>> 48");
   // console.log("caretakersIds line 49", caretakersIds);
   // console.log(userId, "userId");
+
 
   useEffect(() => {
     usersRef
@@ -59,7 +62,7 @@ export default function AddTask(props) {
         setOwnedPetIds(userData.ownedPetId);
       })
       .catch((error) => {
-        console.error("Pets not found");
+        console.log("Pets not found");
       });
   }, []);
 
@@ -84,13 +87,49 @@ export default function AddTask(props) {
             }
           })
           .catch((error) => {
-            console.error("Pets not found");
+            console.log("Pets not found");
           });
       }
       setOwnedPets(holderArray);
     }
     getPets();
   }, [ownedPetIds]);
+
+  //update pet array if recently added pets
+   useEffect(() => {
+    const petIdArray = [];
+    let user;
+    if (Object.keys(props.extraData.ownedPetId).length === 0) {
+      user = { ownedPetId: ["none"] };
+    } else {
+      user = props.extraData;
+    }
+    petsRef.where("ownerId", "array-contains", userId).onSnapshot(
+      (querySnapshot) => {
+        const newPets = [];
+        querySnapshot.forEach((doc) => {
+          const pet = doc.data();
+          pet.id = doc.id;
+          newPets.push(pet);
+        });
+        setPets(newPets);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    pets.map((pet) => petIdArray.push(pet.id));
+    if (user.ownedPetId.length !== petIdArray.length || user.ownedPetId[user.ownedPetId.length - 1] === "none" ) {
+      const currentUser = firebase.firestore().collection("users").doc(userId);
+      petIdArray.forEach((id) => {
+        if (!user.ownedPetId.includes(id)) {
+          currentUser.update({
+            ownedPetId: firebase.firestore.FieldValue.arrayUnion(id),
+          });
+        }
+      });
+    }
+  });
 
   //find coOwnersIds for user
   useEffect(() => {
@@ -155,12 +194,7 @@ export default function AddTask(props) {
     getUserNames();
   }, [allIds]);
 
-  // useEffect(() => {
-  //   console.log(ownedPets, "OwnedPets line 95");
-  //   console.log("ownedPetsId line 96", ownedPetIds);
-  //   console.log("000000000  allAssociatedUsers line 171", allAssociatedUsers);
-  //   console.log("checkedUserIds", checkedUserIds);
-  // });
+ 
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
@@ -205,6 +239,7 @@ export default function AddTask(props) {
     <SafeAreaView>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
+
           <Text
             style={{
               fontWeight: "bold",
@@ -214,6 +249,7 @@ export default function AddTask(props) {
           >
             Add a task
           </Text>
+
         </View>
 
         <View style={[styles.container, styles.addTopMargin, { width: 250 }]}>
@@ -222,6 +258,7 @@ export default function AddTask(props) {
           <Text>(select one)</Text>
           {ownedPets.length > 0 ? (
             ownedPets.map((pet) => {
+
               return (
                 <View
                   style={[
@@ -372,6 +409,7 @@ export default function AddTask(props) {
             <Text style={styles.clearButtonText}>Add owners only</Text>
           </TouchableOpacity>
 
+
           <TouchableOpacity
             style={[styles.addSomeButton, styles.addTopMargin]}
             onPress={() => setCheckedUserIds(allIds)}
@@ -390,6 +428,8 @@ export default function AddTask(props) {
           onPress={onAddButtonPress}
         >
           <Text style={styles.buttonText}>Submit Chore to Calendar</Text>
+
+      
         </TouchableOpacity>
       </View>
       <View style={{ height: 300 }}></View>

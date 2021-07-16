@@ -13,15 +13,14 @@ import {
   Image,
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
-import AddButton from "../../Components/AddButton"
+import AddButton from "../../Components/AddButton";
 import styles from "./styles";
+import { colors } from "../combinedStyles";
 import { firebase } from "../../firebase/config";
 import * as RootNavigator from "../../Navigation/RootNavigator";
 
 export default function HomeScreen(props) {
-  const [entityText, setEntityText] = useState("");
   const [pets, setPets] = useState([]);
-  const [chosenPet, setChosenPet] = useState({});
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
@@ -43,89 +42,90 @@ export default function HomeScreen(props) {
     );
   }, []);
 
-  const onAddButtonPress = () => {
-    if (entityText && entityText.length > 0) {
-      const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-      const data = {
-        petName: entityText,
-        ownerId: [userID],
-        createdAt: timestamp,
-        image:
-          "https://res.cloudinary.com/dx5gk8aso/image/upload/v1625860768/1200px-Paw-print.svg_hmqdd7.png",
-      };
-      petsRef
-        .add(data)
-        .then((_doc) => {
-          setEntityText("");
-          Keyboard.dismiss();
-        })
-        .catch((error) => {
-          alert(error);
-        });
-    }
-  };
+  console.log("pets>>>>>", pets);
 
-  // const petStack = createStackNavigator();
-
-  const renderEntity = ({ item, index }) => {
+  if (pets.length === 0 || pets[0] === "none") {
     return (
-      <View style={styles.entityContainer}>
-        <Image
-          source={{ uri: item.image }}
-          style={{ width: 200, height: 200 }}
-          onPress={() => {
-            RootNavigator.navigate("Pet", { pet: item });
-          }}
-        />
-        <Text style={styles.entityText}>{item.petName}</Text>
-      </View>
+      <SafeAreaView style={styles.addPetContainer}>
+        <View style={styles.container}>
+          <Text style={styles.titleText}>Add a pet!</Text>
+        </View>
+        <View style={styles.container}>
+          <AddButton extraData={props.extraData} addTo={"addPet"} />
+        </View>
+      </SafeAreaView>
     );
-  };
-
-  return (
-    <SafeAreaView>
-      <ScrollView>
-        <View>
-          {console.log("ALL PETS", pets)}
-          {pets.map((pet) => {
-            return (
-            <Card>
-              <Card.Title>{pet.petName}</Card.Title>
-                <Card.Divider />
+  } else {
+    return (
+      <SafeAreaView>
+        <ScrollView>
+          <View>
+            {pets.map((pet) => {
+              return (
+                <Card key={pet.id} borderRadius={70}>
+                  <Card.Title
+                    style={{ color: colors.pawsomeblue, fontSize: 20 }}
+                  >
+                    {pet.petName.toUpperCase()}
+                  </Card.Title>
+                  <Card.Divider />
                   <View
                     style={{
                       position: "relative",
-                      alignItems: "center"
+                      justifyContent: "space-between",
                     }}
                   >
-                    <Avatar
-                    activeOpacity={0.2}
-                    containerStyle={{ backgroundColor: "#BDBDBD" }}
-                    onPress={() => {
-                      RootNavigator.navigate("Pet", { pet: pet });
-                    }}
-                    rounded
-                    size="xlarge"
-                    source={{ uri: pet.image }}
-                    />
-                    <Text>Birthday: {pet.birthday || "unknown"}</Text>
-                    <Text>Features: {pet.features || "not sure yet!"}</Text>
-                    <Button title="See More" onPress={() => {
-                        RootNavigator.navigate("Pet", { pet: pet });
-                      }}>
-                    </Button>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-evenly",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Avatar
+                        activeOpacity={0.2}
+                        containerStyle={{
+                          backgroundColor: "#BDBDBD",
+                          alignSelf: "flex-start",
+                        }}
+                        onPress={() => {
+                          RootNavigator.navigate("Pet", { pet: pet });
+                        }}
+                        rounded
+                        size="xlarge"
+                        source={{ uri: pet.image }}
+                      />
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <View>
+                          <Text>Birthday: {pet.birthday || "unknown"}</Text>
+                          <Text>Sex: {pet.sex || "other"}</Text>
+                        </View>
+                        <View>
+                          <Button
+                            title="See More"
+                            onPress={() => {
+                              RootNavigator.navigate("Pet", { pet: pet });
+                            }}
+                          ></Button>
+                        </View>
+                      </View>
+                    </View>
                   </View>
-            </Card>
-            )
-          })}
+                </Card>
+              );
+            })}
+          </View>
+          <View style={{ height: 100 }}></View>
+        </ScrollView>
+        <View style={{ position: "absolute", right: 0, bottom: 0 }}>
+          <AddButton extraData={props.extraData} addTo={"addPet"} />
         </View>
-
-        <View style={styles.formContainer}>
-          <AddButton extraData={props.extraData} />
-        </View>
-
-      <View style={{ height: 100 }}></View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 }

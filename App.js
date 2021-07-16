@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
-import { DrawerActions, NavigationContainer } from "@react-navigation/native";
+import { DrawerActions, NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text, View, Button, Image, Alert } from "react-native";
 import {
@@ -42,6 +42,8 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(null);
+
+ 
 
   function CustomDrawerContent(props) {
     return (
@@ -108,7 +110,7 @@ export default function App() {
   function HomeStack() {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="All Pets" options={{
+        <Stack.Screen name="My Pets" options={{
           safeAreaInsets: { top: 0 },
           headerTitleStyle: { alignSelf: 'center'},
           headerStyle:{ backgroundColor: 'transparent' }
@@ -128,6 +130,7 @@ export default function App() {
   function MyDrawer() {
     return (
       <Drawer.Navigator
+        initialRouteName="My Pets"
         drawerContentOptions={{
           activeTintColor: colors.yellow,
         }}
@@ -173,6 +176,12 @@ export default function App() {
               backgroundColor: colors.pawsomeblue,
             },
             headerShown: true,
+            // headerLeft: ({navigation}) => (
+            //   <Ionicons name="ios-menu" size={32}
+            //   color={colors.yellow}
+            //   onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            // />
+            // ),
             drawerIcon: () => (
               <Avatar
               activeOpacity={0.2}
@@ -183,7 +192,7 @@ export default function App() {
               source={{ uri: user.image }} />
             ),
           }}/>
-            <Drawer.Screen name="All Pets" component={HomeStack} options={{
+            <Drawer.Screen name="My Pets" component={HomeStack} options={{
             headerTitle: LogoTitle,
             headerStyle: {
               backgroundColor: colors.pawsomeblue,
@@ -218,7 +227,6 @@ export default function App() {
             <CalendarScreen
               {...props}
               extraData={user}
-              navigation={props.navigation}
             />
           )}
         </Drawer.Screen>
@@ -267,12 +275,15 @@ export default function App() {
         ) : (
           <Stack.Navigator>
             <>
-              <Stack.Screen name="Login" component={LoginScreen} 
+              <Stack.Screen name="Login" 
+              component={LoginScreen} 
               options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
                }}/>
               <Stack.Screen
                 name="Registration"
                 component={RegistrationScreen}
+                options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
+               }}
               />
             </>
           </Stack.Navigator>

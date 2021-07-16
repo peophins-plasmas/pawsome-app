@@ -1,10 +1,17 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../combinedStyles";
 
 export default StyleSheet.create({
   container: {
     flexDirection: "column",
     //flex: 1,
     alignItems: "center",
+  },
+  addPetContainer: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
   formContainer: {
     flexDirection: "row",
@@ -57,11 +64,18 @@ export default StyleSheet.create({
     borderBottomColor: "#cccccc",
     borderBottomWidth: 1,
     paddingBottom: 16,
-    alignItems: "center"
+    alignItems: "center",
   },
   entityText: {
     fontSize: 20,
     color: "#333333",
-    alignItems: "center"
+    alignItems: "center",
+  },
+  titleText: {
+    marginBottom: 10,
+    color: colors.pawsomeblue,
+    fontSize: 25,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

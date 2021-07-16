@@ -15,6 +15,7 @@ import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import { Title, Paragraph } from "react-native-paper";
 import { Avatar, Card } from "react-native-elements";
+import * as RootNavigator from "../../Navigation/RootNavigator";
 
 export default function PetScreen(props) {
   const [owners, setOwners] = useState([]);
@@ -79,7 +80,9 @@ export default function PetScreen(props) {
       <ScrollView>
         {pet ? (
           <View style={styles.container}>
-            <UploadImage pet={pet} functionType={"petImg"} />
+            <View style={styles.userContainer}>
+              <UploadImage pet={pet} functionType={"petImg"} />
+            </View>
             <View style={styles.introContainer}>
               <Text style={styles.nameText}>{pet.petName}</Text>
               <View style={[styles.stack]}>
@@ -88,7 +91,7 @@ export default function PetScreen(props) {
               </View>
             </View>
 
-            <Card style={styles.stackContainer}>
+            <Card borderRadius={50} style={styles.stackContainer}>
               <View style={styles.stack}>
                 <Text style={styles.stackHeaderText}>BIRTHDAY</Text>
                 <Text>{pet.birthday ? pet.birthday : "I was born!"}</Text>
@@ -178,18 +181,20 @@ export default function PetScreen(props) {
                   return (
                     <View key={owner.id} style={styles.stack}>
                       <View style={styles.smallAvatarImage}>
-                        <Avatar
-                          avatarStyle={{ padding: 30 }}
-                          activeOpacity={0.2}
-                          containerStyle={{ backgroundColor: "#BDBDBD" }}
-                          onPress={() =>
-                            alert(`Go to ${owner.firstName}'s profile`)
-                          }
-                          rounded
-                          size="large"
-                          source={{ uri: owner.image }}
-                        />
-                        <Text>{owner.firstName}</Text>
+                        <View style={{ alignItems: "center" }}>
+                          <Avatar
+                            avatarStyle={{ padding: 30 }}
+                            activeOpacity={0.2}
+                            containerStyle={{ backgroundColor: "#BDBDBD" }}
+                            onPress={() =>
+                              alert(`Go to ${owner.firstName}'s profile`)
+                            }
+                            rounded
+                            size="large"
+                            source={{ uri: owner.image }}
+                          />
+                          <Text>{owner.firstName}</Text>
+                        </View>
                       </View>
                     </View>
                   );
@@ -202,18 +207,20 @@ export default function PetScreen(props) {
                   return (
                     <View key={caretaker.id} style={styles.stack}>
                       <View style={styles.smallAvatarImage}>
-                        <Avatar
-                          avatarStyle={{ padding: 30 }}
-                          activeOpacity={0.2}
-                          containerStyle={{ backgroundColor: "#BDBDBD" }}
-                          onPress={() =>
-                            alert(`Go to ${caretaker.firstName}'s profile`)
-                          }
-                          rounded
-                          size="large"
-                          source={{ uri: caretaker.image }}
-                        />
-                        <Text>{caretaker.firstName}</Text>
+                        <View style={{ alignItems: "center" }}>
+                          <Avatar
+                            avatarStyle={{ padding: 30 }}
+                            activeOpacity={0.2}
+                            containerStyle={{ backgroundColor: "#BDBDBD" }}
+                            onPress={() =>
+                              alert(`Go to ${caretaker.firstName}'s profile`)
+                            }
+                            rounded
+                            size="large"
+                            source={{ uri: caretaker.image }}
+                          />
+                          <Text>{caretaker.firstName}</Text>
+                        </View>
                       </View>
                     </View>
                   );

@@ -27,7 +27,7 @@ import * as RootNavigator from "../../Navigation/RootNavigator";
 export default function UserScreen(props) {
   const [entityText, setEntityText] = useState("");
   const [users, setUsers] = useState([]);
-  const [singleUser, setSingleUser] = useState({})
+  const [singleUser, setSingleUser] = useState({});
   const [vets, setVets] = useState([]);
   const [pets, setPets] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
@@ -55,7 +55,7 @@ export default function UserScreen(props) {
           userInfo.push(user);
         });
         setUsers(userInfo);
-        setSingleUser(userInfo[0])
+        setSingleUser(userInfo[0]);
       },
       (error) => {
         console.log(error);
@@ -63,26 +63,6 @@ export default function UserScreen(props) {
     );
   }, []);
 
-  useEffect(() => {
-    const petIdArray = [];
-    let user;
-    if  (Object.keys(singleUser).length === 0) {
-      user = {ownedPetId: ["none"]}
-    } else {
-      user = singleUser
-    }
-    ownedPets.map((pet) => petIdArray.push(pet.id))
-    if (user.ownedPetId.length !== petIdArray.length) {
-      const currentUser = firebase.firestore().collection("users").doc(userId)
-      petIdArray.forEach((id) => {
-        if (!user.ownedPetId.includes(id)) {
-          currentUser.update({
-            ownedPetId: firebase.firestore.FieldValue.arrayUnion(id)
-          })
-        }
-      })
-    }
-  })
 
   useEffect(() => {
     vetsRef.where("id", "in", vetId).onSnapshot(
@@ -146,7 +126,7 @@ export default function UserScreen(props) {
           setCaretakersIds(caretakers);
         })
         .catch((error) => {
-          console.error("Caretaker id not found");
+          console.log("Caretaker id not found");
         });
     }
     getCaretakersIds();
@@ -176,7 +156,7 @@ export default function UserScreen(props) {
             }
           })
           .catch((error) => {
-            console.error("Caretakers not found :(");
+            console.log("Caretakers not found :(");
           });
       }
       setCaretakersArr(holderArr);
@@ -210,7 +190,7 @@ export default function UserScreen(props) {
       </View>
     );
   };
-
+  console.log("vets>>>>>>>", vets);
   return (
     <SafeAreaView style={styles.container}>
       {users && (
@@ -226,16 +206,19 @@ export default function UserScreen(props) {
             {ownedPets.map((pet) => {
               return (
                 <View key={pet.id} style={styles.petImage}>
-                  <Avatar
-                    activeOpacity={0.2}
-                    containerStyle={{ backgroundColor: "#BDBDBD" }}
-                    onPress={() => {
-                      RootNavigator.navigate("Pet", { pet: pet });
-                    }}
-                    rounded
-                    size="large"
-                    source={{ uri: pet.image }}
-                  />
+                  <View style={styles.avatarContainer}>
+                    <Avatar
+                      activeOpacity={0.2}
+                      containerStyle={{ backgroundColor: "#BDBDBD" }}
+                      onPress={() => {
+                        RootNavigator.navigate("Pet", { pet: pet });
+                      }}
+                      rounded
+                      size="large"
+                      source={{ uri: pet.image }}
+                    />
+                    <Text>{pet.petName}</Text>
+                  </View>
                 </View>
               );
             })}
@@ -246,14 +229,17 @@ export default function UserScreen(props) {
             {caredPets.map((pet) => {
               return (
                 <View key={pet.id} style={styles.petImage}>
-                  <Avatar
-                    activeOpacity={0.2}
-                    containerStyle={{ backgroundColor: "#BDBDBD" }}
-                    onPress={() => alert("onPress")}
-                    rounded
-                    size="large"
-                    source={{ uri: pet.image }}
-                  />
+                  <View style={styles.avatarContainer}>
+                    <Avatar
+                      activeOpacity={0.2}
+                      containerStyle={{ backgroundColor: "#BDBDBD" }}
+                      onPress={() => alert("onPress")}
+                      rounded
+                      size="large"
+                      source={{ uri: pet.image }}
+                    />
+                    <Text>{pet.petName}</Text>
+                  </View>
                 </View>
               );
             })}
@@ -267,71 +253,81 @@ export default function UserScreen(props) {
                 {caretakersArr.map((caretaker) => {
                   return (
                     <View key={caretaker.caretakerId} style={styles.petImage}>
-                      <Text>{caretaker.firstName}</Text>
-                      <Avatar
-                        activeOpacity={0.2}
-                        containerStyle={{ backgroundColor: "#BDBDBD" }}
-                        onPress={() => alert("onPress")}
-                        rounded
-                        size="large"
-                        source={{ uri: caretaker.image }}
-                      />
+                      <View style={styles.avatarContainer}>
+                        <Avatar
+                          activeOpacity={0.2}
+                          containerStyle={{ backgroundColor: "#BDBDBD" }}
+                          onPress={() => alert("onPress")}
+                          rounded
+                          size="large"
+                          source={{ uri: caretaker.image }}
+                        />
+                        <Text>{caretaker.firstName}</Text>
+                      </View>
                     </View>
                   );
                 })}
+                <AddButton
+                  user={props.extraData}
+                  caretakers={caretakersArr}
+                  pets={ownedPets}
+                  addTo={"addCaretaker"}
+                />
               </View>
-              <AddButton
-                user={props.extraData}
-                caretakers={caretakersArr}
-                pets={ownedPets}
-                addTo={"addCaretaker"}
-              />
             </View>
           )}
-          <View style={styles.modalContainer}>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              {vets.map((vet) => {
-                return (
-                  <View key={vet.id} style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <Text style={styles.modalText}>{vet.vetName}</Text>
-                      <Text style={styles.modalText}>{vet.email}</Text>
-                      <Text style={styles.modalText}>{vet.phoneNum}</Text>
-                      <Text style={styles.modalText}>{vet.address}</Text>
-                      <Text style={styles.modalText}>{vet.hours}</Text>
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => {
-                          console.log("vet was clicked");
-                        }}
-                      >
-                        <Text style={styles.textStyle}>Edit</Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                );
-              })}
+
+          {vets.length > 0 ? (
+            <View>
+              <View style={styles.modalContainer}>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  {vets.map((vet) => {
+                    return (
+                      <View key={vet.id} style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                          <Text style={styles.modalText}>{vet.vetName}</Text>
+                          <Text style={styles.modalText}>{vet.email}</Text>
+                          <Text style={styles.modalText}>{vet.phoneNum}</Text>
+                          <Text style={styles.modalText}>{vet.address}</Text>
+                          <Text style={styles.modalText}>{vet.hours}</Text>
+                          <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => {
+                              console.log("vet was clicked");
+                            }}
+                          >
+                            <Text style={styles.textStyle}>Edit</Text>
+                          </Pressable>
+                        </View>
+                      </View>
+                    );
+                  })}
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.textStyle}>Close</Text>
+                  </Pressable>
+                </Modal>
+              </View>
               <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() => setModalVisible(true)}
               >
-                <Text style={styles.textStyle}>Close</Text>
+                <Text style={styles.textStyle}>My Vets</Text>
               </Pressable>
-            </Modal>
-          </View>
-          <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={styles.textStyle}>My Vets</Text>
-          </Pressable>
+            </View>
+          ) : (
+            <View>{/* <Text>No vets found!</Text> */}</View>
+          )}
+
           <View style={{ height: 100 }}></View>
         </ScrollView>
       )}

@@ -87,12 +87,21 @@ export default function CalendarScreen(props) {
       );
   }, [selDate, dueDate]);
 
+  // useEffect(() => {
+  //   const unsubscribe = props.navigation.addListener('focus', () => {
+  //     Alert.alert('Refreshed');
+  //   });
+  //   return unsubscribe;
+  // }, [props.navigation]);
+
+  
+
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
           <Text>Today is {currentDate}.</Text>
-          <Text>It is {currentTime}.</Text>
+          {/* <Text>It is {currentTime}.</Text> */}
         </View>
         <CalendarStrip
           scrollable
@@ -157,7 +166,7 @@ export default function CalendarScreen(props) {
 
           {addingTask && (
             <AddTask
-              extraData={userId}
+              extraData={props.extraData}
               calDate={dueDate}
               startTimeStamp={timeStamp}
             />
