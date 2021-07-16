@@ -19,11 +19,13 @@ import { colors } from "../combinedStyles";
 import { firebase } from "../../firebase/config";
 import * as RootNavigator from "../../Navigation/RootNavigator";
 
+
 export default function HomeScreen(props) {
   const [pets, setPets] = useState([]);
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
+  
 
   useEffect(() => {
     petsRef.where("ownerId", "array-contains", userID).onSnapshot(

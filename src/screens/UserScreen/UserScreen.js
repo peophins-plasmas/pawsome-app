@@ -63,26 +63,6 @@ export default function UserScreen(props) {
     );
   }, []);
 
-  useEffect(() => {
-    const petIdArray = [];
-    let user;
-    if (Object.keys(singleUser).length === 0) {
-      user = { ownedPetId: ["none"] };
-    } else {
-      user = singleUser;
-    }
-    ownedPets.map((pet) => petIdArray.push(pet.id));
-    if (user.ownedPetId.length !== petIdArray.length || user.ownedPetId[user.ownedPetId.length - 1] === "none" ) {
-      const currentUser = firebase.firestore().collection("users").doc(userId);
-      petIdArray.forEach((id) => {
-        if (!user.ownedPetId.includes(id)) {
-          currentUser.update({
-            ownedPetId: firebase.firestore.FieldValue.arrayUnion(id),
-          });
-        }
-      });
-    }
-  });
 
   useEffect(() => {
     vetsRef.where("id", "in", vetId).onSnapshot(
