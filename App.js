@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
-import { DrawerActions, NavigationContainer, useNavigation } from "@react-navigation/native";
+import { DrawerActions, NavigationContainer, useNavigation, DefaultTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text, View, Button, Alert } from "react-native";
 import {
@@ -48,6 +48,14 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(null);
+
+  const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: '#fdf9f1'
+    },
+  };
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => console.log(token)).catch(err => console.log(err))
@@ -110,7 +118,7 @@ export default function App() {
   function LogoTitle(props) {
     return (
       <Image
-        style={{ width: 300, height: 40, resizeMode: "contain" }}
+        style={{ width: 200, height: 40, resizeMode: "contain" }}
         source={require("./assets/pawsome_logo.png")}
         onPress={() => props.navigation.jumpTo('My Pets')}
       />
@@ -285,7 +293,7 @@ export default function App() {
 
   return (
     <PaperProvider>
-      <NavigationContainer ref={navigationRef}>
+      <NavigationContainer theme={MyTheme} ref={navigationRef}>
         {isSignedIn ? (
           <>
             <MyDrawer />
