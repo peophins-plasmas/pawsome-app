@@ -21,6 +21,7 @@ export default function AddTask(props) {
 
   const [selDate, setSelDate] = useState(props.startTimeStamp || date);
   const [dueDate, setDueDate] = useState(dateCheck);
+  const [pets, setPets] = useState([]);
   const [ownedPetIds, setOwnedPetIds] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
   const [checked, setChecked] = useState();
@@ -39,7 +40,7 @@ export default function AddTask(props) {
   const usersRef = firebase.firestore().collection("users");
   const petsRef = firebase.firestore().collection("pets");
 
-  const userId = props.extraData;
+  const userId = props.extraData.id;
 
   useEffect(() => {
     //console.log(userId);
@@ -85,9 +86,45 @@ export default function AddTask(props) {
     getPets();
   }, [ownedPetIds]);
 
+  useEffect(() => {
+    const petIdArray = [];
+    let user;
+    if (Object.keys(props.extraData.ownedPetId).length === 0) {
+      user = { ownedPetId: ["none"] };
+    } else {
+      user = props.extraData;
+    }
+    petsRef.where("ownerId", "array-contains", userId).onSnapshot(
+      (querySnapshot) => {
+        const newPets = [];
+        querySnapshot.forEach((doc) => {
+          const pet = doc.data();
+          pet.id = doc.id;
+          newPets.push(pet);
+        });
+        setPets(newPets);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    pets.map((pet) => petIdArray.push(pet.id));
+    if (user.ownedPetId.length !== petIdArray.length || user.ownedPetId[user.ownedPetId.length - 1] === "none" ) {
+      const currentUser = firebase.firestore().collection("users").doc(userId);
+      petIdArray.forEach((id) => {
+        if (!user.ownedPetId.includes(id)) {
+          currentUser.update({
+            ownedPetId: firebase.firestore.FieldValue.arrayUnion(id),
+          });
+        }
+      });
+    }
+  });
+
   // useEffect(() => {
   //   console.log(ownedPets, "OwnedPets line 95");
   //   console.log("ownedPetsId line 96", ownedPetIds);
+  //   console.log(Object.keys(props.extraData.ownedPetId).length)
   // });
 
   const onAddButtonPress = () => {
@@ -149,7 +186,7 @@ export default function AddTask(props) {
         <View style={[styles.container, { width: 250 }]}>
           {ownedPets.length > 0 ? (
             ownedPets.map((pet) => {
-              console.log(pet, "pet line 147");
+              // console.log(pet, "pet line 147");
               return (
                 <View
                   style={[styles.container, { flexDirection: "row" }]}

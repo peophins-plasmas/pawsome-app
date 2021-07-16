@@ -107,6 +107,15 @@ export default function CalendarScreen(props) {
       );
   }, [selDate, dueDate]);
 
+  // useEffect(() => {
+  //   const unsubscribe = props.navigation.addListener('focus', () => {
+  //     Alert.alert('Refreshed');
+  //   });
+  //   return unsubscribe;
+  // }, [props.navigation]);
+
+  
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -177,7 +186,7 @@ export default function CalendarScreen(props) {
 
           {addingTask && (
             <AddTask
-              extraData={userId}
+              extraData={props.extraData}
               calDate={dueDate}
               startTimeStamp={timeStamp}
             />
