@@ -41,7 +41,7 @@ export default function CalendarScreen(props) {
     let sortedTasks;
     tasksRef
       .orderBy("dueTime", "asc")
-      .where("userId", "==", userId)
+      .where("userId", "array-contains", userId)
       .where("dueDate", "==", dueDate.toString())
       .onSnapshot(
         (querySnapshot) => {

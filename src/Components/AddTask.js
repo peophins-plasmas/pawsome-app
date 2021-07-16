@@ -27,7 +27,7 @@ export default function AddTask(props) {
   const [coOwnersIds, setCoOwnersIds] = useState([]);
   const [allAssociatedUsers, setAllAssociatedUsers] = useState([]);
   const [checked, setChecked] = useState();
-  const [checkedUser, setCheckedUser] = useState();
+  const [checkedUserIds, setCheckedUserIds] = useState([]);
 
   const [entityPetName, setEntityPetName] = useState("");
   const [entityText, setEntityText] = useState("");
@@ -91,11 +91,6 @@ export default function AddTask(props) {
     getPets();
   }, [ownedPetIds]);
 
-  // useEffect(() => {
-  //   console.log(ownedPets, "OwnedPets line 95");
-  //   console.log("ownedPetsId line 96", ownedPetIds);
-  // });
-
   //find coOwnersIds for user
   useEffect(() => {
     async function getCoOwnersIds() {
@@ -129,37 +124,42 @@ export default function AddTask(props) {
     getCaretakersIds();
   }, []);
 
-  //get all caretaker and owner names by IDs for selecting who to assign the chore
+  // get all caretaker and owner names by IDs for selecting who to assign the chore
+  useEffect(() => {
+    let holderArray = [];
+    async function getUserNames() {
+      for (let j = 0; j < allIds.length; ++j) {
+        if (allIds[j] !== "none") {
+          await usersRef
+            .doc(allIds[j])
+            .get()
+            .then((document) => {
+              const { firstName, lastName } = document.data();
+              const newEl = { firstName, lastName, id: allIds[j] };
+              holderArray.push(newEl);
+            })
+            .catch((error) => {
+              console.error("No users found");
+            });
+        }
+      }
+      if (
+        holderArray.length > 0 &&
+        (allAssociatedUsers.length === 0 ||
+          allAssociatedUsers[0]["id"] !== holderArray[0]["id"])
+      ) {
+        setAllAssociatedUsers(holderArray);
+      }
+    }
+    getUserNames();
+  }, [allIds]);
+
   // useEffect(() => {
-  //   async function getUserNames() {
-  //     let holderArray = [];
-  //     for (let j = 0; j < allIds.length; ++j) {
-  //  if(allIds[j]!=="none"){
-  //       await usersRef
-  //         .doc(allIds[j])
-  //         .get()
-  //         .then((document) => {
-  //           const { firstName, lastName } = document.data();
-  //           const newEl = { firstName, lastName, id: allIds[j] };
-  //           const containsUserId = allAssociatedUsers.some((el) => el.id);
-  //           if (!containsUserId) {
-  //             holderArray.push(newEl);
-  //             // console.log(holderArray, "holder line 78");
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           console.error("No users found");
-  //         });
-  //     }
-  //   }
-  //     setAllAssociatedUsers(holderArray);
-  //   }
-  //   getUserNames();
-  // }, [allIds]);
-
-  //console.log(caretakersIds, "caretakersIds outside useEffect");
-
-  console.log(allAssociatedUsers, "allAssociatedUsers line 161");
+  //   console.log(ownedPets, "OwnedPets line 95");
+  //   console.log("ownedPetsId line 96", ownedPetIds);
+  //   console.log("000000000  allAssociatedUsers line 171", allAssociatedUsers);
+  //   console.log("checkedUserIds", checkedUserIds);
+  // });
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
@@ -170,7 +170,7 @@ export default function AddTask(props) {
         petId: entityPetId,
         status: "open",
         frequency: entityFrequency,
-        userId: userId,
+        userId: checkedUserIds,
         petName: entityPetName,
       };
       tasksRef
@@ -183,6 +183,7 @@ export default function AddTask(props) {
           setEntityPetName("");
           setEntityStatus("open");
           setEntityFrequency("");
+          setCheckedUserIds([]);
           Keyboard.dismiss();
         })
         .catch((error) => {
@@ -207,7 +208,7 @@ export default function AddTask(props) {
 
           <TextInput
             style={styles.input}
-            placeholder='Task name'
+            placeholder='Task description'
             placeholderTextColor='#aaaaaa'
             onChangeText={(text) => setEntityText(text)}
             value={entityText}
@@ -216,7 +217,7 @@ export default function AddTask(props) {
           />
         </View>
 
-        <View style={[styles.container, { width: 250 }]}>
+        <View style={[styles.container, styles.addTopMargin, { width: 250 }]}>
           <Text style={styles.stackHeaderText}>Choose a Pet</Text>
           <Text>(selected pet highlights in blue)</Text>
           {ownedPets.length > 0 ? (
@@ -255,23 +256,79 @@ export default function AddTask(props) {
             </Text>
           )}
         </View>
+        <View style={[styles.container, styles.addTopMargin]}>
+          <Text style={styles.stackHeaderText}>Choose a date and time</Text>
 
-        <DateTimePicker
-          testID='dateTimePicker'
-          mode='datetime'
-          is24Hour={true}
-          display='default'
-          onChange={onChange}
-          value={selDate}
-          style={{
-            color: "black",
-            justifyContent: "center",
-            alignContent: "center",
-            display: "flex",
-            width: 220,
-          }}
-        />
-        <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
+          <DateTimePicker
+            testID='dateTimePicker'
+            mode='datetime'
+            is24Hour={true}
+            display='default'
+            onChange={onChange}
+            value={selDate}
+            style={styles.datePicker}
+          />
+        </View>
+        <View style={[styles.container, styles.addTopMargin, { width: 250 }]}>
+          <Text style={styles.stackHeaderText}>Assign to users</Text>
+          <Text>(selected users highlight in blue)</Text>
+          {allAssociatedUsers.length > 0 ? (
+            allAssociatedUsers.map((user) => {
+              return (
+                <View
+                  style={[styles.container, { flexDirection: "row" }]}
+                  key={user.id}
+                >
+                  <View style={styles.radioPress}>
+                    <Pressable
+                      style={() => [
+                        styles.radioPress,
+                        {
+                          backgroundColor:
+                            checkedUserIds.length > 0 &&
+                            checkedUserIds.includes(user.id)
+                              ? colors.pawsomeblue
+                              : "white",
+                          borderWidth: 0,
+                        },
+                      ]}
+                      onPress={() => {
+                        let addUserIds;
+                        if (checkedUserIds.length > 0) {
+                          addUserIds = checkedUserIds.slice();
+                        } else {
+                          addUserIds = [];
+                        }
+                        if (!addUserIds.includes(user.id)) {
+                          addUserIds.push(user.id);
+                        }
+                        setCheckedUserIds(addUserIds);
+                      }}
+                    >
+                      <Text style={styles.radioText}>
+                        {user.firstName} {user.lastName}
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+              );
+            })
+          ) : (
+            <View>
+              <Text>Loading</Text>
+            </View>
+          )}
+          <TouchableOpacity
+            style={[styles.clearButton, styles.addTopMargin]}
+            onPress={() => setCheckedUserIds([])}
+          >
+            <Text style={styles.clearButtonText}>Clear all users</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          style={[styles.button, styles.addTopMargin]}
+          onPress={onAddButtonPress}
+        >
           <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
       </View>

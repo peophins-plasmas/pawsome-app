@@ -80,11 +80,24 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  clearButton: {
+    height: 30,
+    borderRadius: 10,
+    backgroundColor: colors.ltblue,
+    width: 180,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   buttonText: {
     color: "white",
     fontSize: 16,
     fontWeight: "bold",
   },
+  clearButtonText: {
+    color: "black",
+    fontSize: 14,
+  },
+
   // ButtonTitle used on registration and login screens
   buttonTitle: {
     color: "white",
@@ -176,6 +189,17 @@ export default StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  addTopMargin: {
+    marginTop: 15,
+  },
+  datePicker: {
+    color: "black",
+    justifyContent: "center",
+    alignContent: "center",
+    display: "flex",
+    width: 220,
+    marginTop: 0,
   },
 
   //Registration screen and Login screen: footerview, footertext, footerlink
