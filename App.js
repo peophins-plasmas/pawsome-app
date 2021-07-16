@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
-import { DrawerActions, NavigationContainer } from "@react-navigation/native";
+import { DrawerActions, NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text, View, Button, Image, Alert } from "react-native";
 import {
@@ -42,6 +42,8 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(null);
+
+ 
 
   function CustomDrawerContent(props) {
     return (
@@ -174,6 +176,12 @@ export default function App() {
               backgroundColor: colors.pawsomeblue,
             },
             headerShown: true,
+            // headerLeft: ({navigation}) => (
+            //   <Ionicons name="ios-menu" size={32}
+            //   color={colors.yellow}
+            //   onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            // />
+            // ),
             drawerIcon: () => (
               <Avatar
               activeOpacity={0.2}
@@ -219,7 +227,6 @@ export default function App() {
             <CalendarScreen
               {...props}
               extraData={user}
-              navigation={props.navigation}
             />
           )}
         </Drawer.Screen>
