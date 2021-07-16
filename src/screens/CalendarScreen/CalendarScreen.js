@@ -34,34 +34,15 @@ export default function CalendarScreen(props) {
   }
 
   const tasksRef = firebase.firestore().collection("tasks");
-  const petsRef = firebase.firestore().collection("pets");
   const usersRef = firebase.firestore().collection("users");
   const userId = props.extraData.id;
-
-  //find caretakerIds for user
-  // useEffect(() => {
-  //   async function getCaretakersIds() {
-  //     await usersRef
-  //       .doc(userId)
-  //       .get()
-  //       .then((document) => {
-  //         const { caretakers } = document.data();
-  //         setCaretakersIds(caretakers);
-  //       })
-  //       .catch((error) => {
-  //         console.log("Caretaker id not found");
-  //       });
-  //   }
-  //   getCaretakersIds();
-  // }, []);
 
   useEffect(() => {
     let sortedTasks;
     tasksRef
       .orderBy("dueTime", "asc")
-      .where("userId", "==", userId)
+      .where("userId", "array-contains", userId)
       .where("dueDate", "==", dueDate.toString())
-
       .onSnapshot(
         (querySnapshot) => {
           const newTasks = [];
@@ -72,9 +53,8 @@ export default function CalendarScreen(props) {
 
             if (newTasks.length > 1) {
               sortedTasks = newTasks.sort((a, b) => {
-                console.log("a in HIIIIIII 56", a);
                 let aAPM = a["dueTime"].split(" ");
-                console.log(aAPM, "aAPM line 58");
+
                 let timeArrA = aAPM[0].split(":");
                 let aHour = parseInt(timeArrA[0]);
                 if (aAPM[1] == "PM" && aHour[0] !== 12) {
@@ -102,7 +82,7 @@ export default function CalendarScreen(props) {
           setTasks(sortedTasks);
         },
         (error) => {
-          console.log(error);
+          console.error(error);
         }
       );
   }, [selDate, dueDate]);
