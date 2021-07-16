@@ -1,9 +1,9 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
-import { DrawerActions, NavigationContainer, useNavigation } from "@react-navigation/native";
+import { DrawerActions, NavigationContainer, useNavigation, DefaultTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { SafeAreaView, Text, View, Button, Image, Alert } from "react-native";
+import { SafeAreaView, Text, View, Button, Alert } from "react-native";
 import {
   LoginScreen,
   HomeScreen,
@@ -11,7 +11,9 @@ import {
   CalendarScreen,
   UserScreen,
   PetScreen,
+  TouchableOpacity
 } from "./src/screens";
+import { Image } from "react-native-elements";
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
 import BottomNav from "./src/Navigation/BottomNav";
@@ -26,6 +28,9 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import styles, { colors } from "./src/screens/combinedStyles";
 import { Avatar } from "react-native-elements";
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
 
 if (!global.btoa) {
   global.btoa = encode;
@@ -37,12 +42,44 @@ if (!global.atob) {
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const ProfileStack = createStackNavigator();
+const CalStack = createStackNavigator();
 
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(null);
 
+  const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: '#fdf9f1'
+    },
+  };
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => console.log(token)).catch(err => console.log(err))
+  }, [])
+
+  registerForPushNotificationsAsync = async () => {
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      const token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+      this.setState({ expoPushToken: token });
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  }
  
 
   function CustomDrawerContent(props) {
@@ -78,11 +115,12 @@ export default function App() {
       </DrawerContentScrollView>
     );
   }
-  function LogoTitle() {
+  function LogoTitle(props) {
     return (
       <Image
-        style={{ width: 300, height: 40, resizeMode: "contain" }}
+        style={{ width: 200, height: 40, resizeMode: "contain" }}
         source={require("./assets/pawsome_logo.png")}
+        onPress={() => props.navigation.jumpTo('My Pets')}
       />
     );
   }
@@ -90,40 +128,59 @@ export default function App() {
   function UserProfileStack() {
     return (
       <ProfileStack.Navigator>
-        <ProfileStack.Screen name="My Profile" options={{
-          safeAreaInsets: { top: 0 },
-          headerTitleStyle: { alignSelf: 'center'},
-          headerStyle:{ backgroundColor: 'transparent' }
-        }}>
+        <ProfileStack.Screen name="My Profile" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
+              color={colors.yellow}
+              onPress={() => navigation.toggleDrawer()}
+            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
           {(props) => <UserScreen {...props} extraData={user} navigation={props.navigation}/>}
         </ProfileStack.Screen>
-        <ProfileStack.Screen name="Pet" options={{
-          safeAreaInsets: { top: 0 },
-          headerStyle:{ backgroundColor: 'transparent' }
-        }}>
+        <ProfileStack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: LogoTitle, headerLeft: () => <Ionicons name="ios-menu" size={32}
+              color={colors.yellow}
+              onPress={() => navigation.toggleDrawer()}
+            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
           {(props) => <PetScreen {...props} navigation={props.navigation}/>}
         </ProfileStack.Screen>
       </ProfileStack.Navigator>
     );
   }
 
+  // safeAreaInsets: { top: 0 },
+  //         headerTitleStyle: { alignSelf: 'center'},
+  //         headerStyle:{ backgroundColor: 'transparent' }
   function HomeStack() {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="My Pets" options={{
-          safeAreaInsets: { top: 0 },
-          headerTitleStyle: { alignSelf: 'center'},
-          headerStyle:{ backgroundColor: 'transparent' }
-        }}>
-          {(props) => <HomeScreen {...props} extraData={user} navigation={props.navigation}/>}
+        <Stack.Screen name="My Pets" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: LogoTitle, headerLeft: () => <Ionicons name="ios-menu" size={32}
+              color={colors.yellow}
+              onPress={() => navigation.toggleDrawer()}
+            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
+          {(props) => <BottomNav {...props} extraData={user}/>}
         </Stack.Screen>
-        <Stack.Screen name="Pet" options={{
-          safeAreaInsets: { top: 0 },
-          headerStyle:{ backgroundColor: 'transparent' }
-        }}>
+        <Stack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: LogoTitle, headerLeft: () => <Ionicons name="ios-menu" size={32}
+              color={colors.yellow}
+              onPress={() => navigation.toggleDrawer()}
+            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
           {(props) => <PetScreen {...props} navigation={props.navigation}/>}
         </Stack.Screen>
       </Stack.Navigator>
+    );
+  }
+
+  function CalendarStack() {
+    return (
+      <CalStack.Navigator>
+        <CalStack.Screen name="Tasks" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: LogoTitle, headerLeft: () => <Ionicons name="ios-menu" size={32}
+              color={colors.yellow}
+              onPress={() => navigation.toggleDrawer()}
+            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
+          {(props) => (
+            <CalendarScreen
+              {...props}
+              extraData={user}
+            />
+          )}
+        </CalStack.Screen>
+      </CalStack.Navigator>
     );
   }
 
@@ -171,17 +228,6 @@ export default function App() {
         </Drawer.Screen> */}
 
         <Drawer.Screen name="Profile" component={UserProfileStack} options={{
-            headerTitle: LogoTitle,
-            headerStyle: {
-              backgroundColor: colors.pawsomeblue,
-            },
-            headerShown: true,
-            // headerLeft: ({navigation}) => (
-            //   <Ionicons name="ios-menu" size={32}
-            //   color={colors.yellow}
-            //   onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-            // />
-            // ),
             drawerIcon: () => (
               <Avatar
               activeOpacity={0.2}
@@ -193,11 +239,6 @@ export default function App() {
             ),
           }}/>
             <Drawer.Screen name="My Pets" component={HomeStack} options={{
-            headerTitle: LogoTitle,
-            headerStyle: {
-              backgroundColor: colors.pawsomeblue,
-            },
-            headerShown: true,
             drawerIcon: () => (
               <Ionicons
                 name="ios-paw-outline"
@@ -206,14 +247,7 @@ export default function App() {
               />
             ),
           }}/>
-        <Drawer.Screen
-          name="Tasks"
-          options={{
-            headerStyle: {
-              backgroundColor: colors.pawsomeblue,
-            },
-            headerTitle: LogoTitle,
-            headerShown: true,
+          <Drawer.Screen name="Tasks" component={CalendarStack} options={{
             drawerIcon: () => (
               <Ionicons
                 name="ios-calendar-outline"
@@ -221,15 +255,7 @@ export default function App() {
                 color={colors.yellow}
               />
             ),
-          }}
-        >
-          {(props) => (
-            <CalendarScreen
-              {...props}
-              extraData={user}
-            />
-          )}
-        </Drawer.Screen>
+          }}/>
       </Drawer.Navigator>
     );
   }
@@ -267,7 +293,7 @@ export default function App() {
 
   return (
     <PaperProvider>
-      <NavigationContainer ref={navigationRef}>
+      <NavigationContainer theme={MyTheme} ref={navigationRef}>
         {isSignedIn ? (
           <>
             <MyDrawer />
