@@ -53,7 +53,7 @@ export default StyleSheet.create({
         color: '#2e2e2d'
     },
     footerLink: {
-        color: "#788eec",
+        color: colors.dkblue,
         fontWeight: "bold",
         fontSize: 16
     }

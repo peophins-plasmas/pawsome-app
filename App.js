@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
-import { DrawerActions, NavigationContainer, useNavigation, DefaultTheme } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text, View, Button, Alert } from "react-native";
 import {
@@ -15,7 +15,6 @@ import {
 } from "./src/screens";
 import { Image } from "react-native-elements";
 import { decode, encode } from "base-64";
-import { set } from "react-native-reanimated";
 import BottomNav from "./src/Navigation/BottomNav";
 import { navigationRef } from "./src/Navigation/RootNavigator";
 import { Provider as PaperProvider, Drawer as PaperDrawer } from "react-native-paper";
@@ -29,7 +28,6 @@ import { Ionicons } from "@expo/vector-icons";
 import styles, { colors } from "./src/screens/combinedStyles";
 import { Avatar } from "react-native-elements";
 import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
 if (!global.btoa) {
@@ -57,10 +55,12 @@ export default function App() {
     },
   };
 
+  //console.log for the token
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => console.log(token)).catch(err => console.log(err))
   }, [])
 
+  //function that checks for push notification permissions and sets the push notification token if yes
   registerForPushNotificationsAsync = async () => {
     if (Constants.isDevice) {
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -81,7 +81,7 @@ export default function App() {
     }
   }
  
-
+//logout drawer item
   function CustomDrawerContent(props) {
     return (
       <DrawerContentScrollView {...props}>
@@ -115,6 +115,7 @@ export default function App() {
       </DrawerContentScrollView>
     );
   }
+//pawsome logo that goes back to My Pets screen
   function LogoTitle(props) {
     return (
       <Image
@@ -124,56 +125,68 @@ export default function App() {
       />
     );
   }
-
+//stack navigator that renders My Profile and enables clicking to individual pet screen
   function UserProfileStack() {
     return (
       <ProfileStack.Navigator>
-        <ProfileStack.Screen name="My Profile" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
-              color={colors.yellow}
-              onPress={() => navigation.toggleDrawer()}
-            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
+        <ProfileStack.Screen name="My Profile" options={({ navigation }) => ({ 
+          headerStyle: { backgroundColor: colors.pawsomeblue}, 
+          headerTitle: <LogoTitle navigation={navigation}/>, 
+          headerLeft: () => <Ionicons name="ios-menu" size={32}
+                                      color={colors.yellow}
+                                      onPress={() => navigation.toggleDrawer()}/>, 
+                                      headerLeftContainerStyle: { paddingLeft: 10 } })}>
           {(props) => <UserScreen {...props} extraData={user} navigation={props.navigation}/>}
         </ProfileStack.Screen>
-        <ProfileStack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
-              color={colors.yellow}
-              onPress={() => navigation.toggleDrawer()}
-            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
+        <ProfileStack.Screen name="Pet" options={({ navigation }) => ({ 
+          headerBackTitleVisible: false, 
+          headerBackImage: () => (<Ionicons name={"ios-arrow-back"} size={32}
+          color={colors.yellow}/>),
+          headerStyle: { backgroundColor: colors.pawsomeblue}, 
+          headerTitle: <LogoTitle navigation={navigation}/>, 
+          headerLeftContainerStyle: { paddingLeft: 10 } })}>
           {(props) => <PetScreen {...props} navigation={props.navigation}/>}
         </ProfileStack.Screen>
       </ProfileStack.Navigator>
     );
   }
-
-  // safeAreaInsets: { top: 0 },
-  //         headerTitleStyle: { alignSelf: 'center'},
-  //         headerStyle:{ backgroundColor: 'transparent' }
+//stack navigator that renders My Pets screen and enables clicking to individual pet screen
   function HomeStack() {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="My Pets" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
-
-              color={colors.yellow}
-              onPress={() => navigation.toggleDrawer()}
-            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
+        <Stack.Screen name="My Pets" options={({ navigation }) => ({ 
+          headerBackImage: () => (<Ionicons name={"ios-arrow-back"}/>),
+          headerStyle: { backgroundColor: colors.pawsomeblue}, 
+          headerTitle: <LogoTitle navigation={navigation}/>, 
+          headerLeft: () => <Ionicons name="ios-menu" size={32}
+                                      color={colors.yellow}
+                                      onPress={() => navigation.toggleDrawer()}/>, 
+          headerLeftContainerStyle: { paddingLeft: 10 } })}>
           {(props) => <BottomNav {...props} extraData={user}/>}
         </Stack.Screen>
-        <Stack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
-              color={colors.yellow}
-              onPress={() => navigation.toggleDrawer()}
-            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
+        <Stack.Screen name="Pet" options={({ navigation }) => ({ 
+          headerBackTitleVisible: false, 
+          headerBackImage: () => (<Ionicons name={"ios-arrow-back"} size={32}
+          color={colors.yellow}/>),
+          headerStyle: { backgroundColor: colors.pawsomeblue}, 
+          headerTitle: <LogoTitle navigation={navigation}/>,  
+          headerLeftContainerStyle: { paddingLeft: 10 } })}>
           {(props) => <PetScreen {...props} navigation={props.navigation}/>}
         </Stack.Screen>
       </Stack.Navigator>
     );
   }
-
+//stack navigator that renders the calendar/add task functionality
   function CalendarStack() {
     return (
       <CalStack.Navigator>
-        <CalStack.Screen name="Tasks" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
-              color={colors.yellow}
-              onPress={() => navigation.toggleDrawer()}
-            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
+        <CalStack.Screen name="Tasks" options={({ navigation }) => ({  
+          headerStyle: { backgroundColor: colors.pawsomeblue}, 
+          headerTitle: <LogoTitle navigation={navigation}/>, 
+          headerLeft: () => <Ionicons name="ios-menu" size={32}
+                                      color={colors.yellow}
+                                      onPress={() => navigation.toggleDrawer()}/> , 
+                                      headerLeftContainerStyle: { paddingLeft: 10 } })}>
           {(props) => (
             <CalendarScreen
               {...props}
@@ -184,7 +197,7 @@ export default function App() {
       </CalStack.Navigator>
     );
   }
-
+//drawer navigation
   function MyDrawer() {
     return (
       <Drawer.Navigator
@@ -199,35 +212,6 @@ export default function App() {
           width: 200,
         }}
       >
-        {/* <Drawer.Screen
-          name="Profile"
-          options={{
-            drawerLabel: () => <Text>Me</Text>,
-            headerStyle: {
-              backgroundColor: colors.pawsomeblue,
-            },
-            headerTitle: LogoTitle,
-            headerShown: true,
-            drawerIcon: () => (
-              <Avatar  avatarStyle={{ padding: 30 }}
-              activeOpacity={0.2}
-              containerStyle={{ backgroundColor: "#BDBDBD" }}
-              onPress={() => alert("onPress")}
-              rounded
-              size="large"
-              source={{ uri: user.image }} />
-            ),
-          }}
-        >
-          {(props) => (
-            <UserScreen
-              {...props}
-              extraData={user}
-              navigation={props.navigation}
-            />
-          )}
-        </Drawer.Screen> */}
-
         <Drawer.Screen name="Profile" component={UserProfileStack} options={{
             drawerIcon: () => (
               <Avatar
@@ -282,7 +266,7 @@ export default function App() {
         setIsSignedIn(false);
       }
     });
-  }, []);
+    return () => console.log('unmounting...')}, []);
 
   if (loading) {
     return (
@@ -291,7 +275,7 @@ export default function App() {
       </SafeAreaView>
     );
   }
-
+//the drawer renders if logged in otherwise it renders a stack navigator for logging in or signing up
   return (
     <PaperProvider>
       <NavigationContainer theme={MyTheme} ref={navigationRef}>
@@ -304,12 +288,15 @@ export default function App() {
             <>
               <Stack.Screen name="Login" 
               component={LoginScreen} 
-              options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
+              options={{ headerBackTitleVisible: false, 
+                headerStyle:{ backgroundColor: colors.pawsomeblue } 
                }}/>
               <Stack.Screen
                 name="Registration"
                 component={RegistrationScreen}
-                options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
+                options={{ headerBackTitleVisible: false, 
+                headerBackImage: () => (<Ionicons name={"ios-arrow-back"} size={32}
+                color={colors.yellow}/>), headerStyle:{ backgroundColor: colors.pawsomeblue } 
                }}
               />
             </>

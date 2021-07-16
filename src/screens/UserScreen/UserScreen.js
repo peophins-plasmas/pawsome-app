@@ -61,7 +61,7 @@ export default function UserScreen(props) {
         console.log(error);
       }
     );
-  }, []);
+    return () => console.log('unmounting...')}, []);
 
 
   useEffect(() => {
