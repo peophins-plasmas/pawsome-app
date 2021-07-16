@@ -279,17 +279,17 @@ export default function AddTask(props) {
                   style={[styles.container, { flexDirection: "row" }]}
                   key={user.id}
                 >
-                  <View style={styles.radioPress}>
+                  <View style={styles.selectPress}>
                     <Pressable
                       style={() => [
-                        styles.radioPress,
+                        styles.selectPress,
                         {
                           backgroundColor:
                             checkedUserIds.length > 0 &&
                             checkedUserIds.includes(user.id)
                               ? colors.pawsomeblue
                               : "white",
-                          borderWidth: 0,
+                          borderWidth: 1,
                         },
                       ]}
                       onPress={() => {
