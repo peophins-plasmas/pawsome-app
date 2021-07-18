@@ -1,7 +1,12 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { firebase } from "./src/firebase/config";
-import { DrawerActions, NavigationContainer, useNavigation, DefaultTheme } from "@react-navigation/native";
+import {
+  DrawerActions,
+  NavigationContainer,
+  useNavigation,
+  DefaultTheme,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView, Text, View, Button, Alert } from "react-native";
 import {
@@ -11,14 +16,17 @@ import {
   CalendarScreen,
   UserScreen,
   PetScreen,
-  TouchableOpacity
+  TouchableOpacity,
 } from "./src/screens";
 import { Image } from "react-native-elements";
 import { decode, encode } from "base-64";
 import { set } from "react-native-reanimated";
 import BottomNav from "./src/Navigation/BottomNav";
 import { navigationRef } from "./src/Navigation/RootNavigator";
-import { Provider as PaperProvider, Drawer as PaperDrawer } from "react-native-paper";
+import {
+  Provider as PaperProvider,
+  Drawer as PaperDrawer,
+} from "react-native-paper";
 import {
   createDrawerNavigator,
   DrawerItem,
@@ -28,9 +36,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import styles, { colors } from "./src/screens/combinedStyles";
 import { Avatar } from "react-native-elements";
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 
 if (!global.btoa) {
   global.btoa = encode;
@@ -48,39 +55,111 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(null);
+  const [pushToken, setPushToken] = useState("");
+
+  const usersRef = firebase.firestore().collection("users");
 
   const MyTheme = {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: '#fdf9f1'
+      background: "#fdf9f1",
     },
   };
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => console.log(token)).catch(err => console.log(err))
-  }, [])
+    firebase.auth().onAuthStateChanged((user) => {
+      console.log("user in auth use effect>>>>", user);
+      if (user) {
+        usersRef
+          .doc(user.uid)
+          .get()
+          .then((document) => {
+            const userData = document.data();
+            setLoading(false);
+            setUser(userData);
+            setIsSignedIn(true);
+          })
+          .catch((error) => {
+            setLoading(false);
+          });
+      } else {
+        setLoading(false);
+        setIsSignedIn(false);
+      }
+    });
+  }, []);
 
-  registerForPushNotificationsAsync = async () => {
+  useEffect(() => {
+    registerForPushNotificationsAsync()
+      .then((token) => {
+        // usersRef
+        //   .doc(user.id)
+        //   .set({ pushToken: token }, { merge: true })
+        //   .then(() => {
+        //     console.log(`Updated ${user.firstName} with push token.`);
+        //   });
+        setPushToken(token);
+        return console.log("push token: ", pushToken);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  console.log("push token outside of useEffect", pushToken);
+
+  const registerForPushNotificationsAsync = async () => {
+    //1. can only send notifications to physical devices so check if app is being accessed from device with Constants.isDevice
     if (Constants.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      const {
+        status: existingStatus,
+      } = await Notifications.getPermissionsAsync();
+      //2. check notification permission
       let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
+      if (existingStatus !== "granted") {
+        //3. if permission is not granted, request permission
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
       }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
+      if (finalStatus !== "granted") {
+        //3b. if still not granted, send message
+        alert("Failed to get push token for push notification!");
         return;
       }
-      const token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
-      this.setState({ expoPushToken: token });
+      try {
+        const token = (await Notifications.getExpoPushTokenAsync()).data;
+        //4. token is obtained
+        console.log("token>>>", token);
+
+        //5. create token state and set state to token or save to server?
+
+        //POST token to server
+        // console.log("user in notification token>>>", user);
+        // usersRef
+        //   .doc(user.id)
+        //   .update({ pushToken: token })
+        //   .then(() => {
+        //     console.log(`Updated ${user.firstName} with push token.`);
+        //   });
+      } catch (error) {
+        console.log(error);
+      }
     } else {
-      alert('Must use physical device for Push Notifications');
+      alert("Must use physical device for Push Notifications");
     }
-  }
- 
+
+    //additional logic for android devices:
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+  };
+
+  //6. take expo push token from user record and send to Expo API using post request
+  //7. may need node sdk ??
+  //8. can send notifications with sendPushNotification()
 
   function CustomDrawerContent(props) {
     return (
@@ -128,17 +207,47 @@ export default function App() {
   function UserProfileStack() {
     return (
       <ProfileStack.Navigator>
-        <ProfileStack.Screen name="My Profile" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
-              color={colors.yellow}
-              onPress={() => navigation.toggleDrawer()}
-            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
-          {(props) => <UserScreen {...props} extraData={user} navigation={props.navigation}/>}
+        <ProfileStack.Screen
+          name="My Profile"
+          options={({ navigation }) => ({
+            headerStyle: { backgroundColor: colors.pawsomeblue },
+            headerTitle: <LogoTitle navigation={navigation} />,
+            headerLeft: () => (
+              <Ionicons
+                name="ios-menu"
+                size={32}
+                color={colors.yellow}
+                onPress={() => navigation.toggleDrawer()}
+              />
+            ),
+            headerLeftContainerStyle: { paddingLeft: 10 },
+          })}
+        >
+          {(props) => (
+            <UserScreen
+              {...props}
+              extraData={user}
+              navigation={props.navigation}
+            />
+          )}
         </ProfileStack.Screen>
-        <ProfileStack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
-              color={colors.yellow}
-              onPress={() => navigation.toggleDrawer()}
-            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
-          {(props) => <PetScreen {...props} navigation={props.navigation}/>}
+        <ProfileStack.Screen
+          name="Pet"
+          options={({ navigation }) => ({
+            headerStyle: { backgroundColor: colors.pawsomeblue },
+            headerTitle: <LogoTitle navigation={navigation} />,
+            headerLeft: () => (
+              <Ionicons
+                name="ios-menu"
+                size={32}
+                color={colors.yellow}
+                onPress={() => navigation.toggleDrawer()}
+              />
+            ),
+            headerLeftContainerStyle: { paddingLeft: 10 },
+          })}
+        >
+          {(props) => <PetScreen {...props} navigation={props.navigation} />}
         </ProfileStack.Screen>
       </ProfileStack.Navigator>
     );
@@ -150,18 +259,41 @@ export default function App() {
   function HomeStack() {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="My Pets" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
-
-              color={colors.yellow}
-              onPress={() => navigation.toggleDrawer()}
-            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
-          {(props) => <BottomNav {...props} extraData={user}/>}
+        <Stack.Screen
+          name="My Pets"
+          options={({ navigation }) => ({
+            headerStyle: { backgroundColor: colors.pawsomeblue },
+            headerTitle: <LogoTitle navigation={navigation} />,
+            headerLeft: () => (
+              <Ionicons
+                name="ios-menu"
+                size={32}
+                color={colors.yellow}
+                onPress={() => navigation.toggleDrawer()}
+              />
+            ),
+            headerLeftContainerStyle: { paddingLeft: 10 },
+          })}
+        >
+          {(props) => <BottomNav {...props} extraData={user} />}
         </Stack.Screen>
-        <Stack.Screen name="Pet" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
-              color={colors.yellow}
-              onPress={() => navigation.toggleDrawer()}
-            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
-          {(props) => <PetScreen {...props} navigation={props.navigation}/>}
+        <Stack.Screen
+          name="Pet"
+          options={({ navigation }) => ({
+            headerStyle: { backgroundColor: colors.pawsomeblue },
+            headerTitle: <LogoTitle navigation={navigation} />,
+            headerLeft: () => (
+              <Ionicons
+                name="ios-menu"
+                size={32}
+                color={colors.yellow}
+                onPress={() => navigation.toggleDrawer()}
+              />
+            ),
+            headerLeftContainerStyle: { paddingLeft: 10 },
+          })}
+        >
+          {(props) => <PetScreen {...props} navigation={props.navigation} />}
         </Stack.Screen>
       </Stack.Navigator>
     );
@@ -170,16 +302,23 @@ export default function App() {
   function CalendarStack() {
     return (
       <CalStack.Navigator>
-        <CalStack.Screen name="Tasks" options={({ navigation }) => ({ headerStyle: { backgroundColor: colors.pawsomeblue}, headerTitle: <LogoTitle navigation={navigation}/>, headerLeft: () => <Ionicons name="ios-menu" size={32}
-              color={colors.yellow}
-              onPress={() => navigation.toggleDrawer()}
-            /> , headerLeftContainerStyle: { paddingLeft: 10 } })}>
-          {(props) => (
-            <CalendarScreen
-              {...props}
-              extraData={user}
-            />
-          )}
+        <CalStack.Screen
+          name="Tasks"
+          options={({ navigation }) => ({
+            headerStyle: { backgroundColor: colors.pawsomeblue },
+            headerTitle: <LogoTitle navigation={navigation} />,
+            headerLeft: () => (
+              <Ionicons
+                name="ios-menu"
+                size={32}
+                color={colors.yellow}
+                onPress={() => navigation.toggleDrawer()}
+              />
+            ),
+            headerLeftContainerStyle: { paddingLeft: 10 },
+          })}
+        >
+          {(props) => <CalendarScreen {...props} extraData={user} />}
         </CalStack.Screen>
       </CalStack.Navigator>
     );
@@ -228,18 +367,26 @@ export default function App() {
           )}
         </Drawer.Screen> */}
 
-        <Drawer.Screen name="Profile" component={UserProfileStack} options={{
+        <Drawer.Screen
+          name="Profile"
+          component={UserProfileStack}
+          options={{
             drawerIcon: () => (
               <Avatar
-              activeOpacity={0.2}
-              containerStyle={{ backgroundColor: "#BDBDBD" }}
-              onPress={() => alert("onPress")}
-              rounded
-              size="medium"
-              source={{ uri: user.image }} />
+                activeOpacity={0.2}
+                containerStyle={{ backgroundColor: "#BDBDBD" }}
+                onPress={() => alert("onPress")}
+                rounded
+                size="medium"
+                source={{ uri: user.image }}
+              />
             ),
-          }}/>
-            <Drawer.Screen name="My Pets" component={HomeStack} options={{
+          }}
+        />
+        <Drawer.Screen
+          name="My Pets"
+          component={HomeStack}
+          options={{
             drawerIcon: () => (
               <Ionicons
                 name="ios-paw-outline"
@@ -247,8 +394,12 @@ export default function App() {
                 color={colors.yellow}
               />
             ),
-          }}/>
-          <Drawer.Screen name="Tasks" component={CalendarStack} options={{
+          }}
+        />
+        <Drawer.Screen
+          name="Tasks"
+          component={CalendarStack}
+          options={{
             drawerIcon: () => (
               <Ionicons
                 name="ios-calendar-outline"
@@ -256,33 +407,11 @@ export default function App() {
                 color={colors.yellow}
               />
             ),
-          }}/>
+          }}
+        />
       </Drawer.Navigator>
     );
   }
-
-  useEffect(() => {
-    const usersRef = firebase.firestore().collection("users");
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        usersRef
-          .doc(user.uid)
-          .get()
-          .then((document) => {
-            const userData = document.data();
-            setLoading(false);
-            setUser(userData);
-            setIsSignedIn(true);
-          })
-          .catch((error) => {
-            setLoading(false);
-          });
-      } else {
-        setLoading(false);
-        setIsSignedIn(false);
-      }
-    });
-  }, []);
 
   if (loading) {
     return (
@@ -302,15 +431,19 @@ export default function App() {
         ) : (
           <Stack.Navigator>
             <>
-              <Stack.Screen name="Login" 
-              component={LoginScreen} 
-              options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
-               }}/>
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{
+                  headerStyle: { backgroundColor: colors.pawsomeblue },
+                }}
+              />
               <Stack.Screen
                 name="Registration"
                 component={RegistrationScreen}
-                options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
-               }}
+                options={{
+                  headerStyle: { backgroundColor: colors.pawsomeblue },
+                }}
               />
             </>
           </Stack.Navigator>
