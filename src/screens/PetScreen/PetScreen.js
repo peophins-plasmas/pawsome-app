@@ -80,11 +80,11 @@ export default function PetScreen(props) {
       <ScrollView>
         {pet ? (
           <View style={styles.container}>
-            <View style={styles.userContainer}>
+            <View style={{marginTop: 20}}>
               <UploadImage pet={pet} functionType={"petImg"} />
             </View>
             <View style={styles.introContainer}>
-              <Text style={styles.nameText}>{pet.petName}</Text>
+              <Text style={styles.nameText}>{pet.petName.toUpperCase()}</Text>
               <View style={[styles.stack]}>
                 <Text style={styles.stackHeaderText}>SPECIES</Text>
                 <Text>{pet.species ? pet.species : "animal"}</Text>
@@ -186,9 +186,9 @@ export default function PetScreen(props) {
                             avatarStyle={{ padding: 30 }}
                             activeOpacity={0.2}
                             containerStyle={{ backgroundColor: "#BDBDBD" }}
-                            onPress={() =>
-                              alert(`Go to ${owner.firstName}'s profile`)
-                            }
+                            onPress={() => {
+                              RootNavigator.navigate("My Profile", { owner: owner });
+                            }}
                             rounded
                             size="large"
                             source={{ uri: owner.image }}
@@ -212,9 +212,9 @@ export default function PetScreen(props) {
                             avatarStyle={{ padding: 30 }}
                             activeOpacity={0.2}
                             containerStyle={{ backgroundColor: "#BDBDBD" }}
-                            onPress={() =>
-                              alert(`Go to ${caretaker.firstName}'s profile`)
-                            }
+                            // onPress={() =>
+                            //   alert(`Go to ${caretaker.firstName}'s profile`)
+                            // }
                             rounded
                             size="large"
                             source={{ uri: caretaker.image }}
