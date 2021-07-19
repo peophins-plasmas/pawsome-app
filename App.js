@@ -114,7 +114,7 @@ export default function App() {
         //6. take expo push token from user record and send to Expo API using post request
         usersRef
           .doc(user.id)
-          .update({ pushToken: `${pushToken}` })
+          .add({ pushToken: `${pushToken}` })
           .then(() => {
             console.log(`Updated ${user.firstName} with push token.`);
           });
