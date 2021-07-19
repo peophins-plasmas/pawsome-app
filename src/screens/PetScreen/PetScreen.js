@@ -154,10 +154,10 @@ export default function PetScreen(props) {
                 </Text>
               </View>
 
-              <View style={styles.stack}>
+              {/* <View style={styles.stack}>
                 <Text style={styles.cautionHeaderText}>TOXICITY NOTICE</Text>
                 <Text>list of items that are toxic to {pet.species}s</Text>
-              </View>
+              </View> */}
 
               <View style={styles.stack}>
                 <Text style={styles.cautionHeaderText}>
@@ -187,7 +187,7 @@ export default function PetScreen(props) {
                             activeOpacity={0.2}
                             containerStyle={{ backgroundColor: "#BDBDBD" }}
                             onPress={() => {
-                              RootNavigator.navigate("My Profile", { owner: owner });
+                              RootNavigator.navigate("Profile", { owner: owner });
                             }}
                             rounded
                             size="large"
