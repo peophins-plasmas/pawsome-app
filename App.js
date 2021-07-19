@@ -69,7 +69,6 @@ export default function App() {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
-      console.log("user in auth use effect>>>>", user);
       if (user) {
         usersRef
           .doc(user.uid)
@@ -88,19 +87,29 @@ export default function App() {
         setIsSignedIn(false);
       }
     });
+    return () => console.log("Set user after auth: ", user);
   }, []);
 
   useEffect(() => {
     registerForPushNotificationsAsync()
       .then((token) => {
-        // usersRef
-        //   .doc(user.id)
-        //   .set({ pushToken: token }, { merge: true })
-        //   .then(() => {
-        //     console.log(`Updated ${user.firstName} with push token.`);
-        //   });
-        setPushToken(token);
-        return console.log("push token: ", pushToken);
+        console.log("token type of data: ", typeof token);
+
+        if (user) {
+          console.log(
+            "user in register for push notifications async function",
+            user
+          );
+          console.log("token string stored as pushToken", pushToken);
+          usersRef
+            .doc(user.id)
+            .update({ pushToken: `${pushToken}` })
+            .then(() => {
+              console.log(`Updated ${user.firstName} with push token.`);
+            });
+        }
+        // setPushToken(token);
+        // return console.log("push token: ", pushToken);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -128,7 +137,7 @@ export default function App() {
         const token = (await Notifications.getExpoPushTokenAsync()).data;
         //4. token is obtained
         console.log("token>>>", token);
-
+        setPushToken(token);
         //5. create token state and set state to token or save to server?
 
         //POST token to server
@@ -199,7 +208,7 @@ export default function App() {
       <Image
         style={{ width: 200, height: 40, resizeMode: "contain" }}
         source={require("./assets/pawsome_logo.png")}
-        // onPress={() => props.navigation.jumpTo('My Pets')}
+        onPress={() => props.navigation.jumpTo("My Pets")}
       />
     );
   }
