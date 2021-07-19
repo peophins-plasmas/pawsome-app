@@ -16,9 +16,7 @@ import {
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
-import { Avatar } from "react-native-elements";
-import PetForm from "./petForm";
-import { Card, Title, Paragraph } from "react-native-paper";
+import { Avatar, Overlay, Button } from "react-native-elements";
 import { colors } from "../combinedStyles";
 import AddButton from "../../Components/AddButton";
 import AddCaretaker from "../../Components/AddCaretaker";
@@ -28,12 +26,13 @@ export default function UserScreen(props) {
   const [users, setUsers] = useState([]);
   const [singleUser, setSingleUser] = useState({});
   const [vets, setVets] = useState([]);
-  const [pets, setPets] = useState([]);
   const [ownedPets, setOwnedPets] = useState([]);
   const [caredPets, setCaredPets] = useState([]);
   const [caretakersIds, setCaretakersIds] = useState([]);
   const [caretakersArr, setCaretakersArr] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
+
   //make single pet state to access specific pet to pass through as props to upload image component
 
   const usersRef = firebase.firestore().collection("users");
@@ -42,6 +41,10 @@ export default function UserScreen(props) {
 
   const userId = props.extraData.id;
   const vetId = props.extraData.vetId;
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   useEffect(() => {
     usersRef.where("id", "==", userId).onSnapshot(
@@ -139,9 +142,12 @@ export default function UserScreen(props) {
           .doc(caretakersIds[i])
           .get()
           .then((document) => {
-            const { firstName, image } = document.data();
+            const { firstName, lastName, email, phoneNum, image } = document.data();
             const newEl = {
               firstName: firstName,
+              lastName: lastName,
+              email: email,
+              phone: phoneNum,
               image: image,
               caretakerId: caretakersIds[i],
             };
@@ -251,19 +257,24 @@ export default function UserScreen(props) {
               </View>
               <View style={styles.petImage}>
                 {caretakersArr.map((caretaker) => {
+                  console.log('CARETAKER>>>', caretaker)
                   return (
                     <View key={caretaker.caretakerId} style={styles.petImage}>
                       <View style={styles.avatarContainer}>
                         <Avatar
                           activeOpacity={0.2}
                           containerStyle={{ backgroundColor: "#BDBDBD" }}
-                          // onPress={
-                          //   Alert.alert("coming soon!")
-                          // }
+                          onPress={toggleOverlay}
                           rounded
                           size="large"
                           source={{ uri: caretaker.image }}
                         />
+                        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.modalView} animationType="slide">
+                          <Text style={styles.modalText}>{caretaker.firstName} {caretaker.lastName}</Text>
+                          <Text style={styles.modalText}>{caretaker.email}</Text>
+                          <Text style={styles.modalText}>{caretaker.phone}</Text>
+
+                        </Overlay>
                         <Text>{caretaker.firstName}</Text>
                       </View>
                     </View>
@@ -279,6 +290,7 @@ export default function UserScreen(props) {
             </View>
           )}
           </View>
+
           <View style={{marginBottom: 20}}>
           {vets.length > 0 ? (
             <View>
