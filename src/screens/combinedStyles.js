@@ -154,9 +154,13 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
-    borderWidth: 2,
+    borderWidth: 4,
     borderRadius: 30,
-    borderColor: colors.dkblue
+    borderColor: colors.wheat,
+    backgroundColor: colors.wheat,
+    shadowOpacity: 0.5,
+    shadowColor: "gray"
+
   },
   stackContainer: {
     display: "flex",
@@ -182,10 +186,10 @@ export default StyleSheet.create({
   },
 
   nameText: {
-    color: "black",
-    fontSize: 30,
-    fontWeight: "bold",
-    margin: 5,
+    color: 'black',
+    fontSize: 28,
+    fontWeight: "700",
+    margin: 10,
   },
 
   //Add task component and calendarScreen
@@ -250,7 +254,7 @@ export default StyleSheet.create({
     marginTop: 15,
     display: "flex",
     alignItems: "stretch",
-    height: 125,
+    height: 80,
     width: "100%",
   },
   galleryBtnContainer: {

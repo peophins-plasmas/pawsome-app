@@ -80,7 +80,7 @@ export default function App() {
       alert('Must use physical device for Push Notifications');
     }
   }
- 
+
 
   function CustomDrawerContent(props) {
     return (
@@ -120,7 +120,6 @@ export default function App() {
       <Image
         style={{ width: 200, height: 40, resizeMode: "contain" }}
         source={require("./assets/pawsome_logo.png")}
-        // onPress={() => props.navigation.jumpTo('My Pets')}
       />
     );
   }
@@ -164,6 +163,7 @@ export default function App() {
           {(props) => <PetScreen {...props} navigation={props.navigation}/>}
         </Stack.Screen>
       </Stack.Navigator>
+
     );
   }
 
@@ -302,14 +302,14 @@ export default function App() {
         ) : (
           <Stack.Navigator>
             <>
-              <Stack.Screen name="Login" 
-              component={LoginScreen} 
-              options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
+              <Stack.Screen name="Login"
+              component={LoginScreen}
+              options={{ headerStyle:{ backgroundColor: colors.pawsomeblue }
                }}/>
               <Stack.Screen
                 name="Registration"
                 component={RegistrationScreen}
-                options={{ headerStyle:{ backgroundColor: colors.pawsomeblue } 
+                options={{ headerStyle:{ backgroundColor: colors.pawsomeblue }
                }}
               />
             </>
