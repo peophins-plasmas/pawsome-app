@@ -85,7 +85,8 @@ export default function CalendarScreen(props) {
           console.error(error);
         }
       );
-      return () => console.log('unmounting...')}, [selDate, dueDate]);
+    return () => console.log("unmounting...");
+  }, [selDate, dueDate]);
 
   // useEffect(() => {
   //   const unsubscribe = props.navigation.addListener('focus', () => {
@@ -93,8 +94,6 @@ export default function CalendarScreen(props) {
   //   });
   //   return unsubscribe;
   // }, [props.navigation]);
-
-  
 
   return (
     <SafeAreaView>
@@ -134,7 +133,7 @@ export default function CalendarScreen(props) {
 
         <View style={[styles.container]}>
           <Text style={styles.sectionHeaderText}>
-            Selected Day&apos;s Chores
+            Selected Day&apos;s Tasks
           </Text>
         </View>
         <View style={styles.container}>
@@ -150,7 +149,7 @@ export default function CalendarScreen(props) {
             })
           ) : (
             <View style={styles.container}>
-              <Text>No chores for today!</Text>
+              <Text>No tasks for today!</Text>
             </View>
           )}
 

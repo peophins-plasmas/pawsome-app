@@ -44,14 +44,12 @@ export default function AddTask(props) {
   const usersRef = firebase.firestore().collection("users");
   const petsRef = firebase.firestore().collection("pets");
 
-
   const userId = props.extraData.id;
   const allIds = [...coOwnersIds, ...caretakersIds, userId];
   console.log("checkedUserIds", checkedUserIds);
   // console.log(allIds, "ALLIDS>>>>> 48");
   // console.log("caretakersIds line 49", caretakersIds);
   // console.log(userId, "userId");
-
 
   useEffect(() => {
     usersRef
@@ -64,7 +62,8 @@ export default function AddTask(props) {
       .catch((error) => {
         console.log("Pets not found");
       });
-      return () => console.log('unmounting...')}, []);
+    return () => console.log("unmounting...");
+  }, []);
 
   //get all pet names and Ids in array of arrays
   useEffect(() => {
@@ -93,10 +92,11 @@ export default function AddTask(props) {
       setOwnedPets(holderArray);
     }
     getPets();
-    return () => console.log('unmounting...')}, [ownedPetIds]);
+    return () => console.log("unmounting...");
+  }, [ownedPetIds]);
 
   //update pet array if recently added pets
-   useEffect(() => {
+  useEffect(() => {
     const petIdArray = [];
     let user;
     if (Object.keys(props.extraData.ownedPetId).length === 0) {
@@ -119,7 +119,10 @@ export default function AddTask(props) {
       }
     );
     pets.map((pet) => petIdArray.push(pet.id));
-    if (user.ownedPetId.length !== petIdArray.length || user.ownedPetId[user.ownedPetId.length - 1] === "none" ) {
+    if (
+      user.ownedPetId.length !== petIdArray.length ||
+      user.ownedPetId[user.ownedPetId.length - 1] === "none"
+    ) {
       const currentUser = firebase.firestore().collection("users").doc(userId);
       petIdArray.forEach((id) => {
         if (!user.ownedPetId.includes(id)) {
@@ -129,7 +132,8 @@ export default function AddTask(props) {
         }
       });
     }
-    return () => console.log('unmounting...')}, []);
+    return () => console.log("unmounting...");
+  }, []);
 
   //find coOwnersIds for user
   useEffect(() => {
@@ -146,7 +150,8 @@ export default function AddTask(props) {
         });
     }
     getCoOwnersIds();
-    return () => console.log('unmounting...')}, []);
+    return () => console.log("unmounting...");
+  }, []);
 
   useEffect(() => {
     async function getCaretakersIds() {
@@ -162,7 +167,8 @@ export default function AddTask(props) {
         });
     }
     getCaretakersIds();
-    return () => console.log('unmounting...')}, []);
+    return () => console.log("unmounting...");
+  }, []);
 
   // get all caretaker and owner names by IDs for selecting who to assign the chore
   useEffect(() => {
@@ -192,9 +198,8 @@ export default function AddTask(props) {
       }
     }
     getUserNames();
-    return () => console.log('unmounting...')}, [allIds]);
-
- 
+    return () => console.log("unmounting...");
+  }, [allIds]);
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
@@ -238,18 +243,18 @@ export default function AddTask(props) {
   return (
     <SafeAreaView>
       <View style={styles.formContainer}>
-        <View style={styles.inputContainer}>
-
+        <View style={[styles.titleUnderline]}>
           <Text
-            style={{
-              fontWeight: "bold",
-              color: colors.pawsomeblue,
-              fontSize: 30,
-            }}
+            style={[
+              {
+                fontWeight: "bold",
+                color: colors.pawsomeblue,
+                fontSize: 30,
+              },
+            ]}
           >
             Add a task
           </Text>
-
         </View>
 
         <View style={[styles.container, styles.addTopMargin, { width: 250 }]}>
@@ -258,7 +263,6 @@ export default function AddTask(props) {
           <Text>(select one)</Text>
           {ownedPets.length > 0 ? (
             ownedPets.map((pet) => {
-
               return (
                 <View
                   style={[
@@ -316,7 +320,7 @@ export default function AddTask(props) {
           )}
         </View>
         <View style={[styles.container, styles.addTopMargin]}>
-          <Text style={styles.blueHeaderText}>Choose a date and time</Text>
+          <Text style={styles.blueHeaderText}>Choose a Date and Time</Text>
 
           <DateTimePicker
             testID='dateTimePicker'
@@ -329,7 +333,7 @@ export default function AddTask(props) {
           />
         </View>
         <View style={styles.container}>
-          <Text style={styles.blueHeaderText}>Describe the task</Text>
+          <Text style={styles.blueHeaderText}>Describe the Task</Text>
           <TextInput
             style={styles.input}
             placeholder='Task description'
@@ -341,7 +345,8 @@ export default function AddTask(props) {
           />
         </View>
         <View style={[styles.container, styles.addTopMargin, { width: 250 }]}>
-          <Text style={styles.blueHeaderText}>Assign to users</Text>
+          <Text style={styles.blueHeaderText}>Assign to People</Text>
+
           <Text>(selected users highlight in blue)</Text>
           <Text>(select as many as desired)</Text>
           {allAssociatedUsers.length > 0 ? (
@@ -409,7 +414,6 @@ export default function AddTask(props) {
             <Text style={styles.clearButtonText}>Add owners only</Text>
           </TouchableOpacity>
 
-
           <TouchableOpacity
             style={[styles.addSomeButton, styles.addTopMargin]}
             onPress={() => setCheckedUserIds(allIds)}
@@ -427,9 +431,7 @@ export default function AddTask(props) {
           style={[styles.button, { marginTop: 50, width: 250 }]}
           onPress={onAddButtonPress}
         >
-          <Text style={styles.buttonText}>Submit Chore to Calendar</Text>
-
-      
+          <Text style={styles.buttonText}>Submit Task to Calendar</Text>
         </TouchableOpacity>
       </View>
       <View style={{ height: 300 }}></View>
