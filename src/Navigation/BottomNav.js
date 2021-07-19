@@ -1,40 +1,22 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { HomeScreen } from '../screens';
-import CalendarScreen from '../screens/CalendarScreen/CalendarScreen';
 import {colors} from "../screens/combinedStyles.js"
-import UserScreen from "../screens/UserScreen/UserScreen"
 
 
-// function Feed() {
-//     return (
-//       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//         <HomeScreen />
-//       </View>
-//     );
-//   }
-  
-  // function Profile() {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  //       <Text>Profile!</Text>
-  //     </View>
-  //   );
-  // }
-  
-  // function Notifications() {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  //       <Text>Notifications!</Text>
-  //     </View>
-  //   );
-  // }
+//future feature placeholder
+function CaredForPets() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Future cared for pets feature coming soon!</Text>
+      </View>
+    );
+  }
   
   const Tab = createMaterialBottomTabNavigator();
-  
+  //renders the My Pets screen and the Cared For Pets future feature placeholder
   export default function BottomNav(props) {
     return (
       <Tab.Navigator
@@ -43,8 +25,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
         activeColor={colors.yellow}
         inactiveColor={'black'}
         labelStyle={{ fontSize: 12 }}
-        barStyle={{ backgroundColor: colors.pawsomeblue }}
-      >
+        barStyle={{ backgroundColor: colors.pawsomeblue }}>
         <Tab.Screen
           name="Home"
           children={() => <HomeScreen extraData={props.extraData} />}
@@ -57,7 +38,7 @@ import UserScreen from "../screens/UserScreen/UserScreen"
         />
         <Tab.Screen
           name="Profile"
-          children={() => <UserScreen extraData={props.extraData} />}
+          component={CaredForPets}
           options={{
             tabBarLabel: 'Pets I Sit',
             tabBarIcon: ({ color }) => (

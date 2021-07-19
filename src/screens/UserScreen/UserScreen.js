@@ -62,7 +62,7 @@ export default function UserScreen(props) {
         console.log(error);
       }
     );
-  }, []);
+    return () => console.log('unmounting...')}, []);
 
 
   useEffect(() => {
@@ -169,7 +169,40 @@ export default function UserScreen(props) {
     console.log("caretakers in useeffect>>>>", caretakersArr);
     return () => console.log('unmounting...')}, [caretakersIds]);
 
-
+  const renderUserEntity = ({ item }) => {
+    return (
+      <View style={styles.container}>
+        <View style={styles.userContainer}>
+          <UploadImage user={item} functionType={"userImg"} />
+        </View>
+        <View style={styles.entityContainer}>
+          <Text style={styles.entityText}>Name:</Text>
+          <Text style={styles.entityText}>
+            {item.firstName} {item.lastName}
+          </Text>
+        </View>
+        <View style={styles.entityContainer}>
+          <Text style={styles.entityText}>Email:</Text>
+          <Text style={styles.entityText}>{item.email}</Text>
+        </View>
+        <View style={styles.entityContainer}>
+          <Text style={styles.entityText}>Address:</Text>
+          <Text style={styles.entityText}>{item.address}</Text>
+        </View>
+        <View>
+          <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {
+              Alert.alert("Coming soon", "We are working on this feature for you");
+               }}
+                >
+                   <Text style={styles.textStyle}>Edit</Text>
+          </Pressable>
+      </View>
+    </View>
+    )};
+  
+  console.log("vets>>>>>>>", vets);
   return (
     <SafeAreaView style={styles.container}>
       {users && (
@@ -312,6 +345,15 @@ export default function UserScreen(props) {
                           <Text style={styles.modalText}>{vet.phoneNum}</Text>
                           <Text style={styles.modalText}>{vet.address}</Text>
                           <Text style={styles.modalText}>{vet.hours}</Text>
+
+                          <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => {
+                              Alert.alert("Coming soon", "We are working on this feature for you");
+                            }}
+                          >
+                            <Text style={styles.textStyle}>Edit</Text>
+                          </Pressable>
                         </View>
                       </View>
                     );
