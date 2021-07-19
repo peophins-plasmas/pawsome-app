@@ -18,13 +18,11 @@ import { colors } from "../combinedStyles";
 import { firebase } from "../../firebase/config";
 import * as RootNavigator from "../../Navigation/RootNavigator";
 
-
 export default function HomeScreen(props) {
   const [pets, setPets] = useState([]);
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
-
 
   useEffect(() => {
     petsRef.where("ownerId", "array-contains", userID).onSnapshot(
@@ -41,7 +39,8 @@ export default function HomeScreen(props) {
         console.log(error);
       }
     );
-    return () => console.log('unmounting...')}, []);
+    return () => console.log("unmounting...");
+  }, []);
 
   if (pets.length === 0 || pets[0] === "none") {
     return (
@@ -58,9 +57,9 @@ export default function HomeScreen(props) {
     return (
       <SafeAreaView>
         <ScrollView>
-          <View style={{shadowColor: 'gray',
-                shadowOpacity: 0.2,
-                elevation: 1}}>
+          <View
+            style={{ shadowColor: "gray", shadowOpacity: 0.2, elevation: 1 }}
+          >
             {pets.map((pet) => {
               return (
                 <Card key={pet.id} borderRadius={70}>
@@ -93,7 +92,7 @@ export default function HomeScreen(props) {
                           RootNavigator.navigate("Pet", { pet: pet });
                         }}
                         rounded
-                        size="xlarge"
+                        size='xlarge'
                         source={{ uri: pet.image }}
                       />
                       <View
@@ -102,19 +101,24 @@ export default function HomeScreen(props) {
                           justifyContent: "space-between",
                         }}
                       >
-                        <View style={{marginBottom: 10}}>
-                          <Text style={{fontWeight: "bold"}}>Birthday:</Text><Text style={{marginBottom: 10}}>{pet.birthday || "Unknown"}</Text>
-                          <View style={{width: 130}}>
-                          <Text style={{fontWeight: "bold"}}>Likes:</Text><Text>{pet.likes || "You!"}</Text>
+                        <View style={{ marginBottom: 10 }}>
+                          <Text style={{ fontWeight: "bold" }}>Birthday:</Text>
+                          <Text style={{ marginBottom: 10 }}>
+                            {pet.birthday || "Unknown"}
+                          </Text>
+                          <View style={{ width: 130 }}>
+                            <Text style={{ fontWeight: "bold" }}>Likes:</Text>
+                            <Text>{pet.likes || "You!"}</Text>
                           </View>
                         </View>
                         <View>
                           <Button
-                            title="See More"
+                            title='See More'
+                            color={colors.dkblue}
                             onPress={() => {
                               RootNavigator.navigate("Pet", { pet: pet });
                             }}
-                          ></Button>
+                          />
                         </View>
                       </View>
                     </View>

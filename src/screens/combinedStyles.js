@@ -87,6 +87,13 @@ export default StyleSheet.create({
     width: 180,
     alignItems: "center",
     justifyContent: "center",
+    shadowOffset: {
+      width: 1,
+      height: 3,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.5,
+    shadowColor: "black",
   },
   addSomeButton: {
     height: 30,
@@ -95,6 +102,13 @@ export default StyleSheet.create({
     width: 180,
     alignItems: "center",
     justifyContent: "center",
+    shadowOffset: {
+      width: 1,
+      height: 3,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.5,
+    shadowColor: "black",
   },
   buttonText: {
     color: "white",
@@ -104,6 +118,7 @@ export default StyleSheet.create({
   clearButtonText: {
     color: "black",
     fontSize: 14,
+    fontWeight: "bold",
   },
 
   // ButtonTitle used on registration and login screens
@@ -159,8 +174,7 @@ export default StyleSheet.create({
     borderColor: colors.wheat,
     backgroundColor: colors.wheat,
     shadowOpacity: 0.5,
-    shadowColor: "gray"
-
+    shadowColor: "gray",
   },
   stackContainer: {
     display: "flex",
@@ -186,7 +200,7 @@ export default StyleSheet.create({
   },
 
   nameText: {
-    color: 'black',
+    color: "black",
     fontSize: 28,
     fontWeight: "700",
     margin: 10,
@@ -227,6 +241,12 @@ export default StyleSheet.create({
     display: "flex",
     width: 220,
     marginTop: 0,
+  },
+  titleUnderline: {
+    borderBottomColor: colors.dkblue,
+    borderBottomWidth: 1,
+    borderStyle: "solid",
+    marginBottom: 5,
   },
 
   //Registration screen and Login screen: footerview, footertext, footerlink
