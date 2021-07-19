@@ -234,7 +234,7 @@ export default function PetScreen(props) {
           </View>
         )}
       </ScrollView>
-      <View>
+      <View style={{position: "absolute", bottom: 30, right: 30, alignSelf: "flex-end"}}>
           <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => {

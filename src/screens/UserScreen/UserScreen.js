@@ -17,7 +17,7 @@ import styles from "./styles";
 import { firebase } from "../../firebase/config";
 import UploadImage from "../../Components/UploadImage";
 import { Avatar, Overlay, Button } from "react-native-elements";
-import { colors } from "../combinedStyles";
+import combinedStyles from "../combinedStyles";
 import AddButton from "../../Components/AddButton";
 import AddCaretaker from "../../Components/AddCaretaker";
 import * as RootNavigator from "../../Navigation/RootNavigator";
@@ -201,7 +201,7 @@ export default function UserScreen(props) {
       </View>
     </View>
     )};
-  
+
   console.log("vets>>>>>>>", vets);
   return (
     <SafeAreaView style={styles.container}>
@@ -379,9 +379,21 @@ export default function UserScreen(props) {
             <View>{/* <Text>No vets found!</Text> */}</View>
           )}
           </View>
+          <View>
+      </View>
           <View style={{ height: 100 }}></View>
         </ScrollView>
       )}
+      <View style={{position: "absolute", bottom: 30, alignSelf: "flex-end", right: 30}}>
+      <Pressable
+              style={[combinedStyles.button, combinedStyles.buttonClose]}
+              onPress={() => {
+              Alert.alert("Coming soon", "We are working on this feature for you");
+               }}
+                >
+                   <Text style={combinedStyles.textStyle}>Edit</Text>
+          </Pressable>
+      </View>
     </SafeAreaView>
   );
 }
