@@ -78,4 +78,7 @@ export default StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  seeMore: {
+    color: colors.dkblue,
+  },
 });
