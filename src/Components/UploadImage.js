@@ -15,11 +15,16 @@ import styles from "../screens/combinedStyles";
 
 if (process.env.NODE_ENV !== "production") require("../../secrets");
 
+let libraryPermission;
+let cameraPermission;
+
 const checkForLibraryPermission = async () => {
-  const {
-    libraryPermission,
-  } = await ImagePicker.getMediaLibraryPermissionsAsync();
-  if (libraryPermission !== "granted") {
+  libraryPermission = await ImagePicker.getMediaLibraryPermissionsAsync();
+  console.log(
+    "library permission in check function: ",
+    libraryPermission.status
+  );
+  if (libraryPermission.status !== "granted") {
     alert("Please grant permission for this app to access your media library");
     await ImagePicker.requestMediaLibraryPermissionsAsync();
   } else {
@@ -28,8 +33,9 @@ const checkForLibraryPermission = async () => {
 };
 
 const checkForCameraPermission = async () => {
-  const { cameraPermission } = await ImagePicker.getCameraPermissionsAsync();
-  if (cameraPermission !== "granted") {
+  cameraPermission = await ImagePicker.getCameraPermissionsAsync();
+  console.log("camera permission in check function: ", cameraPermission.status);
+  if (cameraPermission.status !== "granted") {
     alert("Please grant permission for this app to access your camera");
     await ImagePicker.requestCameraPermissionsAsync();
   } else {
@@ -61,35 +67,43 @@ export default function UploadImage(props) {
 
   const addImageFromLibrary = async () => {
     checkForLibraryPermission();
-    _image = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      base64: true,
-    });
-    if (_image.cancelled === true) {
-      return;
+    if (libraryPermission.status == "granted") {
+      _image = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        base64: true,
+      });
+      if (_image.cancelled === true) {
+        return;
+      }
+      // await _image.downloadAsync();
+      //   setImage(_image);
+      //   setReady(true);
+      uploadToCloud(_image);
+    } else {
+      console.log("Library permissions was not granted");
     }
-    // await _image.downloadAsync();
-    //   setImage(_image);
-    //   setReady(true);
-    uploadToCloud(_image);
   };
 
   const captureImageFromCamera = async () => {
     checkForCameraPermission();
-    let _image = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      // aspect: [1: 1],
-      quality: 1,
-      base64: true,
-    });
-    if (_image.cancelled === true) {
-      return;
+    if (cameraPermission.status == "granted") {
+      let _image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        // aspect: [1: 1],
+        quality: 1,
+        base64: true,
+      });
+      if (_image.cancelled === true) {
+        return;
+      }
+      uploadToCloud(_image);
+    } else {
+      console.log("Camera permissions was not granted");
     }
-    uploadToCloud(_image);
   };
 
   const uploadToCloud = async (_image) => {
