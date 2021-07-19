@@ -82,7 +82,7 @@ export default function PetForm(props) {
           {(props) => (
             <View style={styles.button}>
               <Text style={styles.titleTextForm}>
-                Congrats on your new pet!
+                Congrats on your new pet!🎉
               </Text>
               <TextInput
                 style={styles.inputForm}
