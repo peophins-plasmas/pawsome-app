@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { firebase } from "./src/firebase/config";
 import {
   DrawerActions,
@@ -56,6 +56,9 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(null);
   const [pushToken, setPushToken] = useState("");
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   const usersRef = firebase.firestore().collection("users");
 
@@ -90,33 +93,59 @@ export default function App() {
     return () => console.log("Set user after auth: ", user);
   }, []);
 
-  useEffect(() => {
-    registerForPushNotificationsAsync()
-      .then((token) => {
-        console.log("token type of data: ", typeof token);
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
 
-        if (user) {
-          console.log(
-            "user in register for push notifications async function",
-            user
-          );
-          console.log("token string stored as pushToken", pushToken);
-          //6. take expo push token from user record and send to Expo API using post request
-          usersRef
-            .doc(user.id)
-            .update({ pushToken: `${pushToken}` })
-            .then(() => {
-              console.log(`Updated ${user.firstName} with push token.`);
-            });
-        }
-        // setPushToken(token);
-        // return console.log("push token: ", pushToken);
-      })
-      .catch((err) => console.log(err));
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      console.log("token type of data: ", typeof token);
+      setPushToken(token);
+      if (user) {
+        console.log(
+          "user in register for push notifications async function",
+          user
+        );
+        console.log("token string stored as pushToken", pushToken);
+        //6. take expo push token from user record and send to Expo API using post request
+        usersRef
+          .doc(user.id)
+          .update({ pushToken: `${pushToken}` })
+          .then(() => {
+            console.log(`Updated ${user.firstName} with push token.`);
+          });
+      }
+      // return console.log("push token: ", pushToken);
+    });
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        setNotification(notification);
+      }
+    );
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log(response);
+      }
+    );
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
   }, []);
   console.log("push token outside of useEffect", pushToken);
 
   const registerForPushNotificationsAsync = async () => {
+    let token;
     //1. can only send notifications to physical devices so check if app is being accessed from device with Constants.isDevice
     if (Constants.isDevice) {
       const {
@@ -135,10 +164,10 @@ export default function App() {
         return;
       }
       try {
-        const token = (await Notifications.getExpoPushTokenAsync()).data;
+        token = (await Notifications.getExpoPushTokenAsync()).data;
         //4. token is obtained
         console.log("token>>>", token);
-        setPushToken(token);
+
         //5. create token state and set state to token or save to server?
 
         //POST token to server
@@ -155,6 +184,15 @@ export default function App() {
     } else {
       alert("Must use physical device for Push Notifications");
     }
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+    return token;
   };
 
   //7. may need node sdk OR instead of using the expo libraries, can send a post request directly to expo's http/2 API
