@@ -29,7 +29,7 @@ const checkForLibraryPermission = async () => {
 
 const checkForCameraPermission = async () => {
   const { cameraPermission } = await ImagePicker.getCameraPermissionsAsync();
-  if (cameraPermission !== "granted") {
+  if (cameraPermission.status !== "granted") {
     alert("Please grant permission for this app to access your camera");
     await ImagePicker.requestCameraPermissionsAsync();
   } else {
