@@ -74,8 +74,8 @@ export default StyleSheet.create({
   },
   button: {
     height: 47,
-    borderRadius: 5,
-    backgroundColor: colors.dkblue,
+    borderRadius: 15,
+    backgroundColor: colors.wheat,
     width: 80,
     alignItems: "center",
     justifyContent: "center",
@@ -97,7 +97,7 @@ export default StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    color: "white",
+    color: "black",
     fontSize: 16,
     fontWeight: "bold",
   },
