@@ -80,8 +80,10 @@ export default function App() {
       alert('Must use physical device for Push Notifications');
     }
   }
+
  
 //logout drawer item
+
   function CustomDrawerContent(props) {
     return (
       <DrawerContentScrollView {...props}>
@@ -174,6 +176,7 @@ export default function App() {
           {(props) => <PetScreen {...props} navigation={props.navigation}/>}
         </Stack.Screen>
       </Stack.Navigator>
+
     );
   }
 //stack navigator that renders the calendar/add task functionality
@@ -290,6 +293,7 @@ export default function App() {
               component={LoginScreen} 
               options={{ headerBackTitleVisible: false, 
                 headerStyle:{ backgroundColor: colors.pawsomeblue } 
+
                }}/>
               <Stack.Screen
                 name="Registration"
@@ -297,6 +301,7 @@ export default function App() {
                 options={{ headerBackTitleVisible: false, 
                 headerBackImage: () => (<Ionicons name={"ios-arrow-back"} size={32}
                 color={colors.yellow}/>), headerStyle:{ backgroundColor: colors.pawsomeblue } 
+
                }}
               />
             </>

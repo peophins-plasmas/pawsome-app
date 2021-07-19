@@ -9,7 +9,6 @@ export default StyleSheet.create({
   },
   userContainer: {
     flexDirection: "row",
-    flex: 1,
     justifyContent: "center",
   },
   formContainer: {
@@ -44,9 +43,16 @@ export default StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
     borderBottomColor: "#cccccc",
     borderBottomWidth: 1,
     paddingBottom: 10,
+  },
+  header: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.pawsomeblue
   },
   entityText: {
     fontSize: 16,
@@ -89,11 +95,11 @@ export default StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: colors.dkblue,
+    backgroundColor: colors.pawsomeblue,
     margin: 10,
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: colors.pawsomeblue,
   },
   textStyle: {
     color: "white",
@@ -105,7 +111,7 @@ export default StyleSheet.create({
     textAlign: "center",
   },
   titleTextForm: {
-    fontSize: 24,
+    fontSize: 23,
     fontWeight: "bold",
     alignSelf: "center",
     color: colors.dkblue,
