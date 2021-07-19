@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  FlatList,
   Keyboard,
   Text,
   TextInput,
@@ -25,7 +24,7 @@ export default function HomeScreen(props) {
 
   const petsRef = firebase.firestore().collection("pets");
   const userID = props.extraData.id;
-  
+
 
   useEffect(() => {
     petsRef.where("ownerId", "array-contains", userID).onSnapshot(
