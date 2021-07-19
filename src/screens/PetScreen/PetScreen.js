@@ -9,6 +9,7 @@ import {
   View,
   Alert,
   ScrollView,
+  Pressable
 } from "react-native";
 import styles from "../combinedStyles";
 import { firebase } from "../../firebase/config";
@@ -234,6 +235,16 @@ export default function PetScreen(props) {
           </View>
         )}
       </ScrollView>
+      <View>
+          <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {
+              Alert.alert("Coming soon", "We are working on this feature for you");
+               }}
+                >
+                   <Text style={styles.textStyle}>Edit</Text>
+          </Pressable>
+      </View>
     </SafeAreaView>
   );
 }

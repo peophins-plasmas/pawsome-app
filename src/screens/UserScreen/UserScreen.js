@@ -187,9 +187,19 @@ export default function UserScreen(props) {
           <Text style={styles.entityText}>Address:</Text>
           <Text style={styles.entityText}>{item.address}</Text>
         </View>
+        <View>
+          <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {
+              Alert.alert("Coming soon", "We are working on this feature for you");
+               }}
+                >
+                   <Text style={styles.textStyle}>Edit</Text>
+          </Pressable>
       </View>
-    );
-  };
+    </View>
+    )};
+  
   console.log("vets>>>>>>>", vets);
   return (
     <SafeAreaView style={styles.container}>
@@ -297,14 +307,14 @@ export default function UserScreen(props) {
                           <Text style={styles.modalText}>{vet.phoneNum}</Text>
                           <Text style={styles.modalText}>{vet.address}</Text>
                           <Text style={styles.modalText}>{vet.hours}</Text>
-                          {/* <Pressable
+                          <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => {
-                              console.log("vet was clicked");
+                              Alert.alert("Coming soon", "We are working on this feature for you");
                             }}
                           >
                             <Text style={styles.textStyle}>Edit</Text>
-                          </Pressable> */}
+                          </Pressable>
                         </View>
                       </View>
                     );
