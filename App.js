@@ -58,7 +58,7 @@ export default function App() {
   //console.log for the token
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => console.log(token)).catch(err => console.log(err))
-  }, [])
+    return () => console.log('unmounting...')}, [])
 
   //function that checks for push notification permissions and sets the push notification token if yes
   registerForPushNotificationsAsync = async () => {
@@ -77,7 +77,7 @@ export default function App() {
       console.log(token);
       this.setState({ expoPushToken: token });
     } else {
-      alert('Must use physical device for Push Notifications');
+      // alert('Must use physical device for Push Notifications');
     }
   }
 

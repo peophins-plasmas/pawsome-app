@@ -42,7 +42,7 @@ export default function PetScreen(props) {
         console.log(error);
       }
     );
-  }, []);
+    return () => console.log('unmounting...')}, []);
 
   //to find pet's caretakers
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function PetScreen(props) {
         console.log(error);
       }
     );
-  }, []);
+    return () => console.log('unmounting...')}, []);
 
   useEffect(() => {
     vetRef.where("id", "in", pet.vetId).onSnapshot(
@@ -73,7 +73,7 @@ export default function PetScreen(props) {
         console.log(error);
       }
     );
-  }, []);
+    return () => console.log('unmounting...')}, []);
 
   return (
     <SafeAreaView style={styles.container}>
