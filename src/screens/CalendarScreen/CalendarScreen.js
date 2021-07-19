@@ -37,6 +37,12 @@ export default function CalendarScreen(props) {
   const usersRef = firebase.firestore().collection("users");
   const userId = props.extraData.id;
 
+  //for notifications
+  const pushToken = props.extraData.pushToken;
+
+  //find task that is due by filtering tasks due on the current date and time due that matches current time
+  // const taskDue =
+
   useEffect(() => {
     let sortedTasks;
     tasksRef
@@ -85,7 +91,8 @@ export default function CalendarScreen(props) {
           console.error(error);
         }
       );
-      return () => console.log('unmounting...')}, [selDate, dueDate]);
+    return () => console.log("unmounting...");
+  }, [selDate, dueDate]);
 
   // useEffect(() => {
   //   const unsubscribe = props.navigation.addListener('focus', () => {
@@ -94,7 +101,22 @@ export default function CalendarScreen(props) {
   //   return unsubscribe;
   // }, [props.navigation]);
 
-  
+  const sendPushNotification = () => {
+    let response = fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: pushToken,
+        sound: "default",
+        title: "Task is due!",
+        body: `Reminder to complete your assigned task: `,
+      }),
+    });
+    return response;
+  };
 
   return (
     <SafeAreaView>
@@ -153,6 +175,16 @@ export default function CalendarScreen(props) {
               <Text>No chores for today!</Text>
             </View>
           )}
+
+          <TouchableOpacity
+            style={[
+              styles.button,
+              { borderRadius: 30, padding: 10, margin: 15, width: 100 },
+            ]}
+            onPress={() => sendPushNotification()}
+          >
+            <Text style={styles.buttonText}>Test Notifications</Text>
+          </TouchableOpacity>
 
           <TouchableOpacity
             style={[

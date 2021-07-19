@@ -101,6 +101,7 @@ export default function App() {
             user
           );
           console.log("token string stored as pushToken", pushToken);
+          //6. take expo push token from user record and send to Expo API using post request
           usersRef
             .doc(user.id)
             .update({ pushToken: `${pushToken}` })
@@ -154,21 +155,10 @@ export default function App() {
     } else {
       alert("Must use physical device for Push Notifications");
     }
-
-    //additional logic for android devices:
-    if (Platform.OS === "android") {
-      Notifications.setNotificationChannelAsync("default", {
-        name: "default",
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: "#FF231F7C",
-      });
-    }
   };
 
-  //6. take expo push token from user record and send to Expo API using post request
-  //7. may need node sdk ??
-  //8. can send notifications with sendPushNotification()
+  //7. may need node sdk OR instead of using the expo libraries, can send a post request directly to expo's http/2 API
+  //8. can send notifications with sendPushNotification() - trying to define this on calendar screen
 
   function CustomDrawerContent(props) {
     return (
