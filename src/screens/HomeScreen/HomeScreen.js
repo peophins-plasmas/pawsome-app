@@ -102,9 +102,11 @@ export default function HomeScreen(props) {
                           justifyContent: "space-between",
                         }}
                       >
-                        <View>
-                          <Text>Birthday: {pet.birthday || "unknown"}</Text>
-                          <Text>Sex: {pet.sex || "other"}</Text>
+                        <View style={{marginBottom: 10}}>
+                          <Text style={{fontWeight: "bold"}}>Birthday:</Text><Text style={{marginBottom: 10}}>{pet.birthday || "Unknown"}</Text>
+                          <View style={{width: 130}}>
+                          <Text style={{fontWeight: "bold"}}>Likes:</Text><Text>{pet.likes || "You!"}</Text>
+                          </View>
                         </View>
                         <View>
                           <Button
