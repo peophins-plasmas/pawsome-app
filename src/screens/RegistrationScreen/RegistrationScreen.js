@@ -3,6 +3,7 @@ import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import styles from "./styles";
 import { firebase } from "../../firebase/config";
+import * as RootNavigator from "../../Navigation/RootNavigator";
 
 export default function RegistrationScreen({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -35,6 +36,7 @@ export default function RegistrationScreen({ navigation }) {
             "https://res.cloudinary.com/dx5gk8aso/image/upload/v1626380751/pawpring_b2j5oa.png",
           ownedPetId: ["none"],
           caretakers: ["none"],
+          coOwners: ["none"],
           sitterForUsers: ["none"],
           tasks: ["none"],
           vetId: ["none"],
@@ -47,7 +49,7 @@ export default function RegistrationScreen({ navigation }) {
           .doc(uid)
           .set(data)
           .then(() => {
-            navigation.navigate("Home", { user: data });
+            RootNavigator.navigate("My Pets", { user: data });
           })
           .catch((error) => {
             alert(error);

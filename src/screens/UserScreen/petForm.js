@@ -12,15 +12,13 @@ import {
 } from "react-native";
 import styles from "./styles";
 import { Formik, Form, Field } from "formik";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 import colors from "../combinedStyles";
-import { FormValidation } from "../formValidation"
+import { FormValidation } from "../formValidation";
 
 export default function PetForm(props) {
-
   const petsRef = firebase.firestore().collection("pets");
   const userId = props.extraData.id;
-  console.log("PROPS>>>>", props)
   return (
     <ScrollView>
       <View style={styles.containerForm}>
@@ -91,9 +89,9 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("petName")}
                 value={props.values.petName}
               />
-              {props.errors.petName && props.touched.petName &&
+              {props.errors.petName && props.touched.petName && (
                 <Text>{props.errors.petName}</Text>
-              }
+              )}
               <TextInput
                 style={styles.inputForm}
                 placeholder="What species am I?**"
@@ -101,9 +99,9 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("species")}
                 value={props.values.species}
               />
-              {props.errors.species && props.touched.species &&
+              {props.errors.species && props.touched.species && (
                 <Text>{props.errors.species}</Text>
-              }
+              )}
               <TextInput
                 style={styles.inputForm}
                 placeholder="When was I born?"
@@ -111,25 +109,25 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("birthday")}
                 value={props.values.birthday}
               />
-              <View style={{flexDirection: "row"}}>
-              <TextInput
-                style={[styles.inputForm, {flex: 3}]}
-                placeholder="How much do I weigh?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("weight")}
-                value={props.values.weight}
-                keyboardType="numeric"
-              />
-              {props.errors.weight && props.touched.weight &&
-                    <Text>{props.errors.weight}</Text>
-              }
-              <TextInput
-                style={[styles.inputForm, {flex: 1}]}
-                placeholder="Units?"
-                placeholderTextColor="#909090"
-                onChangeText={props.handleChange("units")}
-                value={props.values.units}
-              />
+              <View style={{ flexDirection: "row" }}>
+                <TextInput
+                  style={[styles.inputForm, { flex: 3 }]}
+                  placeholder="How much do I weigh?"
+                  placeholderTextColor="#909090"
+                  onChangeText={props.handleChange("weight")}
+                  value={props.values.weight}
+                  keyboardType="numeric"
+                />
+                {props.errors.weight && props.touched.weight && (
+                  <Text>{props.errors.weight}</Text>
+                )}
+                <TextInput
+                  style={[styles.inputForm, { flex: 1 }]}
+                  placeholder="Units?"
+                  placeholderTextColor="#909090"
+                  onChangeText={props.handleChange("units")}
+                  value={props.values.units}
+                />
               </View>
               <TextInput
                 style={styles.inputForm}
@@ -152,7 +150,7 @@ export default function PetForm(props) {
                 onChangeText={props.handleChange("additionalInfo")}
                 value={props.values.additionalInfo}
               />
-              <View style={{alignSelf: "flex-end"}}>
+              <View style={{ alignSelf: "flex-end" }}>
                 <Text>** (required)</Text>
               </View>
               <Button
