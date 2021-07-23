@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
+  Alert
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -16,10 +17,8 @@ import styles from "../screens/combinedStyles";
 if (process.env.NODE_ENV !== "production") require("../../secrets");
 
 const checkForLibraryPermission = async () => {
-  const {
-    libraryPermission,
-  } = await ImagePicker.getMediaLibraryPermissionsAsync();
-  if (libraryPermission !== "granted") {
+  const libraryPermission = await ImagePicker.getMediaLibraryPermissionsAsync();
+  if (libraryPermission.status !== "granted") {
     alert("Please grant permission for this app to access your media library");
     await ImagePicker.requestMediaLibraryPermissionsAsync();
   } else {
@@ -28,7 +27,7 @@ const checkForLibraryPermission = async () => {
 };
 
 const checkForCameraPermission = async () => {
-  const { cameraPermission } = await ImagePicker.getCameraPermissionsAsync();
+  const cameraPermission = await ImagePicker.getCameraPermissionsAsync();
   if (cameraPermission.status !== "granted") {
     alert("Please grant permission for this app to access your camera");
     await ImagePicker.requestCameraPermissionsAsync();
@@ -75,6 +74,7 @@ export default function UploadImage(props) {
     //   setImage(_image);
     //   setReady(true);
     uploadToCloud(_image);
+    Alert.alert('Upload successful', 'It may take a few seconds to change on your screen')
   };
 
   const captureImageFromCamera = async () => {
@@ -90,6 +90,7 @@ export default function UploadImage(props) {
       return;
     }
     uploadToCloud(_image);
+    Alert.alert('Upload successful', 'It may take a few seconds to change on your screen')
   };
 
   const uploadToCloud = async (_image) => {
