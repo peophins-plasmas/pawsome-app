@@ -16,7 +16,6 @@ import { Alert } from "react-native";
 
 export default function AddTask(props) {
   let date = new Date();
-  //console.log(props, "Props line 22");
   let dateCheck = props.calDate || date.toLocaleDateString();
 
   const [selDate, setSelDate] = useState(props.startTimeStamp || date);
@@ -46,10 +45,6 @@ export default function AddTask(props) {
 
   const userId = props.extraData.id;
   const allIds = [...coOwnersIds, ...caretakersIds, userId];
-  console.log("checkedUserIds", checkedUserIds);
-  // console.log(allIds, "ALLIDS>>>>> 48");
-  // console.log("caretakersIds line 49", caretakersIds);
-  // console.log(userId, "userId");
 
   useEffect(() => {
     usersRef
@@ -76,13 +71,11 @@ export default function AddTask(props) {
           .then((document) => {
             const { petName } = document.data();
             const newEl = [petName, ownedPetIds[i]];
-            // console.log(newEl, "new El line 70");
             const containsPetId = ownedPets.some((el) =>
               el.includes(ownedPetIds[i])
             );
             if (!containsPetId) {
               holderArray.push(newEl);
-              // console.log(holderArray, "holder line 78");
             }
           })
           .catch((error) => {
@@ -97,20 +90,13 @@ export default function AddTask(props) {
 
   //update pet array if recently added pets
   useEffect(() => {
-    const petIdArray = [];
-    let user;
-    if (Object.keys(props.extraData.ownedPetId).length === 0) {
-      user = { ownedPetId: ["none"] };
-    } else {
-      user = props.extraData;
-    }
     petsRef.where("ownerId", "array-contains", userId).onSnapshot(
       (querySnapshot) => {
         const newPets = [];
         querySnapshot.forEach((doc) => {
           const pet = doc.data();
           pet.id = doc.id;
-          newPets.push(pet);
+          newPets.push(pet.id);
         });
         setPets(newPets);
       },
@@ -118,22 +104,37 @@ export default function AddTask(props) {
         console.log(error);
       }
     );
-    pets.map((pet) => petIdArray.push(pet.id));
+    return () => console.log("unmounting...");
+  }, []);
+
+  useEffect(() => {
+    const petIdArray = [];
+    let user;
+    if (Object.keys(props.extraData.ownedPetId).length === 0) {
+      user = { ownedPetId: ["none"] };
+    } else {
+      user = props.extraData;
+    }
+    if (pets.length > 0 || pets[pets.length - 1] != "none") {
+      pets.map((pet) => petIdArray.push(pet));
+    }
     if (
       user.ownedPetId.length !== petIdArray.length ||
       user.ownedPetId[user.ownedPetId.length - 1] === "none"
     ) {
-      const currentUser = firebase.firestore().collection("users").doc(userId);
-      petIdArray.forEach((id) => {
-        if (!user.ownedPetId.includes(id)) {
-          currentUser.update({
-            ownedPetId: firebase.firestore.FieldValue.arrayUnion(id),
-          });
-        }
-      });
+      const currentUser = firebase.firestore().collection("users").doc(user.id);
+      if (petIdArray.length > 0) {
+        petIdArray.forEach((id) => {
+          if (!user.ownedPetId.includes(id)) {
+            currentUser.update({
+              ownedPetId: firebase.firestore.FieldValue.arrayUnion(id),
+            });
+          }
+        });
+      }
     }
     return () => console.log("unmounting...");
-  }, []);
+  }, [pets]);
 
   //find coOwnersIds for user
   useEffect(() => {
@@ -323,10 +324,10 @@ export default function AddTask(props) {
           <Text style={styles.blueHeaderText}>Choose a Date and Time</Text>
 
           <DateTimePicker
-            testID='dateTimePicker'
-            mode='datetime'
+            testID="dateTimePicker"
+            mode="datetime"
             is24Hour={true}
-            display='default'
+            display="default"
             onChange={onChange}
             value={selDate}
             style={styles.datePicker}
@@ -336,12 +337,12 @@ export default function AddTask(props) {
           <Text style={styles.blueHeaderText}>Describe the Task</Text>
           <TextInput
             style={styles.input}
-            placeholder='Task description'
-            placeholderTextColor='#aaaaaa'
+            placeholder="Task description"
+            placeholderTextColor="#aaaaaa"
             onChangeText={(text) => setEntityText(text)}
             value={entityText}
-            underlineColorAndroid='transparent'
-            autoCapitalize='none'
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
           />
         </View>
         <View style={[styles.container, styles.addTopMargin, { width: 250 }]}>

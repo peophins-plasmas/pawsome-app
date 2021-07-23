@@ -39,6 +39,7 @@ export default function HomeScreen(props) {
         console.log(error);
       }
     );
+    return () => console.log("unmounting...");
   }, []);
 
   if (pets.length === 0 || pets[0] === "none") {
@@ -91,7 +92,7 @@ export default function HomeScreen(props) {
                           RootNavigator.navigate("Pet", { pet: pet });
                         }}
                         rounded
-                        size='xlarge'
+                        size="xlarge"
                         source={{ uri: pet.image }}
                       />
                       <View
@@ -112,7 +113,7 @@ export default function HomeScreen(props) {
                         </View>
                         <View>
                           <Button
-                            title='See More'
+                            title="See More"
                             color={colors.dkblue}
                             onPress={() => {
                               RootNavigator.navigate("Pet", { pet: pet });

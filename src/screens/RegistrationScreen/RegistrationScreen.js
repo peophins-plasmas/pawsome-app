@@ -36,6 +36,7 @@ export default function RegistrationScreen({ navigation }) {
             "https://res.cloudinary.com/dx5gk8aso/image/upload/v1626380751/pawpring_b2j5oa.png",
           ownedPetId: ["none"],
           caretakers: ["none"],
+          coOwners: ["none"],
           sitterForUsers: ["none"],
           tasks: ["none"],
           vetId: ["none"],
