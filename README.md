@@ -1,5 +1,14 @@
 ![Pawsome Logo](/assets/pawsome_logo.png)
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Creators](#creators)
+- [Docs](#docs)
+
 # Introduction
 Pawsome is a collaborative pet-care app for iOS that allows you and all your pets' caregivers to work together to take the very best care of your pets. 
 
