@@ -26,6 +26,7 @@ Watch our full 4-minute demo video [here](https://www.youtube.com/watch?v=fapWIl
 * Formik & Yup
 * Expo (and Expo Image Picker)
 * Node.js
+* XCode Simulator (to run iOS simulator)
 
 ![Pawprint](/assets/apple-touch-icon.png)
 
