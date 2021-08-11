@@ -93,10 +93,16 @@ if (!firebase.apps.length) {
 
 export { firebase }
 ````
-## How to Seed Firestore:
+Run ````git 
+npm start
+````
+and pick your simulator (see package.json for scripts)
 
+## How to Seed Firestore with our seed data setup:
+````git
 node seed/populate.js ./seed/{NAME OF COLLECTION JSON}.json set {COLLECTION NAME}
-https://www.youtube.com/watch?v=I11O0UVp8PQ
+````
+[Video for seeding Firestore](https://www.youtube.com/watch?v=I11O0UVp8PQ)
 
 ## To start app in simulator:
 
