@@ -1,5 +1,11 @@
 ![Pawsome Logo](/assets/pawsome_logo.png)
 
+
+![Pawsome Mockup](https://user-images.githubusercontent.com/73001148/129080553-77b67864-db24-44e5-b634-dd4c91aa99ca.png)
+
+<a href='https://www.freepik.com/photos/brush'>Designed with freepik - www.freepik.com</a>
+
+
 ## Table of Contents
 
 - [Introduction](#introduction)
