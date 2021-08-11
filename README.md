@@ -81,10 +81,10 @@ The next steps for Pawsome include notifications for tasks and choosing the freq
 
 # Creators:
 
-Anna Vaigast: [GitHub](https://github.com/av1082) | [LinkedIn](https://www.linkedin.com/in/anna-vaigast/)
-Brenda Wong: [GitHub](https://github.com/brendawon) | [LinkedIn](https://www.linkedin.com/in/brenda-wong-rd/)
-Rebekkah Jou: [GitHub](https://github.com/RebekkahJou) | [LinkedIn](https://www.linkedin.com/in/rebekkah-niles-jou/)
-McKenna Warren: [GitHub](https://github.com/mckennakayyy) | [LinkedIn](https://www.linkedin.com/in/mckenna-warren/)
+* Anna Vaigast: [GitHub](https://github.com/av1082) | [LinkedIn](https://www.linkedin.com/in/anna-vaigast/)
+* Brenda Wong: [GitHub](https://github.com/brendawon) | [LinkedIn](https://www.linkedin.com/in/brenda-wong-rd/)
+* Rebekkah Jou: [GitHub](https://github.com/RebekkahJou) | [LinkedIn](https://www.linkedin.com/in/rebekkah-niles-jou/)
+* McKenna Warren: [GitHub](https://github.com/mckennakayyy) | [LinkedIn](https://www.linkedin.com/in/mckenna-warren/)
 
 ![Pawprint](/assets/apple-touch-icon.png)
 
