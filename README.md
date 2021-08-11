@@ -1,5 +1,3 @@
-![Pawsome Logo](https://res.cloudinary.com/dx5gk8aso/image/upload/v1628709527/Screen_Shot_2021-08-11_at_1.17.19_PM_lfz03x.png)
-
 
 ![Pawsome Mockup](https://user-images.githubusercontent.com/73001148/129080553-77b67864-db24-44e5-b634-dd4c91aa99ca.png)
 <a href='https://www.freepik.com/photos/brush'>This mockup has been designed using resources from Freepik.com - www.freepik.com</a>
