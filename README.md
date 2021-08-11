@@ -75,12 +75,16 @@ npm run android (for Android)
 
 ![Pawprint](/assets/apple-touch-icon.png)
 
+# Next Steps
+The next steps for Pawsome include notifications for tasks and choosing the frequency of each task you want to add. We are also working to assign pet-sitters to our users so that they can view all of the necessary pet information. Another stretch goal is to incorportate a messaging feature within the app so that users and pet-sitters can interact with one another.
+
+
 # Creators:
 
-Anna Vaigast
-Brenda Wong
-Rebekkah Jou
-McKenna Warren
+Anna Vaigast: [GitHub](https://github.com/av1082) | [LinkedIn](https://www.linkedin.com/in/anna-vaigast/)
+Brenda Wong: [GitHub](https://github.com/brendawon) | [LinkedIn](https://www.linkedin.com/in/brenda-wong-rd/)
+Rebekkah Jou: [GitHub](https://github.com/RebekkahJou) | [LinkedIn](https://www.linkedin.com/in/rebekkah-niles-jou/)
+McKenna Warren: [GitHub](https://github.com/mckennakayyy) | [LinkedIn](https://www.linkedin.com/in/mckenna-warren/)
 
 ![Pawprint](/assets/apple-touch-icon.png)
 
