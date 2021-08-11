@@ -12,6 +12,9 @@
 - [Creators](#creators)
 - [Docs](#docs)
 
+
+![Pawprint](/assets/apple-touch-icon.png)
+
 # Introduction
 Pawsome is a collaborative pet-care app for iOS that allows you and all your pets' caregivers to work together to take the very best care of your pets. 
 
@@ -62,7 +65,7 @@ Watch our full 4-minute demo video [here](https://www.youtube.com/watch?v=fapWIl
 
 ![Pawprint](/assets/apple-touch-icon.png)
 
-## Getting Started
+# Getting Started
 
 Fork and clone this repo. Then, npm install.
 
@@ -125,6 +128,8 @@ npm run android (for Android)
 # Next Steps
 The next steps for Pawsome include notifications for tasks and choosing the frequency of each task you want to add. We are also working to assign pet-sitters to our users so that they can view all of the necessary pet information. Another stretch goal is to incorportate a messaging feature within the app so that users and pet-sitters can interact with one another.
 
+
+![Pawprint](/assets/apple-touch-icon.png)
 
 # Creators
 
