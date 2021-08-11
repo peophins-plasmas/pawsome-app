@@ -5,13 +5,16 @@
 node seed/populate.js ./seed/{NAME OF COLLECTION JSON}.json set {COLLECTION NAME}
 https://www.youtube.com/watch?v=I11O0UVp8PQ
 
-# To start app in simulator:
+# Getting Started
+Fork and clone this repo. Then, npm install.
 
-npm install
-npm run start
-or
-npm run ios (for iPhone)
-npm run android (for Android)
+Create a Firebase config file:
+
+````git
+mkdir src/firebaseSpecs && touch src/firebaseSpecs/config.js
+````
+
+Add your Firebase configuration into src/firebaseSpecs/config.js:
 
 # Creators:
 
