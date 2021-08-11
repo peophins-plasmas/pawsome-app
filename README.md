@@ -29,12 +29,23 @@ Watch our full 4-minute demo video [here](https://www.youtube.com/watch?v=fapWIl
 # Features
 ## App Features
 * Persistent login: Log in and stay logged in with Firebase Authentication
+
 * Create a profile: Create a profile with information about yourself, and information that applies to all your pets, such as your vet information
+
 * View pets and caregivers: See all your own pets and the pets you care for, and see all the caregivers for your pets, making it easy to find the information you're looking for
-* Add pets: Add detailed information about your pets
+
+![Pet and Caretaker View](https://media.giphy.com/media/peBwBV1V9eolvSOq4b/giphy.gif)
+
+* Add pets: Add detailed information about your pets 
+
+![Add Pets Demo](https://media.giphy.com/media/igakamNRqXJezsYF3p/giphy.gif)
+
 * Take photos: Take photos of yourself and of your pets
+
 * Calendar: View tasks for each day, clearly labeled with the name of the pet the task is for, organized by time due 
 * Assign tasks: Assign pet care tasks to any or all of your pets' caregivers, with date, time, and task description
+
+![Calendar and Task Demo](https://media.giphy.com/media/7C2i5yADe7Qjuuc9CA/giphy.gif)
 
 ## Technical Features
 * Registration with email and password
