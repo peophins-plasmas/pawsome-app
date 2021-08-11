@@ -58,7 +58,41 @@ Watch our full 4-minute demo video [here](https://www.youtube.com/watch?v=fapWIl
 
 ![Pawprint](/assets/apple-touch-icon.png)
 
-# Getting Started
+## Getting Started
+
+Fork and clone this repo. Then, npm install.
+
+Create a Firebase config file:
+
+````git
+mkdir src/firebase && touch src/firebase/config.js
+````
+
+Add your Firebase configuration into src/firebase/config.js:
+
+````javascript
+import * as firebase from 'firebase';
+import '@firebase/auth';
+import '@firebase/firestore';
+
+if (process.env.NODE_ENV !== "production") require("../../secrets");
+
+const firebaseConfig = {
+  apiKey: 'YOUR_KEY_HERE_AIzaSyAOWH',
+  authDomain: 'your-auth-domain-b1234.firebaseapp.com',
+  databaseURL: 'https://your-database-name.firebaseio.com',
+  projectId: 'your-project-id-1234',
+  storageBucket: 'your-project-id-1234.appspot.com',
+  messagingSenderId: '12345-insert-yourse',
+  appId: 'insert yours: 1:1234:web:ee873bd1234c0deb7eba61ce',
+};
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+
+export { firebase }
+````
 ## How to Seed Firestore:
 
 node seed/populate.js ./seed/{NAME OF COLLECTION JSON}.json set {COLLECTION NAME}
