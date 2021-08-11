@@ -2,7 +2,6 @@
 
 
 ![Pawsome Mockup](https://user-images.githubusercontent.com/73001148/129080553-77b67864-db24-44e5-b634-dd4c91aa99ca.png)
-
 <a href='https://www.freepik.com/photos/brush'>This mockup has been designed using resources from Freepik.com - www.freepik.com</a>
 
 
