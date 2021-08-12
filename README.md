@@ -9,6 +9,7 @@
 - [Tech Stack](#tech-stack)
 - [Features](#features)
 - [Getting Started](#getting-started)
+- [Next Steps](#next-steps)
 - [Creators](#creators)
 - [Docs](#docs)
 
