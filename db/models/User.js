@@ -11,6 +11,4 @@ const User = db.define("User", {
   address: {},
   phone: {},
   zip: {},
-  isOwner: {},
-  isPetSitter: {},
 });

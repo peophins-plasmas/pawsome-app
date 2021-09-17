@@ -8,5 +8,4 @@ const Medication = db.define("Medication", {
   dosage: {},
   medicationName: {},
   medicationNickname: {},
-  PetId: {},
 });

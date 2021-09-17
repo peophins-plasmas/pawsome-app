@@ -7,21 +7,21 @@ const Task = require("./models/Task");
 const Medication = require("./models/Medication");
 //associations
 
-User.hasMany(Pet);
-Pet.belongsTo(User);
+User.belongsToMany(Pet);
+Pet.belongsToMany(User);
 
-User.hasOne(Vet);
-Vet.hasMany(User);
-Pet.hasOne(Vet);
-Vet.hasMany(Pet);
+User.belongsToMany(Vet);
+Vet.belongsToMany(User);
+Pet.belongsToMany(Vet);
+Vet.belongsToMany(Pet);
 
-User.hasMany(Task);
-Task.belongsTo(User);
-Pet.hasMany(Task);
-Task.belongsTo(Pet);
+User.belongsToMany(Task);
+Task.belongsToMany(User);
+Pet.belongsToMany(Task);
+Task.belongsToMany(Pet);
 
 Pet.hasMany(Medication);
-Medication.belongsTo(Pet);
+Medication.hasMany(Pet);
 
 module.exports = {
   db,

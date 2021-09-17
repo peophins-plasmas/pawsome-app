@@ -22,6 +22,4 @@ const Pet = db.define("Pet", {
   medications: {},
   allergies: {},
   additionalInfo: {},
-  vetId: {},
-  userId: {},
 });
